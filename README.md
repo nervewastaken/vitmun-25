@@ -4,8 +4,6 @@ I just want to say, I hate Java.
 
 to anyone what actually wants to run this abomination on their own computer can
 
-request for the .env file
-
 clone the repo
 
 ```bash
