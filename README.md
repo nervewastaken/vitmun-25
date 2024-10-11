@@ -8,9 +8,6 @@ request for the .env file
 
 clone the repo
 
-request for the .env file to tech team
-add it to the vit
-
 ```bash
 cd vitmun-25
 ```
