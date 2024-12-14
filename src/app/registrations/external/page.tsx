@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const DelegateForm = () => {
+const ExternalDelegateForm = () => {
   const [formData, setFormData] = useState({
     participant_name: "",
     gender: "",
@@ -10,8 +10,17 @@ const DelegateForm = () => {
     organisation_name: "",
     accommodation: "",
     committee_preference_1: "",
+    allotment_preference_1_1: "",
+    allotment_preference_1_2: "",
+    allotment_preference_1_3: "",
     committee_preference_2: "",
+    allotment_preference_2_1: "",
+    allotment_preference_2_2: "",
+    allotment_preference_2_3: "",
     committee_preference_3: "",
+    allotment_preference_3_1: "",
+    allotment_preference_3_2: "",
+    allotment_preference_3_3: "",
     exp_delegate_muns: "",
     exp_delegate_text: "",
     exp_eb_muns: "",
@@ -26,7 +35,7 @@ const DelegateForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/submit-delegate-form", {
+      const response = await fetch("/api/submit-delegate-form-ext", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,6 +152,38 @@ const DelegateForm = () => {
           </label>
           <br />
           <label>
+            Allotment Preference 1.1:
+            <input
+              type="text"
+              name="allotment_preference_1_1"
+              value={formData.allotment_preference_1_1}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 1.2:
+            <input
+              type="text"
+              name="allotment_preference_1_2"
+              value={formData.allotment_preference_1_2}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 1.3:
+            <input
+              type="text"
+              name="allotment_preference_1_3"
+              value={formData.allotment_preference_1_3}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+
+          <label>
             Preference 2:
             <input
               type="text"
@@ -153,11 +194,72 @@ const DelegateForm = () => {
           </label>
           <br />
           <label>
+            Allotment Preference 2.1:
+            <input
+              type="text"
+              name="allotment_preference_2_1"
+              value={formData.allotment_preference_2_1}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 2.2:
+            <input
+              type="text"
+              name="allotment_preference_2_2"
+              value={formData.allotment_preference_2_2}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 2.3:
+            <input
+              type="text"
+              name="allotment_preference_2_3"
+              value={formData.allotment_preference_2_3}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+
+          <label>
             Preference 3:
             <input
               type="text"
               name="committee_preference_3"
               value={formData.committee_preference_3}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 3.1:
+            <input
+              type="text"
+              name="allotment_preference_3_1"
+              value={formData.allotment_preference_3_1}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 3.2:
+            <input
+              type="text"
+              name="allotment_preference_3_2"
+              value={formData.allotment_preference_3_2}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Allotment Preference 3.3:
+            <input
+              type="text"
+              name="allotment_preference_3_3"
+              value={formData.allotment_preference_3_3}
               onChange={handleChange}
             />
           </label>
@@ -215,4 +317,4 @@ const DelegateForm = () => {
   );
 };
 
-export default DelegateForm;
+export default ExternalDelegateForm;
