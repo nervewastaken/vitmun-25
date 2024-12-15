@@ -6,11 +6,10 @@ export async function POST(req: Request) {
     const client = await clientPromise;
     const db = client.db("delegateallotments");
     const collection = db.collection("external");
-
     // Parse form data from request body
     const formData = await req.json();
 
-    console.log(req.json());
+    console.log(formData);
 
     // Build the document to be inserted
     const document = {
@@ -21,9 +20,30 @@ export async function POST(req: Request) {
       organisation_name: formData.organisation_name,
       accommodation: formData.accommodation,
       committee_preferences: {
-        preference_1: formData.committee_preference_1,
-        preference_2: formData.committee_preference_2,
-        preference_3: formData.committee_preference_3,
+        preference_1: {
+          committee: formData.committee_preference_1,
+          allotments: [
+            formData.allotment_preference_1_1,
+            formData.allotment_preference_1_2,
+            formData.allotment_preference_1_3,
+          ].filter(Boolean), // Filters out any empty values
+        },
+        preference_2: {
+          committee: formData.committee_preference_2,
+          allotments: [
+            formData.allotment_preference_2_1,
+            formData.allotment_preference_2_2,
+            formData.allotment_preference_2_3,
+          ].filter(Boolean),
+        },
+        preference_3: {
+          committee: formData.committee_preference_3,
+          allotments: [
+            formData.allotment_preference_3_1,
+            formData.allotment_preference_3_2,
+            formData.allotment_preference_3_3,
+          ].filter(Boolean),
+        },
       },
       experience: {
         delegate: {
@@ -48,7 +68,6 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { error: "Failed to save data to MongoDB" },
       { status: 500 }
-      
     );
   }
 }
