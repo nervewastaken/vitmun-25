@@ -1,20 +1,25 @@
-import clientPromise from "../../lib/mongodb";
+"use client";
+import { useAuth } from "@clerk/nextjs";
+import { useEffect } from "react";
 
-export default async function Home() {
-  try {
-    const client = await clientPromise;
-    const db = client.db("delegateallotments");
-    const collection = db.collection("test");
+export default function Home() {
+  const { isSignedIn } = useAuth();
 
-    const data = await collection.find({}).toArray();
+  // Redirect if the user is authenticated
+  useEffect(() => {
+    if (isSignedIn) {
+      window.location.href = "/admin"; // Redirect to the admin page
+    }
+  }, [isSignedIn]);
 
-    return (
-      <div>
-        <h1>Data from MongoDB:</h1>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      </div>
-    );
-  } catch (error) {
-    return <div>{error.message}</div>;
+  if (isSignedIn) {
+    return null; // Render nothing while redirecting
   }
+
+  return (
+    <div>
+      <h1>Welcome to the Home Page</h1>
+      <p>Please sign in to access the admin dashboard.</p>
+    </div>
+  );
 }
