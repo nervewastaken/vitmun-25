@@ -36,7 +36,7 @@ const AdminPage = () => {
   };
 
   // Update allotment details for internal and external delegates
-  const updateDelegate = async (type, id, committee, portfolio) => {
+  const updateDelegate = async (type, id, committee, portfolio, paid) => {
     try {
       const response = await fetch(`/api/admin/update-delegate`, {
         method: "POST",
@@ -48,6 +48,7 @@ const AdminPage = () => {
           id,
           allotment_committee: committee,
           allotment_portfolio: portfolio,
+          paid: paid,
         }),
       });
 
@@ -134,6 +135,7 @@ const AdminPage = () => {
                       )
                     )}
                   </ul>
+                  <p>Paid: {external.paid.toString()}</p>
                   <div>
                     <input
                       type="text"
@@ -153,13 +155,26 @@ const AdminPage = () => {
                       }
                       className="mb-4"
                     />
+                    <div>
+                      <select
+                        defaultValue={external.paid.toString()} // Ensure value is a string for consistency
+                        onChange={(e) =>
+                          (external.paid = e.target.value === "true")
+                        } // Convert back to boolean
+                        className="w-full border rounded-md px-3 py-2 mb-4"
+                      >
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                      </select>
+                    </div>
                     <Button
                       onClick={() =>
                         updateDelegate(
                           "external",
                           external._id,
                           external.allotment_committee,
-                          external.allotment_portfolio
+                          external.allotment_portfolio,
+                          external.paid
                         )
                       }
                     >
@@ -213,6 +228,19 @@ const AdminPage = () => {
                       )
                     )}
                   </ul>
+                  <p>Paid: {internal.paid.toString()}</p>
+                  <div>
+                      <select
+                        defaultValue={internal.paid.toString()} // Ensure value is a string for consistency
+                        onChange={(e) =>
+                          (internal.paid = e.target.value === "true")
+                        } // Convert back to boolean
+                        className="w-full border rounded-md px-3 py-2 mb-4"
+                      >
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                      </select>
+                    </div>
                   <div>
                     <input
                       type="text"
@@ -238,7 +266,8 @@ const AdminPage = () => {
                           "internal",
                           internal._id,
                           internal.allotment_committee,
-                          internal.allotment_portfolio
+                          internal.allotment_portfolio,
+                          internal.paid,
                         )
                       }
                     >

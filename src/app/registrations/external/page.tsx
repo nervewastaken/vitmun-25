@@ -46,7 +46,10 @@ const ExternalDelegateForm = () => {
         },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
+
+      // Handle responses based on status codes
       if (response.ok) {
         alert("Form submitted successfully!");
         console.log("Response Data:", data);
@@ -74,13 +77,23 @@ const ExternalDelegateForm = () => {
           exp_eb_muns: "",
           exp_eb_text: "",
         });
+      } else if (response.status === 400) {
+        alert(
+          "Duplicate entry detected: An entry with this email or contact number already exists. If you have any problems please contact delegate affairs, try NOT to fill the form again - regards, Tech Team"
+        );
+        console.error("Duplicate Entry Error:", data.error);
+      } else if (response.status === 500) {
+        alert("Internal Server Error: Please try again later.");
+        console.error("Server Error:", data.error);
       } else {
-        alert("Failed to submit the form!");
-        console.error("Error:", data);
+        alert(`An unexpected error occurred: ${data.error}`);
+        console.error("Unexpected Error:", data.error);
       }
     } catch (error) {
-      alert("An error occurred while submitting the form.");
-      console.error("Error:", error);
+      alert(
+        "A network error occurred while submitting the form. Please check your connection."
+      );
+      console.error("Network Error:", error);
     }
   };
 

@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
   try {
     // Parse request body
-    const { type, id, allotment_committee, allotment_portfolio } =
+    const { type, id, allotment_committee, allotment_portfolio, paid } =
       await req.json();
 
     // Connect to the database
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
         $set: {
           allotment_committee,
           allotment_portfolio,
+          paid,
         },
       }
     );
