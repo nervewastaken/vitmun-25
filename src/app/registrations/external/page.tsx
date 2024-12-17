@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import NeedHelp from "@/components/custom/needhelp";
+import { useRouter } from "next/navigation"; // For redirection
+import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
+
 
 const ExternalDelegateForm = () => {
   const [formData, setFormData] = useState({
@@ -35,37 +38,66 @@ const ExternalDelegateForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/submit-delegate-form-int", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+  const { toast } = useToast();
+  const router = useRouter();
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch("/api/submit-delegate-form-ext", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast({
+        variant: "success", // You can customize it (success/error)
+        title: "Form Submitted Successfully",
+        description: "Redirecting you to the home page...",
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Form submitted successfully!");
-        console.log("Response Data:", data);
-      } else if (response.status === 400) {
-        alert(
-          "Duplicate entry detected: An entry with this email or contact number already exists. If you have any problems please contact delegate affairs, try NOT to fill the form again - regards, Tech Team"
-        );
-        console.error("Duplicate Entry Error:", data.error);
+
+      // Redirect to Home after a slight delay
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    } else {
+      // Handle errors based on response code
+      if (response.status === 400) {
+        toast({
+          variant: "destructive",
+          title: "Duplicate Entry Detected",
+          description:
+            "An entry with this email/contact already exists. Please contact Delegate Affairs for support.",
+        });
       } else if (response.status === 500) {
-        alert("Internal Server Error: Please try again later.");
-        console.error("Server Error:", data.error);
+        toast({
+          variant: "destructive",
+          title: "Server Error",
+          description: "Something went wrong on our end. Try again later.",
+        });
       } else {
-        alert(`An unexpected error occurred: ${data.error}`);
-        console.error("Unexpected Error:", data.error);
+        toast({
+          variant: "destructive",
+          title: "Unexpected Error",
+          description: data.error || "Please check your input and try again.",
+        });
       }
-    } catch (error) {
-      alert("An error occurred while submitting the form.");
-      console.error("Error:", error);
     }
-  };
+  } catch (error) {
+    toast({
+      variant: "destructive",
+      title: "Network Error",
+      description: "An error occurred while submitting the form. Please try again.",
+    });
+    console.error("Error:", error);
+  }
+};
+
 
   return (
     <div className="px-4 sm:px-8 lg:px-20 py-6">

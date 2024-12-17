@@ -30,7 +30,6 @@ export async function POST(req: Request) {
     const document = {
       registration_number: formData.registration_number,
       participant_name: formData.participant_name,
-      gender: formData.gender,
       contact_number: formData.contact_number,
       email_id: formData.email_id,
       committee_preferences: {

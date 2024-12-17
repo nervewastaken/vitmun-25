@@ -7,7 +7,7 @@ const NeedHelp: React.FC = () => {
       <p className="text-lg mb-3">
         We're here to help. Reach out to us via our official{" "}
         <a
-          href="https://www.instagram.com"
+          href="https://www.instagram.com/vitmunsoc/?hl=en"
           className=" hover:underline font-semibold"
           target="_blank"
           rel="noopener noreferrer"
@@ -16,7 +16,7 @@ const NeedHelp: React.FC = () => {
         </a>
         ,{" "}
         <a
-          href="https://www.linkedin.com"
+          href="https://www.linkedin.com/company/munsocvit/?originalSubdomain=in"
           className=" hover:underline font-semibold"
           target="_blank"
           rel="noopener noreferrer"
@@ -25,7 +25,7 @@ const NeedHelp: React.FC = () => {
         </a>{" "}
         and{" "}
         <a
-          href="mailto:example@gmail.com"
+          href="mailto:help.delegateaffairs@gmail.com"
           className=" hover:underline font-semibold"
         >
           Email
