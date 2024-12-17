@@ -66,6 +66,7 @@ export async function POST(req: Request) {
       },
       allotment_committee: null,
       allotment_portfolio: null,
+      paid:false,
     };
 
     // Insert the document into the MongoDB collection
