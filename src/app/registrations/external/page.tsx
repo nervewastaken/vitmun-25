@@ -1,5 +1,9 @@
 "use client";
+
 import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const ExternalDelegateForm = () => {
   const [formData, setFormData] = useState({
@@ -42,250 +46,249 @@ const ExternalDelegateForm = () => {
         },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
+
+      // Handle responses based on status codes
       if (response.ok) {
         alert("Form submitted successfully!");
         console.log("Response Data:", data);
+        setFormData({
+          participant_name: "",
+          gender: "",
+          contact_number: "",
+          email_id: "",
+          organisation_name: "",
+          accommodation: "",
+          committee_preference_1: "",
+          allotment_preference_1_1: "",
+          allotment_preference_1_2: "",
+          allotment_preference_1_3: "",
+          committee_preference_2: "",
+          allotment_preference_2_1: "",
+          allotment_preference_2_2: "",
+          allotment_preference_2_3: "",
+          committee_preference_3: "",
+          allotment_preference_3_1: "",
+          allotment_preference_3_2: "",
+          allotment_preference_3_3: "",
+          exp_delegate_muns: "",
+          exp_delegate_text: "",
+          exp_eb_muns: "",
+          exp_eb_text: "",
+        });
+      } else if (response.status === 400) {
+        alert(
+          "Duplicate entry detected: An entry with this email or contact number already exists. If you have any problems please contact delegate affairs, try NOT to fill the form again - regards, Tech Team"
+        );
+        console.error("Duplicate Entry Error:", data.error);
+      } else if (response.status === 500) {
+        alert("Internal Server Error: Please try again later.");
+        console.error("Server Error:", data.error);
       } else {
-        alert("Failed to submit the form!");
-        console.error("Error:", data);
+        alert(`An unexpected error occurred: ${data.error}`);
+        console.error("Unexpected Error:", data.error);
       }
     } catch (error) {
-      alert("An error occurred while submitting the form.");
-      console.error("Error:", error);
+      alert(
+        "A network error occurred while submitting the form. Please check your connection."
+      );
+      console.error("Network Error:", error);
     }
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
+    <div className="px-20">
+      <h1 className="text-center text-2xl font-semibold mb-4">
         External Delegate Registration Form
       </h1>
       <form
         onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          background: "#f9f9f9",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        }}
+        className="space-y-6 bg-white shadow-md rounded-lg p-6"
       >
         {/* Participant Details */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Participant Details</legend>
-          <label style={labelStyles}>
-            Participant Name:
-            <input
-              type="text"
-              name="participant_name"
-              value={formData.participant_name}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            />
-          </label>
-          <label style={labelStyles}>
-            Gender:
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            >
-              <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
-          <label style={labelStyles}>
-            Contact Number:
-            <input
-              type="tel"
-              name="contact_number"
-              value={formData.contact_number}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            />
-          </label>
-          <label style={labelStyles}>
-            Email ID:
-            <input
-              type="email"
-              name="email_id"
-              value={formData.email_id}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            />
-          </label>
-          <label style={labelStyles}>
-            Organisation Name:
-            <input
-              type="text"
-              name="organisation_name"
-              value={formData.organisation_name}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            />
-          </label>
-          <label style={labelStyles}>
-            Accommodation:
-            <select
-              name="accommodation"
-              value={formData.accommodation}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            >
-              <option value="">Select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-          </label>
-        </fieldset>
+
+        <legend className="font-semibold text-lg">Participant Details</legend>
+        <div className="space-y-4">
+          {/* Row 1: Participant Name and Gender */}
+          <div className="flex flex-col md:flex-row md:gap-4">
+            <div className="w-full md:w-1/2">
+              <Label htmlFor="participant_name">Participant Name</Label>
+              <Input
+                type="text"
+                name="participant_name"
+                value={formData.participant_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <Label htmlFor="gender">Gender</Label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                required
+                className="block w-full border rounded-md px-3 py-2"
+              >
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Row 2: Contact Number and Email ID */}
+          <div className="flex flex-col md:flex-row md:gap-4">
+            <div className="w-full md:w-1/2">
+              <Label htmlFor="contact_number">Contact Number</Label>
+              <Input
+                type="tel"
+                name="contact_number"
+                value={formData.contact_number}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <Label htmlFor="email_id">Email ID</Label>
+              <Input
+                type="email"
+                name="email_id"
+                value={formData.email_id}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Row 3: Organisation Name and Accommodation */}
+          <div className="flex flex-col md:flex-row md:gap-4">
+            <div className="w-full md:w-1/2">
+              <Label htmlFor="organisation_name">Organisation Name</Label>
+              <Input
+                type="text"
+                name="organisation_name"
+                value={formData.organisation_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <Label htmlFor="accommodation">Accommodation</Label>
+              <select
+                name="accommodation"
+                value={formData.accommodation}
+                onChange={handleChange}
+                required
+                className="block w-full border rounded-md px-3 py-2"
+              >
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
         {/* Committee Preferences */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Committee Preferences</legend>
-          {[1, 2, 3].map((pref) => (
-            <div key={pref} style={{ marginBottom: "15px" }}>
-              <label style={labelStyles}>
-                Preference {pref}:
-                <select
-                  name={`committee_preference_${pref}`}
-                  value={formData[`committee_preference_${pref}`]}
+
+        <legend className="font-semibold text-lg">Committee Preferences</legend>
+        {[1, 2, 3].map((pref) => (
+          <div key={pref} className="space-y-2 mb-4">
+            <Label htmlFor={`committee_preference_${pref}`}>
+              Preference {pref}
+            </Label>
+            <select
+              name={`committee_preference_${pref}`}
+              value={formData[`committee_preference_${pref}`]}
+              onChange={handleChange}
+              required={pref === 1}
+              className="block w-full border rounded-md px-3 py-2"
+            >
+              <option value="" disabled>
+                Select a committee
+              </option>
+              <option value="UNGA-DISEC">UNGA-DISEC</option>
+              <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
+              <option value="UNSC">UNSC</option>
+              <option value="Jackson Hole Economic Symposium (JHES)">
+                Jackson Hole Economic Symposium (JHES)
+              </option>
+              <option value="CHAOS">CHAOS</option>
+              <option value="AIPPM">AIPPM</option>
+              <option value="specialised committee">
+                Specialised Committee
+              </option>
+            </select>
+            {[1, 2, 3].map((allotment) => (
+              <div key={allotment}>
+                <Label htmlFor={`allotment_preference_${pref}_${allotment}`}>
+                  Allotment Preference {pref}.{allotment}
+                </Label>
+                <Input
+                  type="text"
+                  name={`allotment_preference_${pref}_${allotment}`}
+                  value={formData[`allotment_preference_${pref}_${allotment}`]}
                   onChange={handleChange}
-                  required={pref === 1}
-                  style={inputStyles}
-                >
-                  <option value="" disabled>
-                    Select a committee
-                  </option>
-                  <option value="UNGA-DISEC">UNGA-DISEC</option>
-                  <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
-                  <option value="UNSC">UNSC</option>
-                  <option value="Jackson Hole Economic Symposium (JHES)">
-                    Jackson Hole Economic Symposium (JHES)
-                  </option>
-                  <option value="CHAOS">CHAOS</option>
-                  <option value="AIPPM">AIPPM</option>
-                  <option value="specialised committee">
-                    Specialised Committee
-                  </option>
-                </select>
-              </label>
-              {[1, 2, 3].map((allotment) => (
-                <label key={allotment} style={labelStyles}>
-                  Allotment Preference {pref}.{allotment}:
-                  <input
-                    type="text"
-                    name={`allotment_preference_${pref}_${allotment}`}
-                    value={
-                      formData[`allotment_preference_${pref}_${allotment}`]
-                    }
-                    onChange={handleChange}
-                    style={inputStyles}
-                  />
-                </label>
-              ))}
-            </div>
-          ))}
-        </fieldset>
+                />
+              </div>
+            ))}
+          </div>
+        ))}
 
         {/* Experience Section */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Experience</legend>
-          <label style={labelStyles}>
-            MUNs as a Delegate:
-            <input
+
+        <legend className="font-semibold text-lg">Experience</legend>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="exp_delegate_muns">MUNs as a Delegate</Label>
+            <Input
               type="number"
               name="exp_delegate_muns"
               value={formData.exp_delegate_muns}
               onChange={handleChange}
-              style={inputStyles}
             />
-          </label>
-          <label style={labelStyles}>
-            Delegate Experience:
+          </div>
+          <div>
+            <Label htmlFor="exp_delegate_text">Delegate Experience</Label>
             <textarea
               name="exp_delegate_text"
               value={formData.exp_delegate_text}
               onChange={handleChange}
-              style={{ ...inputStyles, height: "80px" }}
+              className="block w-full border rounded-md px-3 py-2"
+              rows="3"
             ></textarea>
-          </label>
-          <label style={labelStyles}>
-            MUNs as an EB:
-            <input
+          </div>
+          <div>
+            <Label htmlFor="exp_eb_muns">MUNs as an EB</Label>
+            <Input
               type="number"
               name="exp_eb_muns"
               value={formData.exp_eb_muns}
               onChange={handleChange}
-              style={inputStyles}
             />
-          </label>
-          <label style={labelStyles}>
-            EB Experience:
+          </div>
+          <div>
+            <Label htmlFor="exp_eb_text">EB Experience</Label>
             <textarea
               name="exp_eb_text"
               value={formData.exp_eb_text}
               onChange={handleChange}
-              style={{ ...inputStyles, height: "80px" }}
+              className="block w-full border rounded-md px-3 py-2"
+              rows="3"
             ></textarea>
-          </label>
-        </fieldset>
+          </div>
+        </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          style={{
-            background: "#007BFF",
-            color: "#fff",
-            padding: "10px 20px",
-            fontSize: "16px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            transition: "background 0.3s",
-          }}
-          onMouseOver={(e) => (e.target.style.background = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.background = "#007BFF")}
-        >
+        <Button type="submit" className="w-full">
           Submit
-        </button>
+        </Button>
       </form>
     </div>
   );
-};
-
-// Styling
-const fieldsetStyles = {
-  border: "1px solid #ddd",
-  padding: "15px",
-  borderRadius: "8px",
-};
-const legendStyles = {
-  fontWeight: "bold",
-  fontSize: "16px",
-};
-const labelStyles = {
-  display: "block",
-  marginBottom: "5px",
-  fontWeight: "bold",
-};
-const inputStyles = {
-  width: "100%",
-  padding: "10px",
-  fontSize: "14px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
 };
 
 export default ExternalDelegateForm;
