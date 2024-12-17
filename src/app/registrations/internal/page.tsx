@@ -1,4 +1,7 @@
 "use client";
+
+import NeedHelp from "@/components/custom/needhelp";
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
 const InternalDelegateForm = () => {
@@ -64,106 +67,115 @@ const InternalDelegateForm = () => {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "30px" }}>
-      <h1
-        style={{ fontSize: "24px", marginBottom: "20px", textAlign: "center" }}
-      >
-        Delegate Registration Form
-      </h1>
+    <div className="px-4 sm:px-8 lg:px-20 py-6">
+      <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-left"
+      >Internal Individual Registration Form</h1>
+      <p className="text-md md:text-lg font-light mb-6 text-left">
+        Fill out the form below if you are interested in participating at VITMUN'25.
+      </p>
       <form
         onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          background: "#f9f9f9",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        }}
+         className="space-y-8 bg-white  shadow-[0_4px_10px_rgba(0,255,255,0.4),0_8px_12px_rgba(0,0,0,0.3)] rounded-lg p-6 md:p-10"
       >
+        
+
         {/* Registration Number */}
+        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
+{/* Participant Details */}
+
+            <div>
+            
+            <label className="block font-medium mb-1" htmlFor="participant_name">
+              Participant Name
+            </label>
+            <input
+              type="text"
+              name="participant_name"
+              value={formData.participant_name}
+              onChange={handleChange}
+              placeholder="Name"
+              className="w-full border rounded-lg px-4 py-2"
+              required
+            />
+          </div>
+
         <div>
-          <label style={{ fontWeight: "bold" }}>Registration Number</label>
+          <label className="block font-medium mb-1" htmlFor="registration_number">Registration Number</label>
           <input
             type="text"
             name="registration_number"
             value={formData.registration_number}
             onChange={handleChange}
             required
-            style={inputStyles}
+            placeholder="2XBXX1234"
+            className="w-full border rounded-lg px-4 py-2"
           />
         </div>
-
-        {/* Participant Details */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Participant Details</legend>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Participant Name</label>
-            <input
-              type="text"
-              name="participant_name"
-              value={formData.participant_name}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            />
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Gender</label>
+        {/* <div>
+            <label className="block font-medium mb-1" htmlFor="gender">
+              Gender
+            </label>
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-2"
               required
-              style={inputStyles}
             >
-              <option value="">Select</option>
+              <option value="" disabled>Select</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Contact Number</label>
+          </div> */}
+          <div>
+            <label className="block font-medium mb-1" htmlFor="contact_number">
+              Contact Number
+            </label>
             <input
               type="tel"
               name="contact_number"
               value={formData.contact_number}
               onChange={handleChange}
+              placeholder="WhatsApp Number"
+              className="w-full border rounded-lg px-4 py-2"
               required
-              style={inputStyles}
             />
           </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Email ID</label>
+          <div>
+            <label className="block font-medium mb-1" htmlFor="email_id">
+              Email ID
+            </label>
             <input
               type="email"
               name="email_id"
               value={formData.email_id}
               onChange={handleChange}
+              placeholder="Use VIT Email ID"
+              className="w-full border rounded-lg px-4 py-2"
               required
-              style={inputStyles}
             />
           </div>
-        </fieldset>
+        </div>
 
         {/* Committee Preferences */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Committee Preferences</legend>
+        <fieldset>
+          <legend className="text-lg font-semibold mb-4">Committee Preferences</legend>
           {[1, 2, 3].map((pref) => (
-            <div key={pref} style={{ marginBottom: "15px" }}>
-              <label style={labelStyles}>Preference {pref}</label>
+            <div
+              key={pref}
+              className="mb-8 p-4 border-2 border-gray-300 rounded-lg shadow-sm"
+            >
+              <label className="block font-medium mb-2">
+                Committee Preference {pref}
+              </label>
               <select
                 name={`committee_preference_${pref}`}
                 value={formData[`committee_preference_${pref}`]}
                 onChange={handleChange}
-                required={pref === 1}
-                style={inputStyles}
+                className="w-full border rounded-lg px-4 py-2 mb-4"
               >
-                <option value="" disabled>
-                  Select a committee
-                </option>
+                <option value="">Select Committee</option>
                 <option value="UNGA-DISEC">UNGA-DISEC</option>
                 <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
                 <option value="UNSC">UNSC</option>
@@ -172,120 +184,78 @@ const InternalDelegateForm = () => {
                 </option>
                 <option value="CHAOS">CHAOS</option>
                 <option value="AIPPM">AIPPM</option>
-                <option value="specialised committee">
-                  Specialised Committee
-                </option>
+                <option value="Specialised Committee">Specialised Committee</option>
               </select>
-              {[1, 2, 3].map((allotment) => (
-                <div key={allotment} style={fieldGroupStyles}>
-                  <label style={labelStyles}>
-                    Allotment Preference {pref}.{allotment}
-                  </label>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[1, 2, 3].map((allotment) => (
                   <input
+                    key={allotment}
                     type="text"
                     name={`allotment_preference_${pref}_${allotment}`}
-                    value={
-                      formData[`allotment_preference_${pref}_${allotment}`]
-                    }
+                    value={formData[`allotment_preference_${pref}_${allotment}`]}
                     onChange={handleChange}
-                    style={inputStyles}
+                    placeholder={`Allotment Preference ${allotment}`}
+                    className="w-full border rounded-lg px-4 py-2"
                   />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ))}
         </fieldset>
 
         {/* Experience Section */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Experience</legend>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>MUNs as a Delegate</label>
+        <fieldset>
+          <legend className="text-lg font-semibold mb-4">Experience</legend>
+          <div className="space-y-4">
             <input
               type="number"
               name="exp_delegate_muns"
               value={formData.exp_delegate_muns}
               onChange={handleChange}
-              style={inputStyles}
+              placeholder="Number of MUNs as Delegate"
+              className="w-full border rounded-lg px-4 py-2"
             />
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Delegate Experience</label>
             <textarea
               name="exp_delegate_text"
               value={formData.exp_delegate_text}
               onChange={handleChange}
-              style={{ ...inputStyles, height: "80px" }}
+              placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
+              className="w-full border rounded-lg px-4 py-2"
+              rows="3"
             ></textarea>
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>MUNs as an EB</label>
             <input
               type="number"
               name="exp_eb_muns"
               value={formData.exp_eb_muns}
               onChange={handleChange}
-              style={inputStyles}
+              placeholder="Number of MUNs as Executive Board"
+              className="w-full border rounded-lg px-4 py-2"
             />
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>EB Experience</label>
             <textarea
               name="exp_eb_text"
               value={formData.exp_eb_text}
               onChange={handleChange}
-              style={{ ...inputStyles, height: "80px" }}
+              placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
+              className="w-full border rounded-lg px-4 py-2"
+              rows="3"
             ></textarea>
           </div>
         </fieldset>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          style={{
-            background: "#007BFF",
-            color: "#fff",
-            padding: "10px 20px",
-            fontSize: "16px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            transition: "background 0.3s",
-          }}
-          onMouseOver={(e) => (e.target.style.background = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.background = "#007BFF")}
-        >
-          Submit
-        </button>
+        <div className="text-center">
+          <Button
+            type="submit"
+            className=" bg-[#54B3EA] hover:bg-[#62B4E2] text-white font-semibold py-2 px-6 rounded-lg transition"
+          >
+            PRESENT AND VOTING
+          </Button>
+        </div>
       </form>
+      <NeedHelp/>
     </div>
   );
-};
-
-// Styling
-const fieldsetStyles = {
-  border: "1px solid #ddd",
-  padding: "15px",
-  borderRadius: "8px",
-};
-const legendStyles = {
-  fontWeight: "bold",
-  fontSize: "16px",
-};
-const labelStyles = {
-  display: "block",
-  marginBottom: "5px",
-  fontWeight: "bold",
-};
-const inputStyles = {
-  width: "100%",
-  padding: "10px",
-  fontSize: "14px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
-};
-const fieldGroupStyles = {
-  marginBottom: "15px",
 };
 
 export default InternalDelegateForm;

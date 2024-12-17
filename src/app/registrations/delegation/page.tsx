@@ -1,5 +1,6 @@
 "use client";
 
+import NeedHelp from "@/components/custom/needhelp";
 import { useState } from "react";
 
 export default function DelegationForm() {
@@ -163,6 +164,7 @@ export default function DelegationForm() {
           Submit
         </button>
       </form>
+      <NeedHelp/>
     </div>
   );
 }
