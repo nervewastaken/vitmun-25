@@ -228,6 +228,8 @@ const AdminPage = () => {
                       )
                     )}
                   </ul>
+                  <strong>Allottment Committee : {internal.allotment_committee || "Not Assigned"} </strong> <br/>
+                  <strong>Allottment Portfolio : {internal.allotment_portfolio || "Not Assigned"} </strong>
                   <p>Paid: {internal.paid.toString()}</p>
                   <div>
                       <select
