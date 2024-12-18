@@ -5,6 +5,14 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // For redirection
 import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
+import { Lora } from "next/font/google";
+import { ReactLenis } from "@studio-freight/react-lenis";
+
+const lora = Lora({
+  subsets: ["latin"],
+  weight: ["700"], // Use the weight you need
+  variable: "--font-lora", // Set the variable
+});
 
 const InternalDelegateForm = () => {
   const [formData, setFormData] = useState({
@@ -98,7 +106,19 @@ const InternalDelegateForm = () => {
 };
 
   return (
-    <div className="px-4 sm:px-8 lg:px-20 py-6">
+    <ReactLenis
+        root
+        options={{
+          lerp: 0.04,
+          duration: 2.5,
+          smoothWheel: true,
+          syncTouch: true,
+          syncTouchLerp: 0.04,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: "vertical",
+        }}
+      >
+        <div className="px-4 sm:px-8 lg:px-20 py-6">
       <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-left"
       >Internal Individual Registration Form</h1>
       <p className="text-md md:text-lg font-light mb-6 text-left">
@@ -106,7 +126,7 @@ const InternalDelegateForm = () => {
       </p>
       <form
         onSubmit={handleSubmit}
-         className="space-y-8 bg-white  shadow-[0_4px_10px_rgba(0,255,255,0.4),0_8px_12px_rgba(0,0,0,0.3)] rounded-lg p-6 md:p-10"
+         className="space-y-8 bg-white  shadow-[0_0_15px_4px_rgba(0,255,255,0.2)] rounded-lg p-6 md:p-10"
       >
         
 
@@ -116,7 +136,7 @@ const InternalDelegateForm = () => {
 
             <div>
             
-            <label className="block font-medium mb-1" htmlFor="participant_name">
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="participant_name">
               Participant Name
             </label>
             <input
@@ -125,13 +145,13 @@ const InternalDelegateForm = () => {
               value={formData.participant_name}
               onChange={handleChange}
               placeholder="Name"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               required
             />
           </div>
 
         <div>
-          <label className="block font-medium mb-1" htmlFor="registration_number">Registration Number</label>
+          <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="registration_number">Registration Number</label>
           <input
             type="text"
             name="registration_number"
@@ -139,7 +159,7 @@ const InternalDelegateForm = () => {
             onChange={handleChange}
             required
             placeholder="2XBXX1234"
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
           />
         </div>
         {/* <div>
@@ -160,7 +180,7 @@ const InternalDelegateForm = () => {
             </select>
           </div> */}
           <div>
-            <label className="block font-medium mb-1" htmlFor="contact_number">
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="contact_number">
               Contact Number
             </label>
             <input
@@ -169,12 +189,12 @@ const InternalDelegateForm = () => {
               value={formData.contact_number}
               onChange={handleChange}
               placeholder="WhatsApp Number"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               required
             />
           </div>
           <div>
-            <label className="block font-medium mb-1" htmlFor="email_id">
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="email_id">
               Email ID
             </label>
             <input
@@ -183,7 +203,7 @@ const InternalDelegateForm = () => {
               value={formData.email_id}
               onChange={handleChange}
               placeholder="Use VIT Email ID"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               required
             />
           </div>
@@ -191,11 +211,25 @@ const InternalDelegateForm = () => {
 
         {/* Committee Preferences */}
         <fieldset>
-          <legend className="text-lg font-semibold mb-4">Committee Preferences</legend>
+  <div className="flex items-center mb-2">
+  <legend className="text-2xl md:text-3xl font-extrabold">
+    Delegate Preference
+  </legend>
+  <Button
+    variant="del_matrix"
+    type="button"
+    size="xsm"
+    className="ml-4 mt-[0.33rem]"
+    onClick={() => window.open("https://www.google.com", "_blank")}
+  >
+    DELEGATE MATRIX
+  </Button>
+</div>
+          <p className="text-lg md:text-xl mb-1 font-bold">Registration fee per delegate is Rs. 1900 (inclusive of GST). Payment link will be mailed once allotment is confirmed</p>
           {[1, 2, 3].map((pref) => (
             <div
               key={pref}
-              className="mb-8 p-4 border-2 border-gray-300 rounded-lg shadow-sm"
+              className="mb-6 p-4 border-2 border-black rounded-lg shadow-sm"
             >
               <label className="block font-medium mb-2">
                 Committee Preference {pref}
@@ -204,18 +238,18 @@ const InternalDelegateForm = () => {
                 name={`committee_preference_${pref}`}
                 value={formData[`committee_preference_${pref}`]}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-4 py-2 mb-4"
+                className="w-full border rounded-lg px-4 py-2 mb-4 font-bold focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               >
-                <option value="">Select Committee</option>
+                <option value="" disabled>Select Committee</option>
                 <option value="UNGA-DISEC">UNGA-DISEC</option>
                 <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
                 <option value="UNSC">UNSC</option>
-                <option value="Jackson Hole Economic Symposium (JHES)">
+                <option value="JHES">
                   Jackson Hole Economic Symposium (JHES)
                 </option>
                 <option value="CHAOS">CHAOS</option>
                 <option value="AIPPM">AIPPM</option>
-                <option value="Specialised Committee">Specialised Committee</option>
+                <option value="ORF">ORF</option>
               </select>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -227,17 +261,18 @@ const InternalDelegateForm = () => {
                     value={formData[`allotment_preference_${pref}_${allotment}`]}
                     onChange={handleChange}
                     placeholder={`Allotment Preference ${allotment}`}
-                    className="w-full border rounded-lg px-4 py-2"
+                    className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
                   />
                 ))}
               </div>
+              <p className="font-bold text-sm md:text-md text-center py-2 md:py-4">*Please Refer Country Matrix Above</p>
             </div>
           ))}
         </fieldset>
 
         {/* Experience Section */}
         <fieldset>
-          <legend className="text-lg font-semibold mb-4">Experience</legend>
+          <legend className="text-2xl md:text-3xl mb-4 font-extrabold">Experience</legend>
           <div className="space-y-4">
             <input
               type="number"
@@ -245,14 +280,14 @@ const InternalDelegateForm = () => {
               value={formData.exp_delegate_muns}
               onChange={handleChange}
               placeholder="Number of MUNs as Delegate"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
             />
             <textarea
               name="exp_delegate_text"
               value={formData.exp_delegate_text}
               onChange={handleChange}
               placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               rows="3"
             ></textarea>
             <input
@@ -261,14 +296,14 @@ const InternalDelegateForm = () => {
               value={formData.exp_eb_muns}
               onChange={handleChange}
               placeholder="Number of MUNs as Executive Board"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
             />
             <textarea
               name="exp_eb_text"
               value={formData.exp_eb_text}
               onChange={handleChange}
               placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               rows="3"
             ></textarea>
           </div>
@@ -278,7 +313,7 @@ const InternalDelegateForm = () => {
         <div className="text-center">
           <Button
             type="submit"
-            className=" bg-[#54B3EA] hover:bg-[#62B4E2] text-white font-semibold py-2 px-6 rounded-lg transition"
+            className=" bg-[#54B3EA] hover:bg-[#62B4E2] text-white font-semibold py-2 px-6 rounded-lg transition shadow-md shadow-blue-300"
           >
             PRESENT AND VOTING
           </Button>
@@ -286,6 +321,8 @@ const InternalDelegateForm = () => {
       </form>
       <NeedHelp/>
     </div>
+      </ReactLenis>
+    
   );
 };
 

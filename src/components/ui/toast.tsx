@@ -32,7 +32,7 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
-        success: "border bg-green-500 text-foreground"
+        success: "border bg-green-500 text-destructive-foreground"
       },
     },
     defaultVariants: {
@@ -45,13 +45,34 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, variant,children,...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}
       className={cn(toastVariants({ variant }), className)}
       {...props}
-    />
+      duration={5000}
+    >
+       {children}
+      {/* Progress Bar */}
+      <div className="absolute bottom-0 left-0 h-1 w-full bg-transparent">
+        <div className="h-full bg-white animate-toast-progress" />
+      </div>
+      {/* Inline CSS */}
+      <style jsx>{`
+        @keyframes toast-progress {
+          from {
+            width: 100%;
+          }
+          to {
+            width: 0%;
+          }
+        }
+        .animate-toast-progress {
+          animation: toast-progress 5s linear;
+        }
+      `}</style>
+    </ToastPrimitives.Root>
   )
 })
 Toast.displayName = ToastPrimitives.Root.displayName

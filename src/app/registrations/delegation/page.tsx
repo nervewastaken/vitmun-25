@@ -6,6 +6,18 @@ import { useState } from "react";
 import { Toast, ToastProvider, ToastViewport } from "@/components/ui/toast";
 import { useRouter } from "next/navigation"; // For redirection
 import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
+import { Lora } from "next/font/google";
+import { Lato } from "next/font/google";
+import { ReactLenis } from "@studio-freight/react-lenis";
+
+const latoThin = Lato({ subsets: ["latin"], weight: "300" });
+const latoBold = Lato({ subsets: ["latin"], weight: "700" });
+
+const lora = Lora({
+  subsets: ["latin"],
+  weight: ["700"], // Use the weight you need
+  variable: "--font-lora", // Set the variable
+});
 
 export default function DelegationForm() {
   const router = useRouter();
@@ -86,20 +98,34 @@ export default function DelegationForm() {
   };
 
   return (
-    <ToastProvider>
-      <div className="flex items-center justify-center min-h-screen px-4">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow-[0_0_15px_4px_rgba(0,255,255,0.2)] rounded-lg p-8 md:p-12 w-full max-w-3xl"
-        >
-          <h1 className="text-2xl md:text-3xl font-semibold mb-1 text-center">Request An Invite</h1>
-          <p className="text-sm md:text-md text-gray-500 mb-8 text-center">
+    <ReactLenis
+        root
+        options={{
+          lerp: 0.04,
+          duration: 2.5,
+          smoothWheel: true,
+          syncTouch: true,
+          syncTouchLerp: 0.04,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: "vertical",
+        }}
+      >
+        <div className="px-4 sm:px-8 lg:px-20 py-6">
+    <h1 className={`${latoBold.className} text-2xl md:text-3xl mb-2 text-left`}>Request An Invite</h1>
+          <p className={`${latoThin.className} text-md md:text-lg mb-8`}>
             Fill out the form below if your delegation hasn't received an invite yet.
           </p>
+      
+        
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-8 bg-white shadow-[0_0_15px_4px_rgba(0,255,255,0.2)] rounded-lg p-6 md:p-10"
+        >
+          
 
           {/* Organisation Name */}
           <div className="mb-6">
-            <label className="block font-medium mb-2" htmlFor="organisationName">
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="organisationName">
               Organization Name
             </label>
             <input
@@ -108,7 +134,7 @@ export default function DelegationForm() {
               value={formData.organisationName}
               onChange={handleChange}
               placeholder="Organization"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA] text-black"
             />
           </div>
 
@@ -116,7 +142,7 @@ export default function DelegationForm() {
           <div className="grid gap-6 md:grid-cols-2 mb-6">
             {/* Head Delegate */}
             <div>
-              <label className="block font-medium mb-2" htmlFor="headDelegate">
+              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="headDelegate">
                 Head Delegate
               </label>
               <input
@@ -125,13 +151,13 @@ export default function DelegationForm() {
                 value={formData.headDelegate}
                 onChange={handleChange}
                 placeholder="Name"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA] text-black"
               />
             </div>
 
             {/* Email ID */}
             <div>
-              <label className="block font-medium mb-2" htmlFor="email">
+              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="email">
                 Email-ID
               </label>
               <input
@@ -140,13 +166,13 @@ export default function DelegationForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA] text-black"
               />
             </div>
 
             {/* Contact Number */}
             <div>
-              <label className="block font-medium mb-2" htmlFor="contactNumber">
+              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="contactNumber">
                 Contact Number
               </label>
               <input
@@ -155,13 +181,13 @@ export default function DelegationForm() {
                 value={formData.contactNumber}
                 onChange={handleChange}
                 placeholder="WhatsApp Number"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA] text-black"
               />
             </div>
 
             {/* Delegation Strength */}
             <div>
-              <label className="block font-medium mb-2" htmlFor="delegationStrength">
+              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="delegationStrength">
                 Delegation Strength
               </label>
               <input
@@ -170,7 +196,7 @@ export default function DelegationForm() {
                 value={formData.delegationStrength}
                 onChange={handleChange}
                 placeholder="Number"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]  text-black"
               />
             </div>
           </div>
@@ -179,16 +205,16 @@ export default function DelegationForm() {
           <div className="text-center">
             <Button
               type="submit"
-              className="bg-[#54B3EA] hover:bg-[#62B4E2] text-white font-semibold py-2 px-8 rounded-lg transition uppercase"
+              className="bg-[#54B3EA] hover:bg-[#62B4E2] text-white font-semibold py-1 px-6 rounded-lg transition uppercase text-md md:text-lg"
             >
               Request
             </Button>
           </div>
         </form>
         {/* Toast Notifications */}
-        <ToastViewport />
-      </div>
       <NeedHelp/>
-    </ToastProvider>
+    </div>
+      </ReactLenis>
+    
   );
 }
