@@ -6,7 +6,7 @@ export default function Home() {
   const { isSignedIn } = useAuth();
 
   // Redirect if the user is authenticated
-  useEffect(() => {
+  useEffect(() => { 
     if (isSignedIn) {
       window.location.href = "/admin"; // Redirect to the admin page
     }

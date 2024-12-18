@@ -1,11 +1,23 @@
 "use client";
+
+import NeedHelp from "@/components/custom/needhelp";
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation"; // For redirection
+import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
+import { Lora } from "next/font/google";
+import { ReactLenis } from "@studio-freight/react-lenis";
+
+const lora = Lora({
+  subsets: ["latin"],
+  weight: ["700"], // Use the weight you need
+  variable: "--font-lora", // Set the variable
+});
 
 const InternalDelegateForm = () => {
   const [formData, setFormData] = useState({
     registration_number: "",
     participant_name: "",
-    gender: "",
     contact_number: "",
     email_id: "",
     committee_preference_1: "",
@@ -26,266 +38,292 @@ const InternalDelegateForm = () => {
     exp_eb_text: "",
   });
 
+
+  const { toast } = useToast();
+  const router = useRouter();
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/submit-delegate-form-int", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+   const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch("/api/submit-delegate-form-int", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast({
+        variant: "success", // You can customize it (success/error)
+        title: "Form Submitted Successfully",
+        description: "Redirecting you to the home page...",
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Form submitted successfully!");
-        console.log("Response Data:", data);
-      } else if (response.status === 400) {
-        alert(
-          "Duplicate entry detected: An entry with this email or contact number already exists. If you have any problems please contact delegate affairs, try NOT to fill the form again - regards, Tech Team"
-        );
-        console.error("Duplicate Entry Error:", data.error);
+
+      // Redirect to Home after a slight delay
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    } else {
+      // Handle errors based on response code
+      if (response.status === 400) {
+        toast({
+          variant: "destructive",
+          title: "Duplicate Entry Detected",
+          description:
+            "An entry with this email/contact already exists. Please contact Delegate Affairs for support.",
+        });
       } else if (response.status === 500) {
-        alert("Internal Server Error: Please try again later.");
-        console.error("Server Error:", data.error);
+        toast({
+          variant: "destructive",
+          title: "Server Error",
+          description: "Something went wrong on our end. Try again later.",
+        });
       } else {
-        alert(`An unexpected error occurred: ${data.error}`);
-        console.error("Unexpected Error:", data.error);
+        toast({
+          variant: "destructive",
+          title: "Unexpected Error",
+          description: data.error || "Please check your input and try again.",
+        });
       }
-    } catch (error) {
-      alert("An error occurred while submitting the form.");
-      console.error("Error:", error);
     }
-  };
+  } catch (error) {
+    toast({
+      variant: "destructive",
+      title: "Network Error",
+      description: "An error occurred while submitting the form. Please try again.",
+    });
+    console.error("Error:", error);
+  }
+};
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "30px" }}>
-      <h1
-        style={{ fontSize: "24px", marginBottom: "20px", textAlign: "center" }}
-      >
-        Delegate Registration Form
-      </h1>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          background: "#f9f9f9",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    <ReactLenis
+        root
+        options={{
+          lerp: 0.04,
+          duration: 2.5,
+          smoothWheel: true,
+          syncTouch: true,
+          syncTouchLerp: 0.04,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: "vertical",
         }}
       >
+        <div className="px-4 sm:px-8 lg:px-20 py-6">
+      <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-left"
+      >Internal Individual Registration Form</h1>
+      <p className="text-md md:text-lg font-light mb-6 text-left">
+        Fill out the form below if you are interested in participating at VITMUN'25.
+      </p>
+      <form
+        onSubmit={handleSubmit}
+         className="space-y-8 bg-white  shadow-[0_0_15px_4px_rgba(0,255,255,0.2)] rounded-lg p-6 md:p-10"
+      >
+        
+
         {/* Registration Number */}
+        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
+{/* Participant Details */}
+
+            <div>
+            
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="participant_name">
+              Participant Name
+            </label>
+            <input
+              type="text"
+              name="participant_name"
+              value={formData.participant_name}
+              onChange={handleChange}
+              placeholder="Name"
+              className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+              required
+            />
+          </div>
+
         <div>
-          <label style={{ fontWeight: "bold" }}>Registration Number</label>
+          <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="registration_number">Registration Number</label>
           <input
             type="text"
             name="registration_number"
             value={formData.registration_number}
             onChange={handleChange}
             required
-            style={inputStyles}
+            placeholder="2XBXX1234"
+            className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
           />
         </div>
-
-        {/* Participant Details */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Participant Details</legend>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Participant Name</label>
-            <input
-              type="text"
-              name="participant_name"
-              value={formData.participant_name}
-              onChange={handleChange}
-              required
-              style={inputStyles}
-            />
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Gender</label>
+        {/* <div>
+            <label className="block font-medium mb-1" htmlFor="gender">
+              Gender
+            </label>
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-2"
               required
-              style={inputStyles}
             >
-              <option value="">Select</option>
+              <option value="" disabled>Select</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Contact Number</label>
+          </div> */}
+          <div>
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="contact_number">
+              Contact Number
+            </label>
             <input
               type="tel"
               name="contact_number"
               value={formData.contact_number}
               onChange={handleChange}
+              placeholder="WhatsApp Number"
+              className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               required
-              style={inputStyles}
             />
           </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Email ID</label>
+          <div>
+            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="email_id">
+              Email ID
+            </label>
             <input
               type="email"
               name="email_id"
               value={formData.email_id}
               onChange={handleChange}
+              placeholder="Use VIT Email ID"
+              className="w-full border rounded-lg px-4 py-2  text-black focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               required
-              style={inputStyles}
             />
           </div>
-        </fieldset>
+        </div>
 
         {/* Committee Preferences */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Committee Preferences</legend>
+        <fieldset>
+  <div className="flex items-center mb-2">
+  <legend className="text-2xl md:text-3xl font-extrabold">
+    Delegate Preference
+  </legend>
+  <Button
+    variant="del_matrix"
+    type="button"
+    size="xsm"
+    className="ml-4 mt-[0.33rem]"
+    onClick={() => window.open("https://www.google.com", "_blank")}
+  >
+    DELEGATE MATRIX
+  </Button>
+</div>
+          <p className="text-lg md:text-xl mb-1 font-bold">Registration fee per delegate is Rs. 1900 (inclusive of GST). Payment link will be mailed once allotment is confirmed</p>
           {[1, 2, 3].map((pref) => (
-            <div key={pref} style={{ marginBottom: "15px" }}>
-              <label style={labelStyles}>Preference {pref}</label>
+            <div
+              key={pref}
+              className="mb-6 p-4 border-2 border-black rounded-lg shadow-sm"
+            >
+              <label className="block font-medium mb-2">
+                Committee Preference {pref}
+              </label>
               <select
                 name={`committee_preference_${pref}`}
                 value={formData[`committee_preference_${pref}`]}
                 onChange={handleChange}
-                required={pref === 1}
-                style={inputStyles}
+                className="w-full border rounded-lg px-4 py-2 mb-4 font-bold focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
               >
-                <option value="" disabled>
-                  Select a committee
-                </option>
+                <option value="" disabled>Select Committee</option>
                 <option value="UNGA-DISEC">UNGA-DISEC</option>
                 <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
                 <option value="UNSC">UNSC</option>
-                <option value="Jackson Hole Economic Symposium (JHES)">
+                <option value="JHES">
                   Jackson Hole Economic Symposium (JHES)
                 </option>
                 <option value="CHAOS">CHAOS</option>
                 <option value="AIPPM">AIPPM</option>
-                <option value="specialised committee">
-                  Specialised Committee
-                </option>
+                <option value="ORF">ORF</option>
               </select>
-              {[1, 2, 3].map((allotment) => (
-                <div key={allotment} style={fieldGroupStyles}>
-                  <label style={labelStyles}>
-                    Allotment Preference {pref}.{allotment}
-                  </label>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[1, 2, 3].map((allotment) => (
                   <input
+                    key={allotment}
                     type="text"
                     name={`allotment_preference_${pref}_${allotment}`}
-                    value={
-                      formData[`allotment_preference_${pref}_${allotment}`]
-                    }
+                    value={formData[`allotment_preference_${pref}_${allotment}`]}
                     onChange={handleChange}
-                    style={inputStyles}
+                    placeholder={`Allotment Preference ${allotment}`}
+                    className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
                   />
-                </div>
-              ))}
+                ))}
+              </div>
+              <p className="font-bold text-sm md:text-md text-center py-2 md:py-4">*Please Refer Country Matrix Above</p>
             </div>
           ))}
         </fieldset>
 
         {/* Experience Section */}
-        <fieldset style={fieldsetStyles}>
-          <legend style={legendStyles}>Experience</legend>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>MUNs as a Delegate</label>
+        <fieldset>
+          <legend className="text-2xl md:text-3xl mb-4 font-extrabold">Experience</legend>
+          <div className="space-y-4">
             <input
               type="number"
               name="exp_delegate_muns"
               value={formData.exp_delegate_muns}
               onChange={handleChange}
-              style={inputStyles}
+              placeholder="Number of MUNs as Delegate"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
             />
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>Delegate Experience</label>
             <textarea
               name="exp_delegate_text"
               value={formData.exp_delegate_text}
               onChange={handleChange}
-              style={{ ...inputStyles, height: "80px" }}
+              placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+              rows="3"
             ></textarea>
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>MUNs as an EB</label>
             <input
               type="number"
               name="exp_eb_muns"
               value={formData.exp_eb_muns}
               onChange={handleChange}
-              style={inputStyles}
+              placeholder="Number of MUNs as Executive Board"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
             />
-          </div>
-          <div style={fieldGroupStyles}>
-            <label style={labelStyles}>EB Experience</label>
             <textarea
               name="exp_eb_text"
               value={formData.exp_eb_text}
               onChange={handleChange}
-              style={{ ...inputStyles, height: "80px" }}
+              placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
+              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+              rows="3"
             ></textarea>
           </div>
         </fieldset>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          style={{
-            background: "#007BFF",
-            color: "#fff",
-            padding: "10px 20px",
-            fontSize: "16px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            transition: "background 0.3s",
-          }}
-          onMouseOver={(e) => (e.target.style.background = "#0056b3")}
-          onMouseOut={(e) => (e.target.style.background = "#007BFF")}
-        >
-          Submit
-        </button>
+        <div className="text-center">
+          <Button
+            type="submit"
+            className=" bg-[#54B3EA] hover:bg-[#62B4E2] text-white font-semibold py-2 px-6 rounded-lg transition shadow-md shadow-blue-300"
+          >
+            PRESENT AND VOTING
+          </Button>
+        </div>
       </form>
+      <NeedHelp/>
     </div>
+      </ReactLenis>
+    
   );
-};
-
-// Styling
-const fieldsetStyles = {
-  border: "1px solid #ddd",
-  padding: "15px",
-  borderRadius: "8px",
-};
-const legendStyles = {
-  fontWeight: "bold",
-  fontSize: "16px",
-};
-const labelStyles = {
-  display: "block",
-  marginBottom: "5px",
-  fontWeight: "bold",
-};
-const inputStyles = {
-  width: "100%",
-  padding: "10px",
-  fontSize: "14px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
-};
-const fieldGroupStyles = {
-  marginBottom: "15px",
 };
 
 export default InternalDelegateForm;
