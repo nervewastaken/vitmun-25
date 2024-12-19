@@ -6,16 +6,21 @@ if (!process.env.MONGODB_URI) {
 
 const uri: string = process.env.MONGODB_URI;
 
-let client: MongoClient | undefined;
+let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
+// Extend the NodeJS global interface to include _mongoClientPromise
 declare global {
-  // Extend the global scope with _mongoClientPromise
-  let _mongoClientPromise: Promise<MongoClient> | undefined;
+  namespace NodeJS {
+    interface Global {
+      _mongoClientPromise?: Promise<MongoClient>;
+    }
+  }
 }
 
+// Check the environment
 if (process.env.NODE_ENV === "development") {
-  // Use a global variable in development to prevent creating multiple connections
+  // Use a global variable to prevent multiple connections in development
   if (!global._mongoClientPromise) {
     client = new MongoClient(uri);
     global._mongoClientPromise = client.connect();
