@@ -5,10 +5,39 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
 
+interface CommitteePreference {
+  committee?: string;
+  allotments: string[];
+}
+
+interface Delegate {
+  _id: string;
+  participant_name?: string;
+  gender?: string;
+  contact_number?: string;
+  email_id?: string;
+  organisation_name?: string;
+  accommodation?: string;
+  allotment_committee?: string;
+  allotment_portfolio?: string;
+  paid: boolean;
+  registration_number?: string;
+  committee_preferences?: Record<string, CommitteePreference>;
+}
+
+interface Delegation {
+  _id: string;
+  organisationName: string;
+  headDelegate: string;
+  email: string;
+  contactNumber: string;
+  delegationStrength: number;
+}
+
 const AdminPage = () => {
-  const [externalDelegates, setExternalDelegates] = useState([]);
-  const [internalDelegates, setInternalDelegates] = useState([]);
-  const [delegations, setDelegations] = useState([]);
+  const [externalDelegates, setExternalDelegates] = useState<Delegate[]>([]);
+  const [internalDelegates, setInternalDelegates] = useState<Delegate[]>([]);
+  const [delegations, setDelegations] = useState<Delegation[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch data from MongoDB
@@ -36,7 +65,13 @@ const AdminPage = () => {
   };
 
   // Update allotment details for internal and external delegates
-  const updateDelegate = async (type, id, committee, portfolio, paid) => {
+  const updateDelegate = async (
+    type: "external" | "internal",
+    id: string,
+    committee: string | undefined,
+    portfolio: string | undefined,
+    paid: boolean
+  ) => {
     try {
       const response = await fetch(`/api/admin/update-delegate`, {
         method: "POST",
@@ -48,7 +83,7 @@ const AdminPage = () => {
           id,
           allotment_committee: committee,
           allotment_portfolio: portfolio,
-          paid: paid,
+          paid,
         }),
       });
 
@@ -228,21 +263,28 @@ const AdminPage = () => {
                       )
                     )}
                   </ul>
-                  <strong>Allottment Committee : {internal.allotment_committee || "Not Assigned"} </strong> <br/>
-                  <strong>Allottment Portfolio : {internal.allotment_portfolio || "Not Assigned"} </strong>
+                  <strong>
+                    Allottment Committee :{" "}
+                    {internal.allotment_committee || "Not Assigned"}{" "}
+                  </strong>{" "}
+                  <br />
+                  <strong>
+                    Allottment Portfolio :{" "}
+                    {internal.allotment_portfolio || "Not Assigned"}{" "}
+                  </strong>
                   <p>Paid: {internal.paid.toString()}</p>
                   <div>
-                      <select
-                        defaultValue={internal.paid.toString()} // Ensure value is a string for consistency
-                        onChange={(e) =>
-                          (internal.paid = e.target.value === "true")
-                        } // Convert back to boolean
-                        className="w-full border rounded-md px-3 py-2 mb-4"
-                      >
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                      </select>
-                    </div>
+                    <select
+                      defaultValue={internal.paid.toString()} // Ensure value is a string for consistency
+                      onChange={(e) =>
+                        (internal.paid = e.target.value === "true")
+                      } // Convert back to boolean
+                      className="w-full border rounded-md px-3 py-2 mb-4"
+                    >
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
+                  </div>
                   <div>
                     <input
                       type="text"
@@ -269,7 +311,7 @@ const AdminPage = () => {
                           internal._id,
                           internal.allotment_committee,
                           internal.allotment_portfolio,
-                          internal.paid,
+                          internal.paid
                         )
                       }
                     >
