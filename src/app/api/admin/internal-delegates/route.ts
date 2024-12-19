@@ -1,8 +1,8 @@
 import clientPromise from "../../../../../lib/mongodb";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   // Get authentication details
   const { userId } = getAuth(req);
 
