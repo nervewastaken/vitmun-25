@@ -34,7 +34,6 @@ export default function DelegationForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -55,7 +54,6 @@ export default function DelegationForm() {
       Number(formData.delegationStrength) <= 0
     )
       newErrors.delegationStrength = "Positive number required";
-    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
