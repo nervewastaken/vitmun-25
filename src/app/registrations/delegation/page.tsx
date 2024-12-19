@@ -3,7 +3,6 @@
 import NeedHelp from "@/components/custom/needhelp";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Toast, ToastProvider, ToastViewport } from "@/components/ui/toast";
 import { useRouter } from "next/navigation"; // For redirection
 import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
 import { Lora } from "next/font/google";
@@ -35,17 +34,26 @@ export default function DelegationForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const [errors, setErrors] = useState({});
-
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
   const validateForm = () => {
-    const newErrors: any = {};
-    if (!formData.organisationName.trim()) newErrors.organisationName = "Organisation Name is required";
-    if (!formData.headDelegate.trim()) newErrors.headDelegate = "Head Delegate is required";
-    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Valid Email is required";
-    if (!formData.contactNumber.trim() || !/^\d{10}$/.test(formData.contactNumber))
+    const newErrors: Record<string, string> = {};
+    if (!formData.organisationName.trim())
+      newErrors.organisationName = "Organisation Name is required";
+    if (!formData.headDelegate.trim())
+      newErrors.headDelegate = "Head Delegate is required";
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Valid Email is required";
+    if (
+      !formData.contactNumber.trim() ||
+      !/^\d{10}$/.test(formData.contactNumber)
+    )
       newErrors.contactNumber = "Valid Contact Number is required";
-    if (!formData.delegationStrength.trim() || isNaN(Number(formData.delegationStrength)) || Number(formData.delegationStrength) <= 0)
+    if (
+      !formData.delegationStrength.trim() ||
+      isNaN(Number(formData.delegationStrength)) ||
+      Number(formData.delegationStrength) <= 0
+    )
       newErrors.delegationStrength = "Positive number required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -99,33 +107,38 @@ export default function DelegationForm() {
 
   return (
     <ReactLenis
-        root
-        options={{
-          lerp: 0.04,
-          duration: 2.5,
-          smoothWheel: true,
-          syncTouch: true,
-          syncTouchLerp: 0.04,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          orientation: "vertical",
-        }}
-      >
-        <div className="px-4 sm:px-8 lg:px-20 py-6">
-    <h1 className={`${latoBold.className} text-2xl md:text-3xl mb-2 text-left`}>Request An Invite</h1>
-          <p className={`${latoThin.className} text-md md:text-lg mb-8`}>
-            Fill out the form below if your delegation hasn't received an invite yet.
-          </p>
-      
-        
+      root
+      options={{
+        lerp: 0.04,
+        duration: 2.5,
+        smoothWheel: true,
+        syncTouch: true,
+        syncTouchLerp: 0.04,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+      }}
+    >
+      <div className="px-4 sm:px-8 lg:px-20 py-6">
+        <h1
+          className={`${latoBold.className} text-2xl md:text-3xl mb-2 text-left`}
+        >
+          Request An Invite
+        </h1>
+        <p className={`${latoThin.className} text-md md:text-lg mb-8`}>
+          Fill out the form below if your delegation hasn&apos;t received an invite
+          yet.
+        </p>
+
         <form
           onSubmit={handleSubmit}
           className="space-y-8 bg-white shadow-[0_0_15px_4px_rgba(0,255,255,0.2)] rounded-lg p-6 md:p-10"
         >
-          
-
           {/* Organisation Name */}
           <div className="mb-6">
-            <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="organisationName">
+            <label
+              className={`block font-medium mb-1 ${lora.className}`}
+              htmlFor="organisationName"
+            >
               Organization Name
             </label>
             <input
@@ -142,7 +155,10 @@ export default function DelegationForm() {
           <div className="grid gap-6 md:grid-cols-2 mb-6">
             {/* Head Delegate */}
             <div>
-              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="headDelegate">
+              <label
+                className={`block font-medium mb-1 ${lora.className}`}
+                htmlFor="headDelegate"
+              >
                 Head Delegate
               </label>
               <input
@@ -157,7 +173,10 @@ export default function DelegationForm() {
 
             {/* Email ID */}
             <div>
-              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="email">
+              <label
+                className={`block font-medium mb-1 ${lora.className}`}
+                htmlFor="email"
+              >
                 Email-ID
               </label>
               <input
@@ -172,7 +191,10 @@ export default function DelegationForm() {
 
             {/* Contact Number */}
             <div>
-              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="contactNumber">
+              <label
+                className={`block font-medium mb-1 ${lora.className}`}
+                htmlFor="contactNumber"
+              >
                 Contact Number
               </label>
               <input
@@ -187,7 +209,10 @@ export default function DelegationForm() {
 
             {/* Delegation Strength */}
             <div>
-              <label className={`block font-medium mb-1 ${lora.className}`} htmlFor="delegationStrength">
+              <label
+                className={`block font-medium mb-1 ${lora.className}`}
+                htmlFor="delegationStrength"
+              >
                 Delegation Strength
               </label>
               <input
@@ -212,9 +237,8 @@ export default function DelegationForm() {
           </div>
         </form>
         {/* Toast Notifications */}
-      <NeedHelp/>
-    </div>
-      </ReactLenis>
-    
+        <NeedHelp />
+      </div>
+    </ReactLenis>
   );
 }
