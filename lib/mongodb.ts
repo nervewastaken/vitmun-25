@@ -1,5 +1,3 @@
-
-require('dotenv');
 import { MongoClient } from "mongodb";
 
 if (!process.env.MONGODB_URI) {
@@ -8,16 +6,21 @@ if (!process.env.MONGODB_URI) {
 
 const uri: string = process.env.MONGODB_URI;
 
-let client: MongoClient;
+let client: MongoClient | undefined;
 let clientPromise: Promise<MongoClient>;
+
+declare global {
+  // Extend the global scope with _mongoClientPromise
+  let _mongoClientPromise: Promise<MongoClient> | undefined;
+}
 
 if (process.env.NODE_ENV === "development") {
   // Use a global variable in development to prevent creating multiple connections
-  if (!(global as any)._mongoClientPromise) {
+  if (!global._mongoClientPromise) {
     client = new MongoClient(uri);
-    (global as any)._mongoClientPromise = client.connect();
+    global._mongoClientPromise = client.connect();
   }
-  clientPromise = (global as any)._mongoClientPromise;
+  clientPromise = global._mongoClientPromise;
 } else {
   // In production, create a new client instance
   client = new MongoClient(uri);

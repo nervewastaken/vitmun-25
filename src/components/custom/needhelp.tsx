@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { Lato } from "next/font/google";
 
 const latoThin = Lato({ subsets: ["latin"], weight: "400" });
@@ -31,7 +30,7 @@ const NeedHelp = () => {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 viewport={{ once: true }}
               >
-                We're here to help. Reach out to us via our official
+                We&apos;re here to help. Reach out to us via our official
                 <span className="text-blue-600">
                   &nbsp;
                   <a

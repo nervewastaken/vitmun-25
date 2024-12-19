@@ -125,7 +125,7 @@ const ExternalDelegateForm = () => {
         External Individual Registration Form
       </h1>
       <p className="text-md md:text-lg font-light mb-6 text-left">
-        Fill out the form below if you are interested in participating at VITMUN'25.
+        Fill out the form below if you are interested in participating at VITMUN&apos;25.
       </p>
       <form
         onSubmit={handleSubmit}
@@ -304,7 +304,7 @@ const ExternalDelegateForm = () => {
               onChange={handleChange}
               placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
               className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
-              rows="3"
+              rows={3}
             ></textarea>
             <input
               type="number"
@@ -320,7 +320,7 @@ const ExternalDelegateForm = () => {
               onChange={handleChange}
               placeholder="Conference Name/year - Committee - Country - Award(N/A if none)"
               className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
-              rows="3"
+              rows={3}
             ></textarea>
           </div>
         </fieldset>
