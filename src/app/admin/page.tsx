@@ -64,6 +64,30 @@ const AdminPage = () => {
     }
   };
 
+  const handleInternalChange = (
+    id: string,
+    field: string,
+    value: string | boolean
+  ) => {
+    setInternalDelegates((prev) =>
+      prev.map((delegate) =>
+        delegate._id === id ? { ...delegate, [field]: value } : delegate
+      )
+    );
+  };
+
+  const handleExternalChange = (
+    id: string,
+    field: string,
+    value: string | boolean
+  ) => {
+    setExternalDelegates((prev) =>
+      prev.map((delegate) =>
+        delegate._id === id ? { ...delegate, [field]: value } : delegate
+      )
+    );
+  };
+
   // Update allotment details for internal and external delegates
   const updateDelegate = async (
     type: "external" | "internal",
@@ -172,15 +196,31 @@ const AdminPage = () => {
                   </ul>
                   <p>Paid: {external.paid.toString()}</p>
                   <div>
-                    <input
-                      type="text"
-                      placeholder="Allotment Committee"
-                      defaultValue={external.allotment_committee}
+                    <select
+                      name="allotment_committee"
+                      value={external.allotment_committee || ""} // Ensure value is not null
                       onChange={(e) =>
-                        (external.allotment_committee = e.target.value)
+                        handleExternalChange(
+                          external._id,
+                          "allotment_committee",
+                          e.target.value
+                        )
                       }
-                      className="mb-2"
-                    />
+                      className="w-full border rounded-lg px-4 py-2 mb-4 font-bold focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                    >
+                      <option value="" disabled>
+                        Select Committee
+                      </option>
+                      <option value="UNGA-DISEC">UNGA-DISEC</option>
+                      <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
+                      <option value="UNSC">UNSC</option>
+                      <option value="JHES">
+                        Jackson Hole Economic Symposium (JHES)
+                      </option>
+                      <option value="CHAOS">CHAOS</option>
+                      <option value="AIPPM">AIPPM</option>
+                      <option value="ORF">ORF</option>
+                    </select>
                     <input
                       type="text"
                       placeholder="Allotment Portfolio"
@@ -286,15 +326,29 @@ const AdminPage = () => {
                     </select>
                   </div>
                   <div>
-                    <input
-                      type="text"
-                      placeholder="Allotment Committee"
-                      defaultValue={internal.allotment_committee}
+                    <select
+                      value={internal.allotment_committee || ""}
                       onChange={(e) =>
-                        (internal.allotment_committee = e.target.value)
+                        handleInternalChange(
+                          internal._id,
+                          "allotment_committee",
+                          e.target.value
+                        )
                       }
-                      className="mb-2"
-                    />
+                    >
+                      <option value="" disabled>
+                        Select Committee
+                      </option>
+                      <option value="UNGA-DISEC">UNGA-DISEC</option>
+                      <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
+                      <option value="UNSC">UNSC</option>
+                      <option value="JHES">
+                        Jackson Hole Economic Symposium (JHES)
+                      </option>
+                      <option value="CHAOS">CHAOS</option>
+                      <option value="AIPPM">AIPPM</option>
+                      <option value="ORF">ORF</option>
+                    </select>
                     <input
                       type="text"
                       placeholder="Allotment Portfolio"
