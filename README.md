@@ -8,6 +8,11 @@ I hate writing documentatio
 cd vitmun-25
 ```
 3) get the .env.local file from tech team.
+
+4)
+```bash
+npm i
+```
 4)
 ```bash
 npm run dev
