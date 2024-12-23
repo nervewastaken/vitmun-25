@@ -146,33 +146,54 @@ const AdminPage = () => {
   return (
     <>
       <SignedIn>
-        <Link
-          href="#top"
-          className="fixed bottom-4 right-[150px] z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition"
-        >
-          <ArrowUp /> Top
-        </Link>
+  {/* Fixed Navbar */}
+  <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
+    <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+      <span className="text-lg font-bold mx-auto sm:mx-0">Admin Panel- VITMUN 25</span>
+      <div className="hidden sm:flex space-x-4">
         <Link
           href="#internal"
-          className="fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition"
+          className="px-4 py-2 rounded hover:bg-blue-700 transition"
         >
-          <ArrowUp /> Internal
+          Internal
         </Link>
-        <div id="top" className="px-24">
-          use ctrl+F or cmd+F to search for delegates
-          <br />
-          DO NOT FORGET to save your changes. 
-        </div>
-        <div className="px-4 py-2">
-          <Button className="">
-            <Link href={"#internal"}>Go to internal delegates</Link>
-          </Button>
-        </div>
-        <div className="px-4">
-          <Button>
-            <Link href={"#delegations"}>Go to Delegations</Link>
-          </Button>
-        </div>
+        <Link
+          href="#external"
+          className="px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          External
+        </Link>
+        <Link
+          href="#delegations"
+          className="px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Delegations
+        </Link>
+        <Link
+          href="../allotments"
+          className="px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Allotments
+        </Link>
+      </div>
+    </div>
+  </nav>
+
+  {/* Content Section */}
+  <div id="top" className="p-6 mt-16 bg-gray-100 rounded-lg shadow-md">
+    <ul className="list-disc pl-8 space-y-2 text-gray-700">
+      <li>
+        Use <span className="font-semibold">Ctrl+F</span> or <span className="font-semibold">Cmd+F</span> to search for delegates.
+      </li>
+      <li>
+        <span className="font-semibold text-red-600">DO NOT FORGET</span> to save your changes.
+      </li>
+      <li>
+        <span className="font-semibold text-red-600">Confidential:</span> This page is extremely confidential and should only be accessed by the Core Secretariat and USG-Delegate Affairs and USG-Hospitality.
+      </li>
+    </ul>
+  </div>
+
 
         <div className="text-4xl px-42">External Delegates</div>
         <section id="external">
