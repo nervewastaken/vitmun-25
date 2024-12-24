@@ -2,6 +2,9 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
+import Marquee from "@/components/custom/Marquee"
+import Button from "@/components/custom/Button"
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 interface ImageFilledTextProps {
   text: string;
@@ -53,9 +56,9 @@ const Landing = () => {
   const [countdownComplete, setCountdownComplete] = useState(false);
 
   return (
-    <div className="absolute h-[90vh] w-[100vw]">
+    <div className="absolute h-[85vh] w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100">
       <div className="relative flex flex-col items-center w-full">
-        <div className="relative w-full h-[30vh]">
+        <div className="relative w-full h-[25vh]">
           <Image
             src="/home.svg"
             height={0}
@@ -68,7 +71,7 @@ const Landing = () => {
             <ImageFilledText
               text="7-9 MAR 2025"
               imageUrl="/blue.jpg"
-              className="text-4xl sm:text-6xl md:text-8xl lg:text-[30vh] whitespace-nowrap"
+              className="text-4xl sm:text-6xl md:text-8xl lg:text-[23vh] whitespace-nowrap"
             />
           </div>
 
@@ -80,7 +83,7 @@ const Landing = () => {
               alt="VITMUN"
               className="h-[15vh] w-auto sm:h-[20vh] md:h-[25vh] lg:h-[30vh] -mt-[15vh] z-10 border rounded-full bg-white"
             />
-            <div>
+            <div className="font-bebas font-bold">
               VIT
               <ImageFilledText
                 text="MUN"
@@ -95,8 +98,8 @@ const Landing = () => {
                 className="inline"
               />
             </div>
-            <p className="text-[3vh] text-black">WHERE YOUR VOICE MATTERS</p>
-            <p className="text-[2.5vh] text-black font-semibold mb-4">Registrations Open In...</p>
+            <p className="text-[2.5vh] text-black border border-black px-4 rounded-3xl">WHERE YOUR VOICE MATTERS</p>
+            {/* <p className="text-[2.5vh] text-black font-semibold mb-4">Registrations Open In...</p>
             <FlipClockCountdown
               digitBlockStyle={{
                 color: "white",
@@ -115,7 +118,18 @@ const Landing = () => {
               onComplete={() => {
                 setCountdownComplete(true);
               }}
-            />
+            /> */}
+
+<Router>
+      <Routes>
+        <Route path="/individual" element={<div>Individual Page</div>} />
+        
+      </Routes>
+      <div className="flex gap-x-8 mt-[3vh] font-semibold">
+      <Button onClick={() => console.log('Button clicked')} label="INDIVIDUAL REGISTRATION" />
+      <Button onClick={() => console.log('Button clicked')} label="DELEGATION REGISTRATION" />
+      </div>
+    </Router>
           </div>
         </div>
 
@@ -123,21 +137,39 @@ const Landing = () => {
         </div>
       </div>
       
+      
       <Image
-        src="/castle.svg"
+        src="/castle.png"
         alt="castle"
-        height={0}
-        width={0}
-        className="h-[60vh] w-[60vw] absolute bottom-0 left-0 z-0"
+        width={960}  // Use an arbitrary width or approximate based on your design
+  height={540} // Use an arbitrary height or approximate based on your design
+        className="h-[50vh] w-[30vw] absolute bottom-[8vh] transform scale-x-[-1] left-0 z-0"
       />
 
-      <Image
-        src="/castle.svg"
-        alt="castle"
-        height={0}
-        width={0}
-        className="h-[60vh] w-[60vw] absolute bottom-0 right-0 transform scale-x-[-1] z-0"
-      />
+<Image
+  src="/castle.png"
+  alt="castle"
+  width={960}  // Use an arbitrary width or approximate based on your design
+  height={540} // Use an arbitrary height or approximate based on your design
+  className="h-[50vh] w-[30vw] absolute bottom-[8vh] right-0 z-0"
+/>
+
+
+<div>
+      
+    </div>
+    <div
+  className="absolute h-[8vh] bottom-0 w-full"
+  style={{
+    backgroundImage: "url('/blue.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+  <Marquee text1="VITMUN" text2="WHERE YOUR VOICE MATTERS" />
+</div>
+
     </div>
   );
 };

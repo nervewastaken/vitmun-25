@@ -43,7 +43,7 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
         <body>
           <SignedOut>
-            <SignInButton /> {/* No redirectUrl here; redirect handled globally */}
+             {/* No redirectUrl here; redirect handled globally */}
           </SignedOut>
           <SignedIn>
             <UserButton />
