@@ -6,11 +6,11 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Roboto } from "next/font/google";
+import { Roboto } from "next/font/google"
 
-//fonts deleted
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -33,13 +33,13 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
         <body>
           <SignedOut>
-          
+             {/* No redirectUrl here; redirect handled globally */}
           </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
           {children}
-          <Toaster />
+          <Toaster/>
         </body>
       </html>
     </ClerkProvider>
