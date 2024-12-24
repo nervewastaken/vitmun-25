@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
-import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import React, { useState } from "react";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import Marquee from "@/components/custom/Marquee";
 import Link from "next/link";
@@ -51,10 +50,7 @@ const ImageFilledText = ({
 };
 
 const Landing = () => {
-  const eventTime = new Date("January 7, 2025 00:00:00");
-  const [countdownComplete, setCountdownComplete] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
 
   const handleInd = () => {
