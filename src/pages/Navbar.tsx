@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Karma } from "@next/font/google";
+import { Karma } from "next/font/google";
 import "../app/globals.css";
 
 const karma = Karma({
@@ -8,7 +8,7 @@ const karma = Karma({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-export default function Navbar(): JSX.Element {
+export default function Navbar() {
   return (
     <nav className={` h-[15vh] w-[100vw] ${karma.className} z-20`}>
       <div className="flex flex-row items-center h-full w-full px-4">
