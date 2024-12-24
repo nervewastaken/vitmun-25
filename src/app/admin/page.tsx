@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/table";
 import { Fragment } from "react";
 import Link from "next/link";
-import { ArrowUp } from "lucide-react";
 
 interface CommitteePreference {
   committee?: string;
@@ -147,7 +146,7 @@ const AdminPage = () => {
     <>
       <SignedIn>
   {/* Fixed Navbar */}
-  <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
+  <nav className="fixed hidden top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
     <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
       <span className="text-lg font-bold mx-auto sm:mx-0">Admin Panel- VITMUN 25</span>
       <div className="hidden sm:flex space-x-4">
