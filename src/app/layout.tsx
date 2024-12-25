@@ -1,6 +1,6 @@
 import {
   ClerkProvider,
-  SignInButton,
+  //SignInButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -8,9 +8,8 @@ import {
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Roboto } from "next/font/google";
 
-//fonts deleted
+import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -33,7 +32,6 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
         <body>
           <SignedOut>
-            <SignInButton />{" "}
             {/* No redirectUrl here; redirect handled globally */}
           </SignedOut>
           <SignedIn>

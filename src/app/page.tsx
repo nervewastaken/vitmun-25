@@ -1,6 +1,8 @@
 "use client";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
+import Landing from "../pages/Landing"
+import Navbar from "../pages/Navbar"
 
 export default function Home() {
   const { isSignedIn } = useAuth();
@@ -18,8 +20,8 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
-      <p>Please sign in to access the admin dashboard.</p>
+      <Navbar />
+      <Landing />
     </div>
   );
 }

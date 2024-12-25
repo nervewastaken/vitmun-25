@@ -10,6 +10,18 @@ export default {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			bebas: ['"Bebas Neue"', 'regular'],
+		  },
+		animation: {
+			marquee: 'marquee 20s linear infinite',
+		},
+		keyframes: {
+			marquee: {
+				'0%': { transform: 'translateX(0)' },
+				'100%': { transform: 'translateX(-100%)' },
+			},
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
