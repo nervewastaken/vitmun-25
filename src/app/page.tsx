@@ -2,7 +2,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 import Landing from "../pages/Landing"
-import Navbar from "../pages/Navbar"
+import Navbar from "../components/custom/Navbar"
 
 export default function Home() {
   const { isSignedIn } = useAuth();
