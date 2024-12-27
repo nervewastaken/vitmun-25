@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import CommitteeCard from "@/components/custom/committee";
 import { Lora } from "next/font/google";
 import { ReactLenis } from "@studio-freight/react-lenis";
+import Navbar from "@/components/custom/Navbar";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ const CommitteesPage = () => {
         orientation: "vertical",
       }}
     >
+      <Navbar />
       <div className="px-4 sm:px-8 lg:px-20 py-6">
         <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left ${lora.className}`}>
           Committees
