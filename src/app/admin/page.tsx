@@ -1,20 +1,43 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
+
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from "@/components/ui/table";
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+  UserButton,
+} from "@clerk/nextjs";
+
 import { Fragment } from "react";
 import Link from "next/link";
-import { ArrowUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 interface CommitteePreference {
   committee?: string;
@@ -34,6 +57,16 @@ interface Delegate {
   paid: boolean;
   registration_number?: string;
   committee_preferences?: Record<string, CommitteePreference>;
+  experience?: {
+    delegate: {
+      muns: string;
+      experience: string;
+    };
+    eb: {
+      muns: string;
+      experience: string;
+    };
+  };
 }
 
 interface Delegation {
@@ -146,153 +179,177 @@ const AdminPage = () => {
   return (
     <>
       <SignedIn>
-  {/* Fixed Navbar */}
-  <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
-    <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
-      <span className="text-lg font-bold mx-auto sm:mx-0">Admin Panel- VITMUN 25</span>
-      <div className="hidden sm:flex space-x-4">
-        <Link
-          href="#internal"
-          className="px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Internal
-        </Link>
-        <Link
-          href="#external"
-          className="px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          External
-        </Link>
-        <Link
-          href="#delegations"
-          className="px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Delegations
-        </Link>
-        <Link
-          href="../allotments"
-          className="px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Allotments
-        </Link>
-      </div>
-    </div>
-  </nav>
+        {/* Fixed Navbar */}
+        <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50 ">
+          <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+            <span className="text-lg font-bold mx-auto sm:mx-0">
+              Admin Panel- VITMUN 25
+            </span>
+            <div className="hidden sm:flex space-x-4">
+              <Link
+                href="#internal"
+                className="px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Internal
+              </Link>
+              <Link
+                href="#external"
+                className="px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                External
+              </Link>
+              <Link
+                href="#delegations"
+                className="px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Delegations
+              </Link>
+              <Link
+                href="../allotments"
+                className="px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Allotments
+              </Link>
+              <UserButton />
+            </div>
+          </div>
+        </nav>
 
-  {/* Content Section */}
-  <div id="top" className="p-6 mt-16 bg-gray-100 rounded-lg shadow-md">
-    <ul className="list-disc pl-8 space-y-2 text-gray-700">
-      <li>
-        Use <span className="font-semibold">Ctrl+F</span> or <span className="font-semibold">Cmd+F</span> to search for delegates.
-      </li>
-      <li>
-        <span className="font-semibold text-red-600">DO NOT FORGET</span> to save your changes.
-      </li>
-      <li>
-        <span className="font-semibold text-red-600">Confidential:</span> This page is extremely confidential and should only be accessed by the Core Secretariat and USG-Delegate Affairs and USG-Hospitality.
-      </li>
-    </ul>
-  </div>
+        {/* Content Section */}
+        <div id="top" className="p-6 mt-16 bg-gray-100 rounded-lg shadow-md">
+          <ul className="list-disc pl-8 space-y-2 text-gray-700">
+            <li>
+              Use <span className="font-semibold">Ctrl+F</span> or{" "}
+              <span className="font-semibold">Cmd+F</span> to search for
+              delegates.
+            </li>
+            <li>
+              <span className="font-semibold text-red-600">DO NOT FORGET</span>{" "}
+              to save your changes.
+            </li>
+          </ul>
+        </div>
 
-
-        <div className="text-4xl px-42">External Delegates</div>
         <section id="external">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Field</TableHead>
-                <TableHead>Response</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {externalDelegates.map((external) => (
-                <Fragment key={external._id}>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Participant Name:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {external.participant_name || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Gender:</strong>
-                    </TableCell>
-                    <TableCell>{external.gender || "Not Provided"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Contact Number:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {external.contact_number || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Email:</strong>
-                    </TableCell>
-                    <TableCell>{external.email_id || "Not Provided"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Organisation:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {external.organisation_name || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Accommodation:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {external.accommodation || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Committee Preferences:</strong>
-                    </TableCell>
-                    <TableCell>
-                      <ul>
-                        {Object.entries(
-                          external.committee_preferences || {}
-                        ).map(([key, value]) => (
-                          <li key={key}>
-                            <strong>{key}:</strong>{" "}
-                            {value?.committee || "Not Assigned"}
-                            <ul>
-                              {(value?.allotments || []).map(
-                                (allotment, idx) => (
+          <div className="text-4xl p-24 text-center">External Delegates</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
+            {externalDelegates.map((external) => (
+              <Card key={external._id} className="w-full">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">
+                    {external.participant_name || "Name not provided"}
+                  </CardTitle>
+                  <CardDescription>
+                    <strong>Allotment Committee:</strong>{" "}
+                    {external.allotment_committee || "Not Assigned"}
+                    <br />
+                    <strong>Portfolio:</strong>{" "}
+                    {external.allotment_portfolio || "Not Assigned"}
+                    <br />
+                    <strong>Paid:</strong> {external.paid ? "Yes" : "No"}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Accordion type="single" collapsible>
+                    {/* Personal Details */}
+                    <AccordionItem value="personalDetails">
+                      <AccordionTrigger>Personal Details</AccordionTrigger>
+                      <AccordionContent>
+                        <p>
+                          <strong>Registration Number:</strong>{" "}
+                          {external.registration_number || "Not Provided"}
+                        </p>
+                        <p>
+                          <strong>Contact Number:</strong>{" "}
+                          {external.contact_number || "Not Provided"}
+                        </p>
+                        <p>
+                          <strong>Email:</strong>{" "}
+                          {external.email_id || "Not Provided"}
+                        </p>
+                        <p>
+                          <strong>Gender:</strong>{" "}
+                          {external.gender || "Not Provided"}
+                        </p>
+                        <p>
+                          <strong>Accommodation:</strong>{" "}
+                          {external.accommodation || "Not Provided"}
+                        </p>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    {/* Committee Preferences */}
+                    <AccordionItem value="preferences">
+                      <AccordionTrigger>Preferences</AccordionTrigger>
+                      <AccordionContent>
+                        <ul>
+                          {Object.entries(
+                            external.committee_preferences || {}
+                          ).map(([key, value]) => (
+                            <li key={key}>
+                              <strong>{key}:</strong>{" "}
+                              {value.committee || "Not Assigned"}
+                              <ul>
+                                {value.allotments.map((allotment, idx) => (
                                   <li key={idx}>
                                     {key}.{idx + 1}:{" "}
                                     {allotment || "Not Assigned"}
                                   </li>
-                                )
-                              )}
-                            </ul>
-                          </li>
-                        ))}
-                      </ul>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Paid?:</strong>
-                    </TableCell>
-                    <TableCell>{external.paid ? "Yes" : "No"}</TableCell>
-                  </TableRow>
+                                ))}
+                              </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
 
-                  {/* Editing Fields */}
-                  <TableRow>
-                    <TableCell colSpan={2}>
-                      <div className="flex flex-wrap items-center gap-4">
-                        <div className="flex-1">
+                    {/* MUN Experience */}
+                    <AccordionItem value="mun-exp">
+                      <AccordionTrigger>MUN Experience</AccordionTrigger>
+                      <AccordionContent>
+                        <p>
+                          <strong>Number of MUNs as Delegate:</strong>{" "}
+                          {external.experience?.delegate?.muns || "N/A"}
+                        </p>
+                        <p>
+                          <strong>Delegate Experience Details:</strong>{" "}
+                          {external.experience?.delegate?.experience || "N/A"}
+                        </p>
+                        <p>
+                          <strong>Number of MUNs as EB:</strong>{" "}
+                          {external.experience?.eb?.muns || "N/A"}
+                        </p>
+                        <p>
+                          <strong>EB Experience Details:</strong>{" "}
+                          {external.experience?.eb?.experience || "N/A"}
+                        </p>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline">Edit Allotment</Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Edit Allotment Details</SheetTitle>
+                        <SheetDescription>
+                          Make changes to allotment details and save them.
+                        </SheetDescription>
+                      </SheetHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label
+                            htmlFor="allotment_committee"
+                            className="text-right"
+                          >
+                            Committee
+                          </Label>
                           <select
-                            name="allotment_committee"
-                            value={external.allotment_committee || ""}
+                            id="allotment_committee"
+                            defaultValue={external.allotment_committee || ""}
                             onChange={(e) =>
                               handleExternalChange(
                                 external._id,
@@ -300,7 +357,7 @@ const AdminPage = () => {
                                 e.target.value
                               )
                             }
-                            className="w-full border rounded-lg px-4 py-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                            className="col-span-3 border rounded-md px-3 py-2"
                           >
                             <option value="" disabled>
                               Select Committee
@@ -316,11 +373,15 @@ const AdminPage = () => {
                             <option value="ORF">ORF</option>
                           </select>
                         </div>
-
-                        <div className="flex-1">
-                          <input
-                            type="text"
-                            placeholder="Allotment Portfolio"
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label
+                            htmlFor="allotment_portfolio"
+                            className="text-right"
+                          >
+                            Portfolio
+                          </Label>
+                          <Input
+                            id="allotment_portfolio"
                             defaultValue={external.allotment_portfolio}
                             onChange={(e) =>
                               handleExternalChange(
@@ -329,13 +390,17 @@ const AdminPage = () => {
                                 e.target.value
                               )
                             }
-                            className="w-full border rounded-lg px-4 py-2"
+                            placeholder="Allotment Portfolio"
+                            className="col-span-3"
                           />
                         </div>
-
-                        <div className="flex-1">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="paid" className="text-right">
+                            Paid
+                          </Label>
                           <select
-                            value={external.paid.toString()}
+                            id="paid"
+                            defaultValue={external.paid.toString()}
                             onChange={(e) =>
                               handleExternalChange(
                                 external._id,
@@ -343,123 +408,149 @@ const AdminPage = () => {
                                 e.target.value === "true"
                               )
                             }
-                            className="w-full border rounded-lg px-4 py-2"
+                            className="col-span-3 border rounded-md px-3 py-2"
                           >
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                           </select>
                         </div>
                       </div>
-                      <div className="mt-4">
-                        <Button
-                          onClick={() =>
-                            updateDelegate(
-                              "external",
-                              external._id,
-                              external.allotment_committee,
-                              external.allotment_portfolio,
-                              external.paid
-                            )
-                          }
-                        >
-                          Save Changes
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                </Fragment>
-              ))}
-            </TableBody>
-          </Table>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button
+                            onClick={() =>
+                              updateDelegate(
+                                "external",
+                                external._id,
+                                external.allotment_committee,
+                                external.allotment_portfolio,
+                                external.paid
+                              )
+                            }
+                          >
+                            Save Changes
+                          </Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </section>
 
         {/* Internal Delegates Section */}
         <section id="internal" className="mb-10 ">
-          <h2 className="text-4xl font-semibold mb-4">Internal Delegates</h2>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Field</TableHead>
-                <TableHead>Response</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {internalDelegates.map((internal) => (
-                <Fragment key={internal._id}>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Registration Number:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {internal.registration_number || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Participant Name:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {internal.participant_name || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Gender:</strong>
-                    </TableCell>
-                    <TableCell>{internal.gender || "Not Provided"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Contact Number:</strong>
-                    </TableCell>
-                    <TableCell>
-                      {internal.contact_number || "Not Provided"}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Email:</strong>
-                    </TableCell>
-                    <TableCell>{internal.email_id || "Not Provided"}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Committee Preferences:</strong>
-                    </TableCell>
-                    <TableCell>
-                      <ul>
-                        {Object.entries(
-                          internal.committee_preferences || {}
-                        ).map(([key, value]) => (
-                          <li key={key}>
-                            <strong>{key}:</strong>{" "}
-                            {value.committee || "Not Assigned"}
-                            <ul>
-                              {value.allotments.map((allotment, idx) => (
-                                <li key={idx}>
-                                  {key}.{idx + 1}: {allotment || "Not Assigned"}
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                        ))}
-                      </ul>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Paid?:</strong>
-                    </TableCell>
-                    <TableCell>{internal.paid || "Not Provided"}</TableCell>
-                  </TableRow>
+          <div className="text-4xl p-24 text-center">Internal Delegates</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
+            {internalDelegates.map((internal) => (
+              <Card key={internal._id} className="w-full">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">
+                    {internal.participant_name || "Name not provided"}
+                  </CardTitle>
+                  <CardDescription>
+                    <strong>Allotment Committee:</strong>{" "}
+                    {internal.allotment_committee || "Not Assigned"}
+                    <br />
+                    <strong>Portfolio:</strong>{" "}
+                    {internal.allotment_portfolio || "Not Assigned"}
+                    <br />
+                    <strong>Paid:</strong> {internal.paid ? "Yes" : "No"}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Accordion type="single" collapsible>
+                    {/* Personal Details */}
+                    <AccordionItem value="personalDetails">
+                      <AccordionTrigger>Personal Details</AccordionTrigger>
+                      <AccordionContent>
+                        <p>
+                          <strong>Registration Number:</strong>{" "}
+                          {internal.registration_number || "Not Provided"}
+                        </p>
+                        <p>
+                          <strong>Contact Number:</strong>{" "}
+                          {internal.contact_number || "Not Provided"}
+                        </p>
+                        <p>
+                          <strong>Email:</strong>{" "}
+                          {internal.email_id || "Not Provided"}
+                        </p>
+                      </AccordionContent>
+                    </AccordionItem>
 
-                  {/* Editing Fields */}
-                  <TableRow>
-                    <TableCell colSpan={2}>
-                      <div className="flex flex-wrap items-center gap-4">
-                        <div className="flex-1">
+                    {/* Committee Preferences */}
+                    <AccordionItem value="preferences">
+                      <AccordionTrigger>Preferences</AccordionTrigger>
+                      <AccordionContent>
+                        <ul>
+                          {Object.entries(
+                            internal.committee_preferences || {}
+                          ).map(([key, value]) => (
+                            <li key={key}>
+                              <strong>{key}:</strong>{" "}
+                              {value.committee || "Not Assigned"}
+                              <ul>
+                                {value.allotments.map((allotment, idx) => (
+                                  <li key={idx}>
+                                    {key}.{idx + 1}:{" "}
+                                    {allotment || "Not Assigned"}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="mun-exp">
+                      <AccordionTrigger>MUN Experience</AccordionTrigger>
+                      <AccordionContent>
+                        <p>
+                          <strong>Number of MUNs as Delegate:</strong>{" "}
+                          {internal.experience?.delegate?.muns || "N/A"}
+                        </p>
+                        <p>
+                          <strong>Delegate Experience Details:</strong>{" "}
+                          {internal.experience?.delegate?.experience || "N/A"}
+                        </p>
+                        <p>
+                          <strong>Number of MUNs as EB:</strong>{" "}
+                          {internal.experience?.eb?.muns || "N/A"}
+                        </p>
+                        <p>
+                          <strong>EB Experience Details:</strong>{" "}
+                          {internal.experience?.eb?.experience || "N/A"}
+                        </p>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline">Edit Allotment</Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Edit Allotment Details</SheetTitle>
+                        <SheetDescription>
+                          Make changes to allotment details and save them.
+                        </SheetDescription>
+                      </SheetHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label
+                            htmlFor="allotment_committee"
+                            className="text-right"
+                          >
+                            Committee
+                          </Label>
                           <select
-                            value={internal.allotment_committee || ""}
+                            id="allotment_committee"
+                            defaultValue={internal.allotment_committee || ""}
                             onChange={(e) =>
                               handleInternalChange(
                                 internal._id,
@@ -467,7 +558,7 @@ const AdminPage = () => {
                                 e.target.value
                               )
                             }
-                            className="w-full border rounded-lg px-4 py-2 font-bold focus:outline-none focus:ring-2 focus:ring-[#54B3EA]"
+                            className="col-span-3 border rounded-md px-3 py-2"
                           >
                             <option value="" disabled>
                               Select Committee
@@ -483,11 +574,15 @@ const AdminPage = () => {
                             <option value="ORF">ORF</option>
                           </select>
                         </div>
-
-                        <div className="flex-1">
-                          <input
-                            type="text"
-                            placeholder="Allotment Portfolio"
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label
+                            htmlFor="allotment_portfolio"
+                            className="text-right"
+                          >
+                            Portfolio
+                          </Label>
+                          <Input
+                            id="allotment_portfolio"
                             defaultValue={internal.allotment_portfolio}
                             onChange={(e) =>
                               handleInternalChange(
@@ -496,13 +591,17 @@ const AdminPage = () => {
                                 e.target.value
                               )
                             }
-                            className="w-full border rounded-lg px-4 py-2"
+                            placeholder="Allotment Portfolio"
+                            className="col-span-3"
                           />
                         </div>
-
-                        <div className="flex-1">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="paid" className="text-right">
+                            Paid
+                          </Label>
                           <select
-                            value={internal.paid.toString()}
+                            id="paid"
+                            defaultValue={internal.paid.toString()}
                             onChange={(e) =>
                               handleInternalChange(
                                 internal._id,
@@ -510,39 +609,41 @@ const AdminPage = () => {
                                 e.target.value === "true"
                               )
                             }
-                            className="w-full border rounded-lg px-4 py-2"
+                            className="col-span-3 border rounded-md px-3 py-2"
                           >
                             <option value="true">Yes</option>
                             <option value="false">No</option>
                           </select>
                         </div>
                       </div>
-                      <div className="mt-4">
-                        <Button
-                          onClick={() =>
-                            updateDelegate(
-                              "internal",
-                              internal._id,
-                              internal.allotment_committee,
-                              internal.allotment_portfolio,
-                              internal.paid
-                            )
-                          }
-                        >
-                          Save Changes
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                </Fragment>
-              ))}
-            </TableBody>
-          </Table>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button
+                            onClick={() =>
+                              updateDelegate(
+                                "internal",
+                                internal._id,
+                                internal.allotment_committee,
+                                internal.allotment_portfolio,
+                                internal.paid
+                              )
+                            }
+                          >
+                            Save Changes
+                          </Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </section>
 
         {/* Delegations Section */}
         <section id="delegations">
-          <h2 className="text-4xl font-semibold">Delegations</h2>
+          <div className="text-4xl p-8 text-center">Delegations</div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {delegations.map((delegation) => (
               <Card key={delegation._id} className="p-4">
