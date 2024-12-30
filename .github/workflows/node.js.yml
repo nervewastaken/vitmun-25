@@ -36,6 +36,28 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Set Environment Variables
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      run: |
+        echo "Environment variables set"
+
     - run: npm ci
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+
     - run: npm run build --if-present
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+
     - run: npm test
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
