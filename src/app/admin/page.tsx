@@ -9,11 +9,14 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
+import { Trash } from "lucide-react";
+
 import { Fragment } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import {
   Sheet,
   SheetClose,
@@ -39,11 +42,6 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 
-interface CommitteePreference {
-  committee?: string;
-  allotments: string[];
-}
-
 interface Delegate {
   _id: string;
   participant_name?: string;
@@ -56,7 +54,20 @@ interface Delegate {
   allotment_portfolio?: string;
   paid: boolean;
   registration_number?: string;
-  committee_preferences?: Record<string, CommitteePreference>;
+  committee_preferences?: {
+    preference_1?: {
+      committee: string;
+      allotments: [string, string, string]; // Array for 1.1, 1.2, 1.3
+    };
+    preference_2?: {
+      committee: string;
+      allotments: [string, string, string]; // Array for 2.1, 2.2, 2.3
+    };
+    preference_3?: {
+      committee: string;
+      allotments: [string, string, string]; // Array for 3.1, 3.2, 3.3
+    };
+  };
   experience?: {
     delegate: {
       muns: string;
@@ -105,6 +116,34 @@ const AdminPage = () => {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const deleteDelegate = async (type: "external" | "internal", id: string) => {
+    try {
+      const confirmation = window.confirm(
+        "Are you sure you want to delete this delegate? This action cannot be undone."
+      );
+      if (!confirmation) return;
+
+      const response = await fetch(
+        `/api/admin/delete-delegate?type=${type}&id=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        alert("Delegate deleted successfully!");
+        fetchData(); // Refresh the data after deletion
+      } else {
+        alert(result.error || "Failed to delete the delegate.");
+      }
+    } catch (error) {
+      console.error("Error deleting delegate:", error);
+      alert("An error occurred while deleting the delegate.");
     }
   };
 
@@ -236,9 +275,18 @@ const AdminPage = () => {
             {externalDelegates.map((external) => (
               <Card key={external._id} className="w-full">
                 <CardHeader>
-                  <CardTitle className="text-lg font-semibold">
-                    {external.participant_name || "Name not provided"}
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg font-semibold">
+                      {external.participant_name || "Name not provided"}
+                    </CardTitle>
+                    <Button
+                      variant="destructive"
+                      className="flex items-center space-x-2"
+                      onClick={() => deleteDelegate("external", external._id)} // Replace "external" with "internal" for internal delegates
+                    >
+                      <Trash className="w-4 h-4" />
+                    </Button>
+                  </div>
                   <CardDescription>
                     <strong>Allotment Committee:</strong>{" "}
                     {external.allotment_committee || "Not Assigned"}
@@ -255,10 +303,6 @@ const AdminPage = () => {
                     <AccordionItem value="personalDetails">
                       <AccordionTrigger>Personal Details</AccordionTrigger>
                       <AccordionContent>
-                        <p>
-                          <strong>Registration Number:</strong>{" "}
-                          {external.registration_number || "Not Provided"}
-                        </p>
                         <p>
                           <strong>Contact Number:</strong>{" "}
                           {external.contact_number || "Not Provided"}
@@ -282,24 +326,38 @@ const AdminPage = () => {
                     <AccordionItem value="preferences">
                       <AccordionTrigger>Preferences</AccordionTrigger>
                       <AccordionContent>
-                        <ul>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           {Object.entries(
                             external.committee_preferences || {}
-                          ).map(([key, value]) => (
-                            <li key={key}>
-                              <strong>{key}:</strong>{" "}
-                              {value.committee || "Not Assigned"}
-                              <ul>
-                                {value.allotments.map((allotment, idx) => (
-                                  <li key={idx}>
-                                    {key}.{idx + 1}:{" "}
-                                    {allotment || "Not Assigned"}
-                                  </li>
-                                ))}
-                              </ul>
-                            </li>
-                          ))}
-                        </ul>
+                          ).map(
+                            (
+                              [preferenceKey, preferenceValue],
+                              committeeIndex
+                            ) => (
+                              <div key={preferenceKey} className="space-y-1">
+                                {/* Committee Header */}
+                                <p className="text-lg font-semibold">
+                                  {committeeIndex + 1}){" "}
+                                  {preferenceValue.committee || "Not Assigned"}
+                                </p>
+
+                                {/* Allotments */}
+                                <ul className="space-y-1 ">
+                                  {preferenceValue.allotments.map(
+                                    (allotment, preferenceIndex) => (
+                                      <li key={preferenceIndex}>
+                                        {String.fromCharCode(
+                                          97 + preferenceIndex
+                                        )}
+                                        ) {allotment || "Not Assigned"}
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
 
@@ -307,22 +365,32 @@ const AdminPage = () => {
                     <AccordionItem value="mun-exp">
                       <AccordionTrigger>MUN Experience</AccordionTrigger>
                       <AccordionContent>
-                        <p>
-                          <strong>Number of MUNs as Delegate:</strong>{" "}
-                          {external.experience?.delegate?.muns || "N/A"}
-                        </p>
-                        <p>
-                          <strong>Delegate Experience Details:</strong>{" "}
-                          {external.experience?.delegate?.experience || "N/A"}
-                        </p>
-                        <p>
-                          <strong>Number of MUNs as EB:</strong>{" "}
-                          {external.experience?.eb?.muns || "N/A"}
-                        </p>
-                        <p>
-                          <strong>EB Experience Details:</strong>{" "}
-                          {external.experience?.eb?.experience || "N/A"}
-                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Delegate Experience */}
+                          <div>
+                            <p>
+                              <strong>MUNs as Delegate:</strong>{" "}
+                              {external.experience?.delegate?.muns || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Details:</strong>{" "}
+                              {external.experience?.delegate?.experience ||
+                                "N/A"}
+                            </p>
+                          </div>
+
+                          {/* EB Experience */}
+                          <div>
+                            <p>
+                              <strong>MUNs as EB:</strong>{" "}
+                              {external.experience?.eb?.muns || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Details:</strong>{" "}
+                              {external.experience?.eb?.experience || "N/A"}
+                            </p>
+                          </div>
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -447,9 +515,18 @@ const AdminPage = () => {
             {internalDelegates.map((internal) => (
               <Card key={internal._id} className="w-full">
                 <CardHeader>
-                  <CardTitle className="text-lg font-semibold">
-                    {internal.participant_name || "Name not provided"}
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg font-semibold">
+                      {internal.participant_name || "Name not provided"}
+                    </CardTitle>
+                    <Button
+                      variant="destructive"
+                      className="flex items-center space-x-2"
+                      onClick={() => deleteDelegate("internal", internal._id)}
+                    >
+                      <Trash className="w-4 h-4" />
+                    </Button>
+                  </div>
                   <CardDescription>
                     <strong>Allotment Committee:</strong>{" "}
                     {internal.allotment_committee || "Not Assigned"}
@@ -485,45 +562,69 @@ const AdminPage = () => {
                     <AccordionItem value="preferences">
                       <AccordionTrigger>Preferences</AccordionTrigger>
                       <AccordionContent>
-                        <ul>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                           {Object.entries(
                             internal.committee_preferences || {}
-                          ).map(([key, value]) => (
-                            <li key={key}>
-                              <strong>{key}:</strong>{" "}
-                              {value.committee || "Not Assigned"}
-                              <ul>
-                                {value.allotments.map((allotment, idx) => (
-                                  <li key={idx}>
-                                    {key}.{idx + 1}:{" "}
-                                    {allotment || "Not Assigned"}
-                                  </li>
-                                ))}
-                              </ul>
-                            </li>
-                          ))}
-                        </ul>
+                          ).map(
+                            (
+                              [preferenceKey, preferenceValue],
+                              committeeIndex
+                            ) => (
+                              <div key={preferenceKey} className="space-y-1">
+                                {/* Committee Header */}
+                                <p className="text-lg font-semibold">
+                                  {committeeIndex + 1}){" "}
+                                  {preferenceValue.committee || "Not Assigned"}
+                                </p>
+
+                                {/* Allotments */}
+                                <ul className="space-y-1 ">
+                                  {preferenceValue.allotments.map(
+                                    (allotment, preferenceIndex) => (
+                                      <li key={preferenceIndex}>
+                                        {String.fromCharCode(
+                                          97 + preferenceIndex
+                                        )}
+                                        ) {allotment || "Not Assigned"}
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              </div>
+                            )
+                          )}
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="mun-exp">
                       <AccordionTrigger>MUN Experience</AccordionTrigger>
                       <AccordionContent>
-                        <p>
-                          <strong>Number of MUNs as Delegate:</strong>{" "}
-                          {internal.experience?.delegate?.muns || "N/A"}
-                        </p>
-                        <p>
-                          <strong>Delegate Experience Details:</strong>{" "}
-                          {internal.experience?.delegate?.experience || "N/A"}
-                        </p>
-                        <p>
-                          <strong>Number of MUNs as EB:</strong>{" "}
-                          {internal.experience?.eb?.muns || "N/A"}
-                        </p>
-                        <p>
-                          <strong>EB Experience Details:</strong>{" "}
-                          {internal.experience?.eb?.experience || "N/A"}
-                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Delegate Experience */}
+                          <div>
+                            <p>
+                              <strong>MUNs as Delegate:</strong>{" "}
+                              {internal.experience?.delegate?.muns || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Details:</strong>{" "}
+                              {internal.experience?.delegate?.experience ||
+                                "N/A"}
+                            </p>
+                          </div>
+
+                          {/* EB Experience */}
+                          <div>
+                            <p>
+                              <strong>MUNs as EB:</strong>{" "}
+                              {internal.experience?.eb?.muns || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Details:</strong>{" "}
+                              {internal.experience?.eb?.experience || "N/A"}
+                            </p>
+                          </div>
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
