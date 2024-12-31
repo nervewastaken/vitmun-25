@@ -10,6 +10,7 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
+import Navbar from "@/pages/Navbar";
 
 const DelegateTable = () => {
   const [data, setData] = useState<any[]>([]);
@@ -39,6 +40,7 @@ const DelegateTable = () => {
 
   return (
     <>
+    <Navbar/>
       <Tabs
         tabs={[
           { title: "UNGA-DISEC", value: "UNGA-DISEC" },
@@ -55,12 +57,14 @@ const DelegateTable = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
+        <>
+        
         <Table className="mt-6">
           <TableHeader>
             <TableRow>
               <TableHead>Sr No.</TableHead>
-              <TableHead>Delegate Name</TableHead>
               <TableHead>Portfolio</TableHead>
+              <TableHead>Delegate Name</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -68,10 +72,10 @@ const DelegateTable = () => {
               data.map((delegate, idx) => (
                 <TableRow key={delegate._id}>
                   <TableCell>{idx + 1}</TableCell>
-                  <TableCell>{delegate.participant_name || "N/A"}</TableCell>
                   <TableCell>
                     {delegate.allotment_portfolio || "Not Assigned"}
                   </TableCell>
+                  <TableCell>{delegate.participant_name || "N/A"}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -83,6 +87,7 @@ const DelegateTable = () => {
             )}
           </TableBody>
         </Table>
+        </>
       )}
     </>
   );
