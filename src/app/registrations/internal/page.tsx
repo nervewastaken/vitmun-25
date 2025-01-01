@@ -42,68 +42,151 @@ const InternalDelegateForm = () => {
   const { toast } = useToast();
   const router = useRouter();
 
+  const validateForm = () => {
+    const requiredFields = [
+      "registration_number",
+      "participant_name",
+      "contact_number",
+      "email_id",
+      "committee_preference_1",
+      "committee_preference_2",
+      "committee_preference_3",
+    ];
+  
+    let isValid = true;
+  
+    const updatedFormData = { ...formData }; // Create a copy of formData to update
+  
+    // Check if required fields are filled
+    requiredFields.forEach((field) => {
+      if (!formData[field] || formData[field].trim() === "") {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: `${field.replace(/_/g, " ")} is required.`,
+        });
+        updatedFormData[field] = ""; // Clear the problematic field
+        isValid = false;
+      }
+    });
+  
+    // Validate email
+    if (formData.email_id && !/\S+@\S+\.\S+/.test(formData.email_id)) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Invalid Email ID.",
+      });
+      updatedFormData.email_id = ""; // Clear invalid email
+      isValid = false;
+    }
+  
+    // Validate contact number
+    if (formData.contact_number && !/^\d{10}$/.test(formData.contact_number)) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Contact Number must be exactly 10 digits.",
+      });
+      updatedFormData.contact_number = ""; // Clear invalid contact number
+      isValid = false;
+    }
+  
+    // Validate MUN and EB experience
+    if (formData.exp_delegate_muns && Number(formData.exp_delegate_muns) < 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "MUN experience cannot be negative.",
+      });
+      updatedFormData.exp_delegate_muns = ""; // Clear invalid MUN experience
+      isValid = false;
+    }
+  
+    if (formData.exp_eb_muns && Number(formData.exp_eb_muns) < 0) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "EB experience cannot be negative.",
+      });
+      updatedFormData.exp_eb_muns = ""; // Clear invalid EB experience
+      isValid = false;
+    }
+  
+    setFormData(updatedFormData); // Update the formData state with cleared fields
+    return isValid;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch("/api/submit-delegate-form-int", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      toast({
-        variant: "success", // You can customize it (success/error)
-        title: "Form Submitted Successfully",
-        description: "Redirecting you to the home page...",
-      });
-
-      // Redirect to Home after a slight delay
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    } else {
-      // Handle errors based on response code
-      if (response.status === 400) {
-        toast({
-          variant: "destructive",
-          title: "Duplicate Entry Detected",
-          description:
-            "An entry with this email/contact already exists. Please contact Delegate Affairs for support.",
-        });
-      } else if (response.status === 500) {
-        toast({
-          variant: "destructive",
-          title: "Server Error",
-          description: "Something went wrong on our end. Try again later.",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Unexpected Error",
-          description: data.error || "Please check your input and try again.",
-        });
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Validate the form
+    if (!validateForm()) {
+      console.log("Validation failed");
+      return;
     }
-  } catch (error) {
-    toast({
-      variant: "destructive",
-      title: "Network Error",
-      description: "An error occurred while submitting the form. Please try again.",
-    });
-    console.error("Error:", error);
-  }
-};
+    console.log("Validation passed");
+  
+    try {
+      const response = await fetch("/api/submit-delegate-form-int", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        toast({
+          variant: "success",
+          title: "Form Submitted Successfully",
+          description: "Redirecting you to the home page...",
+        });
+  
+        // Redirect to Home after a slight delay
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      } else {
+        console.log("Form submission failed with status:", response.status);
+        if (response.status === 400) {
+          toast({
+            variant: "destructive",
+            title: "Duplicate Entry Detected",
+            description:
+              "An entry with this email/contact already exists. Please contact Delegate Affairs for support.",
+          });
+        } else if (response.status === 500) {
+          toast({
+            variant: "destructive",
+            title: "Server Error",
+            description: "Something went wrong on our end. Try again later.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Unexpected Error",
+            description: data.error || "Please check your input and try again.",
+          });
+        }
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Network Error",
+        description:
+          "An error occurred while submitting the form. Please try again.",
+      });
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <ReactLenis
