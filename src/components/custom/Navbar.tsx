@@ -62,7 +62,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[85vh]`}>
+        <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh]`}>
           <div className="flex flex-col w-full p-4 text-center items-center">
             <ul className="flex flex-col gap-y-8 w-full text-[3vh]">
               <li>

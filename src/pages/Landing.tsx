@@ -31,13 +31,29 @@ const Landing = () => {
             className="h-full w-full object-cover"
           />
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 border-b-[1.5vh] border-transparent" style={{ borderImage: "url('/blue.jpg') 30 stretch" }}>
-            <ImageFilledText
-              text="7-9 MAR 2025"
-              imageUrl="/blue.jpg"
-              className="text-[5vh] md:text-8xl lg:text-[23vh] whitespace-nowrap"
-            />
-          </div>
+<div
+  className="absolute inset-0 flex flex-col items-center justify-center z-10 border-b-[1.5vh] border-transparent select-none"
+  style={{ borderImage: "url('/blue.jpg') 30 stretch" }}
+>
+<div className="flex whitespace-nowrap">
+  {Array.from("7-9 MAR 2025").map((char, index) => (
+    <span
+      key={index}
+      className={`text-[5vh] lg:hover:text-[27vh] md:text-8xl lg:text-[20vh] transition-all duration-300`}
+    >
+      <ImageFilledText
+    text={char === " " ? "\u00A0" : char}
+    imageUrl="/blue.jpg"
+    className=" whitespace-nowrap"
+  />
+      
+    </span>
+  ))}
+</div>
+
+</div>
+
+
 
           <div className="mt-8 flex flex-col items-center justify-center text-[8vh]">
           <div className="relative z-10 mx-auto">
