@@ -15,7 +15,7 @@ interface CommitteeCardProps {
 const CommitteeCard: React.FC<CommitteeCardProps> = ({ image, name, onClick, isSelected }) => {
   return (
     <motion.div
-      className={`flex flex-col items-center cursor-pointer transition duration-300 py-5 mx-20 rounded-md ${
+      className={`flex flex-col items-center cursor-pointer transition duration-300 py-5 lg:py-3 mx-20 rounded-md ${
         isSelected ? "ring-4 ring-[#54B3EA] bg-black bg-opacity-10" : "hover:ring-4 hover:ring-[#54B3EA] hover:bg-black hover:bg-opacity-5"
       }`}
       onClick={onClick}

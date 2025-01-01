@@ -48,14 +48,14 @@ const CommitteesPage = () => {
       }}
     >
       <Navbar />
-      <div className="px-4 sm:px-8 lg:px-20 py-6">
-        <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left ${lora.className}`}>
+      <div className="relative pt-[10vh] lg:pt-[15vh] h-auto lg:h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
+        <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left ${lora.className} px-6`}>
           Committees
         </h1>
-        <p className="text-md md:text-lg font-light mb-6 text-left">
+        <p className="text-md md:text-lg font-light mb-2 text-left px-6">
           Presenting the committees for VITMUN'25
         </p>
-        <div className="grid gap-2 md:gap-4 lg:gap-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-0 md:gap-x-4 lg:gap-x-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {committees.map((committee) => (
             <CommitteeCard
               key={committee.name}
