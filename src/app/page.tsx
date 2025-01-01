@@ -1,7 +1,8 @@
 "use client";
 
 import Landing from "../pages/Landing"
-import Navbar from "../pages/Navbar"
+import Navbar from "../components/custom/Navbar"
+import AboutUs from "@/pages/About";
 
 export default function Home() {
   
@@ -13,6 +14,7 @@ export default function Home() {
     <div>
       <Navbar />
       <Landing />
+      {/* <AboutUs /> */}
     </div>
   );
 }

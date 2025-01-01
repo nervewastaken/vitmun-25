@@ -83,3 +83,23 @@ body {
 .border-rotating {
   animation: rotate-border 10s linear infinite;
 }
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+  display: flex; /* Ensure the items are aligned correctly */
+  will-change: transform; /* Improve performance */
+}
+
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation: marquee 5s linear infinite;
+  }
+}
