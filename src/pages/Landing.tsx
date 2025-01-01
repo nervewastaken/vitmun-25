@@ -20,7 +20,7 @@ const Landing = () => {
 
 
   return (
-    <div className="relative pt-[10vh] lg:pt-[15vh] h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
+    <div className="relative pt-[10vh] h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
       <div className="relative flex flex-col items-center w-full">
         <div className="relative w-full h-[20vh] md:h-[25vh]">
           <Image
@@ -39,17 +39,17 @@ const Landing = () => {
   {Array.from("7-9 MAR 2025").map((char, index) => (
     <span
       key={index}
-      className={`text-[5vh] lg:hover:text-[27vh] md:text-8xl lg:text-[20vh] transition-all duration-300`}
+      className="text-[5vh] lg:hover:scale-[1.4] md:text-8xl lg:text-[20vh] transition-all duration-300 origin-center"
     >
       <ImageFilledText
-    text={char === " " ? "\u00A0" : char}
-    imageUrl="/blue.jpg"
-    className=" whitespace-nowrap"
-  />
-      
+        text={char === " " ? "\u00A0" : char}
+        imageUrl="/blue.jpg"
+        className="whitespace-nowrap"
+      />
     </span>
   ))}
 </div>
+
 
 </div>
 

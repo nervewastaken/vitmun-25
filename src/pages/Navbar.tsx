@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Karma } from "next/font/google";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import "../../app/globals.css";
+import "../app/globals.css";
 import ImageFilledText from "@/components/ui/ImageFilledText"
 
 const karma = Karma({
@@ -19,7 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed h-[10vh] md:h-[15vh] w-[100vw] ${karma.className} z-50 bg-white`}>
+    <nav className={`fixed h-[10vh] w-[100vw] ${karma.className} z-50 bg-white`}>
       <div className="flex flex-row items-center h-full w-full relative px-4">
         <Link href="https://vit.ac.in/" target="_blank" passHref>
           <Image

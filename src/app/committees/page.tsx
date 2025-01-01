@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import CommitteeCard from "@/components/custom/committee";
 import { Lora } from "next/font/google";
 import { ReactLenis } from "@studio-freight/react-lenis";
-import Navbar from "@/components/custom/Navbar";
+import Navbar from "@/pages/Navbar";
 import Image from "next/image";
 
 const lora = Lora({
@@ -48,7 +48,7 @@ const CommitteesPage = () => {
       }}
     >
       <Navbar />
-      <div className="relative pt-[10vh] lg:pt-[15vh] h-auto lg:h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
+      <div className="relative pt-[10vh] h-auto lg:h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
         <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left ${lora.className} px-6`}>
           Committees
         </h1>
