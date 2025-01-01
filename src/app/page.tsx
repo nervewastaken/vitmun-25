@@ -3,6 +3,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 import Landing from "../pages/Landing"
 import Navbar from "../components/custom/Navbar"
+import AboutUs from "@/pages/About";
 
 export default function Home() {
   const { isSignedIn } = useAuth();
@@ -22,6 +23,7 @@ export default function Home() {
     <div>
       <Navbar />
       <Landing />
+      {/* <AboutUs /> */}
     </div>
   );
 }

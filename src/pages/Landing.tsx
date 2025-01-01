@@ -20,7 +20,7 @@ const Landing = () => {
 
 
   return (
-    <div className="absolute h-[85vh] w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100">
+    <div className="relative pt-[10vh] lg:pt-[15vh] h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
       <div className="relative flex flex-col items-center w-full">
         <div className="relative w-full h-[20vh] md:h-[25vh]">
           <Image
@@ -146,7 +146,7 @@ const Landing = () => {
         alt="castle"
         width={960}  // Use an arbitrary width or approximate based on your design
         height={540} // Use an arbitrary height or approximate based on your design
-        className="h-[20vh] w-[40vw] lg:h-[50vh] lg:w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] left-0 z-0"
+        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] left-0 z-0 overflow-hidden"
       />
 
       <Image
@@ -154,7 +154,7 @@ const Landing = () => {
         alt="castle"
         width={960}  // Use an arbitrary width or approximate based on your design
         height={540} // Use an arbitrary height or approximate based on your design
-        className="h-[20vh] w-[40vw] lg:h-[50vh] lg:w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] right-0"
+        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] right-0 z-0 overflow-hidden"
       />
 
       <div>
