@@ -92,31 +92,56 @@ const InternalDelegateForm = () => {
       isValid = false;
     }
   
-    // Validate MUN and EB experience
-    if (formData.exp_delegate_muns && Number(formData.exp_delegate_muns) < 0) {
+    // Validate committee preferences are unique
+    const committeePreferences = [
+      formData.committee_preference_1,
+      formData.committee_preference_2,
+      formData.committee_preference_3,
+    ];
+    if (new Set(committeePreferences).size !== committeePreferences.length) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "MUN experience cannot be negative.",
+        description: "Committee Preferences must be unique.",
       });
-      updatedFormData.exp_delegate_muns = ""; // Clear invalid MUN experience
       isValid = false;
     }
   
-    if (formData.exp_eb_muns && Number(formData.exp_eb_muns) < 0) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "EB experience cannot be negative.",
-      });
-      updatedFormData.exp_eb_muns = ""; // Clear invalid EB experience
-      isValid = false;
-    }
+    // Validate allotment preferences within each committee
+    const allotmentGroups = [
+      [
+        formData.allotment_preference_1_1,
+        formData.allotment_preference_1_2,
+        formData.allotment_preference_1_3,
+      ],
+      [
+        formData.allotment_preference_2_1,
+        formData.allotment_preference_2_2,
+        formData.allotment_preference_2_3,
+      ],
+      [
+        formData.allotment_preference_3_1,
+        formData.allotment_preference_3_2,
+        formData.allotment_preference_3_3,
+      ],
+    ];
   
-    setFormData(updatedFormData); // Update the formData state with cleared fields
+    allotmentGroups.forEach((group, index) => {
+      if (new Set(group).size !== group.length) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: `Allotment preferences within Committee Preference ${index + 1} must be unique.`,
+        });
+        isValid = false;
+      }
+    });
+  
+    // Update formData if there are changes
+    setFormData(updatedFormData);
+  
     return isValid;
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

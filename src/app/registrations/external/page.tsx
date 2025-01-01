@@ -121,11 +121,59 @@ const ExternalDelegateForm = () => {
       isValid = false;
     }
 
-    setFormData(updatedFormData); // Update the formData state with cleared fields
+    // Validate committee preferences are unique
+    const committeePreferences = [
+      formData.committee_preference_1,
+      formData.committee_preference_2,
+      formData.committee_preference_3,
+    ];
+    if (new Set(committeePreferences).size !== committeePreferences.length) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Committee Preferences must be unique.",
+      });
+      isValid = false;
+    }
+
+    // Validate allotment preferences within each committee
+    const allotmentGroups = [
+      [
+        formData.allotment_preference_1_1,
+        formData.allotment_preference_1_2,
+        formData.allotment_preference_1_3,
+      ],
+      [
+        formData.allotment_preference_2_1,
+        formData.allotment_preference_2_2,
+        formData.allotment_preference_2_3,
+      ],
+      [
+        formData.allotment_preference_3_1,
+        formData.allotment_preference_3_2,
+        formData.allotment_preference_3_3,
+      ],
+    ];
+
+    allotmentGroups.forEach((group, index) => {
+      if (new Set(group).size !== group.length) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: `Allotment preferences within Committee Preference ${
+            index + 1
+          } must be unique.`,
+        });
+        isValid = false;
+      }
+    });
+
+    // Update formData if there are changes
+    setFormData(updatedFormData);
+
     console.log("Validation Status:", isValid);
     return isValid;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Validate the form
@@ -187,8 +235,6 @@ const ExternalDelegateForm = () => {
       console.error("Error:", error);
     }
   };
-
-  
 
   return (
     <ReactLenis
