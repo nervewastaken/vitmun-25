@@ -249,7 +249,7 @@ const AdminPage = () => {
               >
                 Allotments
               </Link>
-              <UserButton />
+              <UserButton/>
             </div>
           </div>
         </nav>

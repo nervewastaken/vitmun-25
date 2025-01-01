@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl={"/"}>
       <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
         <body>
          
