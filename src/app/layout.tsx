@@ -1,9 +1,6 @@
 import {
   ClerkProvider,
   //SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -28,15 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl={"/"}>
       <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
         <body>
-          <SignedOut>
-            {/* No redirectUrl here; redirect handled globally */}
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+         
           {children}
           <Toaster />
         </body>
