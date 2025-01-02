@@ -2,7 +2,6 @@
 
 import Landing from "../pages/Landing"
 import Navbar from "../pages/Navbar"
-import AboutUs from "@/pages/About";
 
 export default function Home() {
   
