@@ -58,13 +58,12 @@ const Landing = () => {
           <div className="mt-8 flex flex-col items-center justify-center text-[8vh]">
           <div className="relative z-10 mx-auto">
         
-          <div className="relative w-fit p-8 -mt-[12vh] md:-mt-[15vh] z-1 bg-white rounded-full">
+          <div className="relative w-fit p-8 -mt-[12vh] md:-mt-[15vh] z-1 bg-white border-rotating rounded-full">
       <div 
-        className="absolute inset-0 rounded-full border-rotating"
+        className="absolute inset-0  "
         style={{
           background: `url('/globe-border.png') center/100% 100%`,
-          padding: '10px',
-          transform: 'scale(1.1)'
+          
         }}
       />
       <Image
