@@ -38,6 +38,7 @@ export default function Navbar() {
           {isMenuOpen ? <Image src="/cross.svg" height={48} width={48} alt="cross"/> : <Menu size={48} />}
         </button>
 
+
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-24 mr-[2vw]">
           <ul className="flex flex-row gap-x-8 text-[3vh]">

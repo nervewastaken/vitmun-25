@@ -10,7 +10,6 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
-import Navbar from "@/pages/Navbar";
 
 const DelegateTable = () => {
   const [data, setData] = useState<any[]>([]);
@@ -40,7 +39,7 @@ const DelegateTable = () => {
 
   return (
     <>
-    <Navbar/>
+    
       <Tabs
         tabs={[
           { title: "UNGA-DISEC", value: "UNGA-DISEC" },
