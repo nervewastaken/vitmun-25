@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Karma } from "next/font/google";
 import { useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import "../app/globals.css";
 import ImageFilledText from "@/components/ui/ImageFilledText"
 
@@ -37,7 +37,8 @@ export default function Navbar() {
         >
           {isMenuOpen ? <Image src="/cross.svg" height={48} width={48} alt="cross"/> : <Menu size={48} />}
         </button>
-        {/* hello */}
+
+
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-24 mr-[2vw]">
           <ul className="flex flex-row gap-x-8 text-[3vh]">
