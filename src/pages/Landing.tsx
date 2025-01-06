@@ -80,29 +80,32 @@ const Landing = () => {
 
 
 
+    <div className="flex flex-col items-center justify-center">
+  <div className="font-bebas font-bold text-[5vh] lg:text-[6vh] select-none flex justify-center">
+    VIT
+    <ImageFilledText
+      text="MUN"
+      imageUrl="/blue.jpg"
+      className=""
+    />
+    <Image
+      src="/bird.svg"
+      width={24}
+      height={24}
+      alt="bird"
+      className="inline -mt-12"
+    />
+  </div>
+  <div>
+    <p className="text-[1.3vh] lg:text-[2vh] text-black border border-black px-4 rounded-3xl select-none mt-2">WHERE YOUR VOICE MATTERS</p>
+  </div>
+</div>
 
-            <div className="font-bebas font-bold text-[5vh] lg:text-[6vh] select-none">
-              VIT
-              <ImageFilledText
-                text="MUN"
-                imageUrl="/blue.jpg"
-                className=""
-              />
-              <Image
-                src="/bird.svg"
-                width={24}
-                height={24}
-                alt="bird"
-                className="inline -mt-12"
-              />
-            </div>
-            <p className="text-[2vh] lg:text-[2.5vh] text-black border border-black px-4 rounded-3xl select-none">WHERE YOUR VOICE MATTERS</p>
-
-            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 font-semibold relative">
-  <div className="z-10">
+            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 font-semibold relative justify-center items-center">
+  <div className="z-10 ">
     <button
       onClick={handleInd}
-      className="font-bebas text-[2vh] bg-white py-2 px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
+      className="font-bebas text-[1.2vh] lg:text-[2vh] bg-white py-2 px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
     >
       INDIVIDUAL REGISTRATION
     </button>
@@ -124,7 +127,7 @@ const Landing = () => {
             />
           </button>
         </div>
-        <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[2vh] lg:text-[3vh] ">
+        <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[1.2vh] lg:text-[2vh] ">
           <Link href="/registrations/internal">
             <button className="font-bebas  bg-white py-2 px-8 border rounded-3xl z-10">
               VIT VELLORE STUDENT
@@ -143,7 +146,7 @@ const Landing = () => {
 
   <div className="z-10 -mt-[4vh] lg:mt-0">
     <Link href="/registrations/delegation">
-      <button className="font-bebas text-[2vh] bg-white py-2 px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
+      <button className="font-bebas text-[1.2vh] lg:text-[2vh] bg-white py-2 px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
         DELEGATION REGISTRATION
       </button>
     </Link>
@@ -162,7 +165,7 @@ const Landing = () => {
         alt="castle"
         width={960}
         height={540} 
-        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh]  left-0 z-0 overflow-hidden"
+        className="h-[20vh] max-w-[60vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh]  left-0 z-0 overflow-hidden"
       />
 
       <Image
@@ -170,7 +173,7 @@ const Landing = () => {
         alt="castle"
         width={960}  
         height={540} 
-        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] right-0 z-0 overflow-hidden"
+        className="h-[20vh] max-w-[60vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] right-0 z-0 overflow-hidden"
       />
 
       <div>

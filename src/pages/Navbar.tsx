@@ -64,8 +64,8 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh]`}>
-          <div className="flex flex-col w-full p-4 text-center items-center">
-            <ul className="flex flex-col gap-y-8 w-full text-[3vh]">
+          <div className="flex flex-col w-full p-4 text-center items-center justify-center">
+            <ul className="flex flex-col gap-y-8 w-full text-[2vh]">
               <li>
                 <Link href="/" onClick={toggleMenu}  className="hover:text-[#54B3EA]">HOME</Link>
               </li>
@@ -109,7 +109,7 @@ export default function Navbar() {
       className="inline"
     />
   </div>
-  <p className="text-[2vh] text-black border border-black px-4 rounded-3xl text-center">
+  <p className="text-[1.5vh] text-black border border-black px-4 rounded-3xl text-center">
     WHERE YOUR VOICE MATTERS
   </p>
   </div>
