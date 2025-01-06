@@ -97,7 +97,7 @@ const Landing = () => {
     />
   </div>
   <div>
-    <p className="text-[1.3vh] lg:text-[2vh] text-black border border-black px-4 rounded-3xl select-none mt-2">WHERE YOUR VOICE MATTERS</p>
+    <p className="text-[1.3vh] lg:text-[1.5vh] text-black border border-black px-4 rounded-3xl select-none mt-2">WHERE YOUR VOICE MATTERS</p>
   </div>
 </div>
 
