@@ -22,7 +22,7 @@ const Landing = () => {
   return (
     <div className="relative pt-[10vh] h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
       <div className="relative flex flex-col items-center w-full">
-        <div className="relative w-full h-[20vh] md:h-[25vh]">
+        <div className="relative w-full h-[20vh] lg:h-[25vh]">
           <Image
             src="/home.svg"
             height={0}
@@ -32,14 +32,14 @@ const Landing = () => {
           />
 
 <div
-  className="absolute inset-0 flex flex-col items-center justify-center z-10 border-b-[1.5vh] border-transparent select-none"
+  className="absolute inset-0 flex flex-col items-center   z-10 border-b-[1.5vh] border-transparent select-none"
   style={{ borderImage: "url('/blue.jpg') 30 stretch" }}
 >
-<div className="flex whitespace-nowrap">
+<div className="flex whitespace-nowrap lg:justify-center">
   {Array.from("7-9 MAR 2025").map((char, index) => (
     <span
       key={index}
-      className="text-[5vh] lg:hover:scale-[1.4] md:text-8xl lg:text-[20vh] transition-all duration-300 origin-center"
+      className="text-[6vh] mt-[6vh] lg:mt-0  lg:hover:scale-[1.4] lg:text-[14vh] transition-all duration-300 origin-center"
     >
       <ImageFilledText
         text={char === " " ? "\u00A0" : char}
@@ -56,13 +56,13 @@ const Landing = () => {
 
 
           <div className="mt-8 flex flex-col items-center justify-center text-[8vh]">
-          <div className="relative z-10 mx-auto">
-        
-          <div className="relative w-fit p-8 -mt-[12vh] md:-mt-[15vh] z-1 bg-white border-rotating rounded-full">
+          <div className="relative z-10">
+        <div className="relative -mt-[10vh] lg:-mt-[16vh] mb-[2vh]">
       <div 
-        className="absolute inset-0  "
+        className="inset-0 border-rotating p-8 z-1 h-[18vh] w-[18vh] lg:h-[30vh] lg:w-[30vh] z-0"
         style={{
-          background: `url('/globe-border.png') center/100% 100%`,
+          background: `url('/globe-rotating.png') center/100% 100%`,
+         
           
         }}
       />
@@ -71,16 +71,17 @@ const Landing = () => {
         width={0}
         src="/globe.svg"
         alt="VITMUN"
-        className="h-[10vh] md:h-[20vh] w-auto rounded-full bg-white relative"
+        draggable="false"
+        className="h-[10vh] w-[10vh] lg:h-[18vh] lg:w-[18vh]  rounded-full z-15 absolute -mt-[14vh] ml-[4vh] lg:-mt-[24vh] lg:ml-[6vh]"
       />
+    </div>
     </div>
 
 
 
-</div>
 
 
-            <div className="font-bebas font-bold text-[5vh] lg:text-[8vh]">
+            <div className="font-bebas font-bold text-[5vh] lg:text-[6vh] select-none">
               VIT
               <ImageFilledText
                 text="MUN"
@@ -95,13 +96,13 @@ const Landing = () => {
                 className="inline -mt-12"
               />
             </div>
-            <p className="text-[2vh] lg:text-[2.5vh] text-black border border-black px-4 rounded-3xl">WHERE YOUR VOICE MATTERS</p>
+            <p className="text-[2vh] lg:text-[2.5vh] text-black border border-black px-4 rounded-3xl select-none">WHERE YOUR VOICE MATTERS</p>
 
-            <div className="flex flex-col md:flex-row gap-y-0 md:gap-x-8 font-semibold relative">
+            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 font-semibold relative">
   <div className="z-10">
     <button
       onClick={handleInd}
-      className="font-bebas text-[2vh] md:text-[3vh] bg-white py-2 px-8 border rounded-3xl z-10  shadow-2xl"
+      className="font-bebas text-[2vh] bg-white py-2 px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
     >
       INDIVIDUAL REGISTRATION
     </button>
@@ -140,9 +141,9 @@ const Landing = () => {
     </div>
   )}
 
-  <div className="z-10 -mt-[4vh] md:mt-0">
+  <div className="z-10 -mt-[4vh] lg:mt-0">
     <Link href="/registrations/delegation">
-      <button className="font-bebas text-[2vh] md:text-[3vh] bg-white py-2 px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 ">
+      <button className="font-bebas text-[2vh] bg-white py-2 px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
         DELEGATION REGISTRATION
       </button>
     </Link>
@@ -157,34 +158,44 @@ const Landing = () => {
       </div>
 
       <Image
-        src="/castle.png"
+        src="/castle.svg"
         alt="castle"
-        width={960}  // Use an arbitrary width or approximate based on your design
-        height={540} // Use an arbitrary height or approximate based on your design
-        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] left-0 z-0 overflow-hidden"
+        width={960}
+        height={540} 
+        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh]  left-0 z-0 overflow-hidden"
       />
 
       <Image
-        src="/castle.png"
+        src="/castle.svg"
         alt="castle"
-        width={960}  // Use an arbitrary width or approximate based on your design
-        height={540} // Use an arbitrary height or approximate based on your design
-        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] right-0 z-0 overflow-hidden"
+        width={960}  
+        height={540} 
+        className="h-[20vh] max-w-[40vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] right-0 z-0 overflow-hidden"
       />
 
       <div>
       </div>
-      <div
-        className="absolute h-[5vh] lg:h-[8vh] bottom-0 w-full"
-        style={{
-          backgroundImage: "url('/blue-marquee.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <Marquee text1="VITMUN" text2="WHERE YOUR VOICE MATTERS" />
-      </div>
+      <div className="absolute h-[5vh] lg:h-[8vh] bottom-0 w-full z-0">
+  {/* Background Overlay */}
+  <div
+    className="absolute inset-0"
+    style={{
+      backgroundImage: "url('/blue.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}
+  >
+    <div
+      className="absolute inset-0 bg-black"
+      style={{ opacity: 0.2 }}
+    ></div>
+  </div>
+
+  {/* Marquee Text */}
+  <Marquee text1="VITMUN" text2="WHERE YOUR VOICE MATTERS" />
+</div>
+
     </div>
   );
 };
