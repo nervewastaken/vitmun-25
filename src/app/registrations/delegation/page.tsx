@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
 import { Lora } from "next/font/google";
 import { Lato } from "next/font/google";
 import { ReactLenis } from "@studio-freight/react-lenis";
+import Navbar from "@/pages/Navbar";
 
 const latoThin = Lato({ subsets: ["latin"], weight: "300" });
 const latoBold = Lato({ subsets: ["latin"], weight: "700" });
@@ -104,6 +105,8 @@ export default function DelegationForm() {
   };
 
   return (
+    <>
+    <Navbar/>
     <ReactLenis
       root
       options={{
@@ -118,7 +121,7 @@ export default function DelegationForm() {
     >
       <div className="px-4 sm:px-8 lg:px-20 py-6">
         <h1
-          className={`${latoBold.className} text-2xl md:text-3xl mb-2 text-left`}
+          className={`${latoBold.className} text-2xl md:text-3xl mb-2 text-leftb mt-8`}
         >
           Request An Invite
         </h1>
@@ -238,5 +241,7 @@ export default function DelegationForm() {
         <NeedHelp />
       </div>
     </ReactLenis>
+    </>
+    
   );
 }

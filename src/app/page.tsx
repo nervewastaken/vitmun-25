@@ -1,7 +1,9 @@
 "use client";
 
+import NeedHelp from "@/components/custom/needhelp";
 import Landing from "../pages/Landing"
 import Navbar from "../pages/Navbar"
+import AboutMunsoc from "@/components/custom/aboutMunsoc";
 
 export default function Home() {
   
@@ -13,6 +15,8 @@ export default function Home() {
     <div>
       <Navbar />
       <Landing />
+      <AboutMunsoc/>
+      <NeedHelp/>
       {/* <AboutUs /> */}
     </div>
   );
