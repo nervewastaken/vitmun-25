@@ -1,3 +1,5 @@
+
+
 import {
   ClerkProvider,
   //SignInButton,
@@ -7,6 +9,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 import { Roboto } from "next/font/google";
+import Navbar from "@/pages/Navbar";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -27,8 +30,8 @@ export default function RootLayout({
   return (
     <ClerkProvider afterSignOutUrl={"/"}>
       <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
+
         <body>
-         
           {children}
           <Toaster />
         </body>

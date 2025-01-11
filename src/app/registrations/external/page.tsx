@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"; // For redirection
 import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
 import { Lora } from "next/font/google";
 import { ReactLenis } from "@studio-freight/react-lenis";
+import Navbar from "@/pages/Navbar";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -237,6 +238,8 @@ const ExternalDelegateForm = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <ReactLenis
       root
       options={{
@@ -250,7 +253,7 @@ const ExternalDelegateForm = () => {
       }}
     >
       <div className="px-4 sm:px-8 lg:px-20 py-6 overflow-auto scroll-smooth">
-        <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-left">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-left mt-8">
           External Individual Registration Form
         </h1>
         <p className="text-md md:text-lg font-light mb-6 text-left">
@@ -499,6 +502,8 @@ const ExternalDelegateForm = () => {
         <NeedHelp />
       </div>
     </ReactLenis>
+    </>
+    
   );
 };
 
