@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Karma } from "next/font/google";
 import { useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import "../app/globals.css";
 import ImageFilledText from "@/components/ui/ImageFilledText"
 
@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed h-[10vh] w-[100vw] ${karma.className} z-50 bg-white`}>
-      <div className="flex flex-row items-center h-full w-full relative px-4">
+      <div className="flex flex-row items-center h-full w-full relative px-8">
         <Link href="https://vit.ac.in/" target="_blank" passHref>
           <Image
             src="/vit-logo.svg"
@@ -37,20 +37,21 @@ export default function Navbar() {
         >
           {isMenuOpen ? <Image src="/cross.svg" height={48} width={48} alt="cross"/> : <Menu size={48} />}
         </button>
-        {/* hello */}
+
+
         {/* Desktop Menu */}
-        <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-24 mr-[2vw]">
+        <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-36">
           <ul className="flex flex-row gap-x-8 text-[3vh]">
-            <li>
+            <li className="hover:text-[#54B3EA]">
               <Link href="/">HOME</Link>
             </li>
-            <li>
+            <li className="hover:text-[#54B3EA]">
               <Link href="/committees">COMMITTEES</Link>
             </li>
-            <li>
+            <li className="hover:text-[#54B3EA]">
               <Link href="/resources">RESOURCES</Link>
             </li>
-            <li>
+            <li className="hover:text-[#54B3EA]">
               <Link href="/allotments">ALLOTMENTS</Link>
             </li>
           </ul>
@@ -63,19 +64,19 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh]`}>
-          <div className="flex flex-col w-full p-4 text-center items-center">
-            <ul className="flex flex-col gap-y-8 w-full text-[3vh]">
+          <div className="flex flex-col w-full p-4 text-center items-center justify-center">
+            <ul className="flex flex-col gap-y-8 w-full text-[2vh]">
               <li>
-                <Link href="/" onClick={toggleMenu}>HOME</Link>
+                <Link href="/" onClick={toggleMenu}  className="hover:text-[#54B3EA]">HOME</Link>
               </li>
               <li>
-                <Link href="/committees" onClick={toggleMenu}>COMMITTEES</Link>
+                <Link href="/committees" onClick={toggleMenu} className="hover:text-[#54B3EA]">COMMITTEES</Link>
               </li>
               <li>
-                <Link href="/resources" onClick={toggleMenu}>RESOURCES</Link>
+                <Link href="/resources" onClick={toggleMenu} className="hover:text-[#54B3EA]">RESOURCES</Link>
               </li>
               <li>
-                <Link href="/allotments" onClick={toggleMenu}>ALLOTMENTS</Link>
+                <Link href="/allotments" onClick={toggleMenu} className="hover:text-[#54B3EA]">ALLOTMENTS</Link>
               </li>
             </ul>
             <Link href="/pay-now" passHref className="mt-4">
@@ -108,7 +109,7 @@ export default function Navbar() {
       className="inline"
     />
   </div>
-  <p className="text-[2vh] text-black border border-black px-4 rounded-3xl text-center">
+  <p className="text-[1.5vh] text-black border border-black px-4 rounded-3xl text-center">
     WHERE YOUR VOICE MATTERS
   </p>
   </div>
