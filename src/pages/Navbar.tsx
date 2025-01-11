@@ -19,7 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed h-[10vh] w-[100vw] ${karma.className} z-50 bg-white`}>
+    <nav className={`fixed h-[12.5vh] w-[100vw] ${karma.className} z-50 bg-white`}>
       <div className="flex flex-row items-center h-full w-full relative px-8">
         <Link href="https://vit.ac.in/" target="_blank" passHref>
           <Image
