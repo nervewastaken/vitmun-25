@@ -43,12 +43,12 @@ export default function Navbar() {
             <li className="hover:text-[#54B3EA]">
               <Link href="/committees">COMMITTEES</Link>
             </li>
-            <li className="hover:text-[#54B3EA]">
+            {/* <li className="hover:text-[#54B3EA]">
               <Link href="/resources">RESOURCES</Link>
             </li>
             <li className="hover:text-[#54B3EA]">
               <Link href="/allotments">ALLOTMENTS</Link>
-            </li>
+            </li> */}
           </ul>
           <Link href="/pay-now" passHref>
             <button className={`bg-[#62B4E2] w-[10vw] text-[3vh] p-2 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas`}>
@@ -79,7 +79,7 @@ export default function Navbar() {
                   COMMITTEES
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/resources"
                   onClick={toggleMenu}
@@ -96,7 +96,7 @@ export default function Navbar() {
                 >
                   ALLOTMENTS
                 </Link>
-              </li>
+              </li> */}
             </ul>
             <Link href="/pay-now" passHref className="mt-4">
               <button onClick={toggleMenu} className="bg-[#62B4E2] w-full text-[2.5vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas">

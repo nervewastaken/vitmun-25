@@ -42,7 +42,7 @@ const CommitteesPage = () => {
   return (
     <>
       <Navbar />
-      <div className="relative pt-[10vh] h-auto max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 ">
+      <div className="relative pt-[10vh] h-auto max-w-[100vw] overflow-hidden bg-gradient-to-l from-transparent to-blue-100">
         <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left  px-6 ${lato.className}`}>
           Committees
         </h1>
