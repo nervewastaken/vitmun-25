@@ -2,9 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Karma } from "next/font/google";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu} from "lucide-react";
 import "../app/globals.css";
-import ImageFilledText from "@/components/ui/ImageFilledText"
+import ImageFilledText from "@/components/ui/ImageFilledText";
 
 const karma = Karma({
   subsets: ["latin"],
@@ -19,25 +19,22 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed h-[12.5vh] w-[100vw] ${karma.className} z-50 bg-white`}>
+    <nav
+      className={`fixed h-[12.5vh] w-[100vw] ${karma.className} z-50 bg-white`}
+    >
       <div className="flex flex-row items-center h-full w-full relative px-8">
         <Link href="https://vit.ac.in/" target="_blank" passHref>
-          <Image
-            src="/vit-logo.svg"
-            height={150}
-            width={150}
-            alt="VIT Logo"
-          />
+          <Image src="/vit-logo.svg" height={150} width={150} alt="VIT Logo" />
         </Link>
 
         {/* Mobile Menu Button */}
-        <button 
-          onClick={toggleMenu} 
-          className="md:hidden ml-auto"
-        >
-          {isMenuOpen ? <Image src="/cross.svg" height={48} width={48} alt="cross"/> : <Menu size={48} />}
+        <button onClick={toggleMenu} className="md:hidden ml-auto">
+          {isMenuOpen ? (
+            <Image src="/cross.svg" height={48} width={48} alt="cross" />
+          ) : (
+            <Menu size={48} />
+          )}
         </button>
-
 
         {/* Desktop Menu */}
         <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-36">
@@ -63,57 +60,85 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh]`}>
+        <div
+          className={`${
+            isMenuOpen ? "flex" : "hidden"
+          } md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh]`}
+        >
           <div className="flex flex-col w-full p-4 text-center items-center justify-center">
             <ul className="flex flex-col gap-y-8 w-full text-[2vh]">
               <li>
-                <Link href="/" onClick={toggleMenu}  className="hover:text-[#54B3EA]">HOME</Link>
+                <Link
+                  href="/"
+                  onClick={toggleMenu}
+                  className="hover:text-[#54B3EA]"
+                >
+                  HOME
+                </Link>
               </li>
               <li>
-                <Link href="/committees" onClick={toggleMenu} className="hover:text-[#54B3EA]">COMMITTEES</Link>
+                <Link
+                  href="/committees"
+                  onClick={toggleMenu}
+                  className="hover:text-[#54B3EA]"
+                >
+                  COMMITTEES
+                </Link>
               </li>
               <li>
-                <Link href="/resources" onClick={toggleMenu} className="hover:text-[#54B3EA]">RESOURCES</Link>
+                <Link
+                  href="/resources"
+                  onClick={toggleMenu}
+                  className="hover:text-[#54B3EA]"
+                >
+                  RESOURCES
+                </Link>
               </li>
               <li>
-                <Link href="/allotments" onClick={toggleMenu} className="hover:text-[#54B3EA]">ALLOTMENTS</Link>
+                <Link
+                  href="/allotments"
+                  onClick={toggleMenu}
+                  className="hover:text-[#54B3EA]"
+                >
+                  ALLOTMENTS
+                </Link>
+              </li>
+              <li>
+                <Link href={"stuff.com"} className="mt-4">
+                  <button
+                    onClick={toggleMenu}
+                    className="bg-[#62B4E2] w-full text-[2vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition"
+                  >
+                    PAY NOW
+                  </button>
+                </Link>
               </li>
             </ul>
-            <Link href="/pay-now" passHref className="mt-4">
-              <button onClick={toggleMenu} className="bg-[#62B4E2] w-full text-[2vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition">
-                PAY NOW
-              </button>
-            </Link>
 
-  <div className="mt-[6vh] w-full relative inset-0 rounded-full flex flex-col items-center justify-center">
-    <Image
-      height={0}
-      width={0}
-      src="/globe.svg"
-      alt="VITMUN"
-      className="h-auto w-[20vw] rounded-full bg-white"
-    />
+            <div className="mt-[6vh] w-full relative inset-0 rounded-full flex flex-col items-center justify-center">
+              <Image
+                height={0}
+                width={0}
+                src="/globe.svg"
+                alt="VITMUN"
+                className="h-auto w-[20vw] rounded-full bg-white"
+              />
 
-<div className="font-bebas font-bold text-center text-[5vh]">
-    VIT
-    <ImageFilledText
-      text="MUN"
-      imageUrl="/blue.jpg"
-      className=""
-    />
-    <Image
-      src="/bird.svg"
-      width={24}
-      height={24}
-      alt="bird"
-      className="inline"
-    />
-  </div>
-  <p className="text-[1.5vh] text-black border border-black px-4 rounded-3xl text-center">
-    WHERE YOUR VOICE MATTERS
-  </p>
-  </div>
-
+              <div className="font-bebas font-bold text-center text-[5vh]">
+                VIT
+                <ImageFilledText text="MUN" imageUrl="/blue.jpg" className="" />
+                <Image
+                  src="/bird.svg"
+                  width={24}
+                  height={24}
+                  alt="bird"
+                  className="inline"
+                />
+              </div>
+              <p className="text-[1.5vh] text-black border border-black px-4 rounded-3xl text-center">
+                WHERE YOUR VOICE MATTERS
+              </p>
+            </div>
           </div>
         </div>
       </div>
