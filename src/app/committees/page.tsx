@@ -31,9 +31,9 @@ const committees = [
 const CommitteesPage = () => {
   const [selectedCommittee, setSelectedCommittee] = useState<{ name: string, agenda: string, board: { [key: string]: string } } | null>(null);
 
-  const handleCommitteeClick = (committee: { name: string, agenda: string, board: { [key: string]: string } }) => {
-    setSelectedCommittee(committee);
-  };
+  // const handleCommitteeClick = (committee: { name: string, agenda: string, board: { [key: string]: string } }) => {
+  //   setSelectedCommittee(committee);
+  // };
 
   const closeModal = () => {
     setSelectedCommittee(null);

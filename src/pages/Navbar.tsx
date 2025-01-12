@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Bebas_Neue, Karma } from "next/font/google";
+import { Karma } from "next/font/google";
 import { useState } from "react";
 import { Menu} from "lucide-react";
 import "../app/globals.css";

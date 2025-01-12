@@ -9,7 +9,7 @@ interface CommitteeCardProps {
   imageWhite: string;
   imageBlack: string;
   name: string;
-  onClick: () => void;
+  // onClick: () => void;
   isSelected: boolean;
 }
 
