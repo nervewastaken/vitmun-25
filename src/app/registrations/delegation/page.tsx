@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation"; // For redirection
 import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
 import { Lora } from "next/font/google";
 import { Lato } from "next/font/google";
-import { ReactLenis } from "@studio-freight/react-lenis";
 import Navbar from "@/pages/Navbar";
 
 const latoThin = Lato({ subsets: ["latin"], weight: "300" });
@@ -107,19 +106,8 @@ export default function DelegationForm() {
   return (
     <>
     <Navbar/>
-    <ReactLenis
-      root
-      options={{
-        lerp: 0.04,
-        duration: 2.5,
-        smoothWheel: true,
-        syncTouch: true,
-        syncTouchLerp: 0.04,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: "vertical",
-      }}
-    >
-      <div className="px-4 sm:px-8 lg:px-20 py-6">
+    
+      <div className="px-4 sm:px-8 lg:px-20 pt-[7vh] bg-gradient-to-l from-transparent to-blue-100">
         <h1
           className={`${latoBold.className} text-2xl md:text-3xl mb-2 text-leftb mt-8`}
         >
@@ -240,7 +228,6 @@ export default function DelegationForm() {
         {/* Toast Notifications */}
         <NeedHelp />
       </div>
-    </ReactLenis>
     </>
     
   );
