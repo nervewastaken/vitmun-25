@@ -38,6 +38,7 @@ const Landing = () => {
           />
 
 <div
+
       className="absolute inset-0 flex flex-col items-center justify-center z-10 border-b-[1.5vh] border-transparent select-none"
       style={{ borderImage: "url('/blue.jpg') 20 stretch" }}
     >
@@ -46,11 +47,14 @@ const Landing = () => {
           <span
             key={index}
             className={`text-[7vh] mt-[6vh] lg:text-[25vh]  transition-all duration-300 origin-center ${bebasNeue.className}`}
+
           >
             <ImageFilledText
               text={char === " " ? "\u00A0" : char}
               imageUrl="/hero_font.svg"
+
               className="whitespace-nowrap lg:hover:scale-[1.3]"
+
             />
           </span>
         ))}
@@ -112,6 +116,7 @@ const Landing = () => {
   <div className="z-10 ">
     <button
       onClick={handleInd}
+
       className="font-bebas text-[1.6vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
     >
       INDIVIDUAL REGISTRATION
@@ -153,6 +158,7 @@ const Landing = () => {
 
   <div className="z-10 -mt-[4vh] lg:mt-0">
     <Link href="/registrations/delegation">
+
       <button className="font-bebas text-[1.6vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
         DELEGATION REGISTRATION
       </button>

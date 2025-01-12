@@ -27,9 +27,10 @@ const CommitteeCard: React.FC<CommitteeCardProps> = ({ image, name, onClick, isS
       <Image
         src={image}
         alt={name}
-        width={96}
-        height={96}
-        className="w-24 h-24 rounded-full mb-2 object-cover"
+        width={180}
+        height={180}
+        
+        className="rounded-full mb-2 object-cover"
       />
       <h3 className={`text-lg font-semibold text-center ${latoBold.className}`}>{name}</h3>
     </motion.div>

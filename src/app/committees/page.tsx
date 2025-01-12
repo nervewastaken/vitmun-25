@@ -2,16 +2,9 @@
 
 import React, { useState } from "react";
 import CommitteeCard from "@/components/custom/committee";
-import { Lora } from "next/font/google";
 import { ReactLenis } from "@studio-freight/react-lenis";
 import Navbar from "@/pages/Navbar";
 import Image from "next/image";
-
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-lora",
-});
 
 const committees = [
   { name: "AIPPM", image: "/committee/AIPPM.png", agenda: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc.", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
@@ -48,14 +41,8 @@ const CommitteesPage = () => {
       }}
     >
       <Navbar />
-      <div className="relative pt-[10vh] h-auto lg:h-[100vh] max-w-[100vw] overflow-hidden bg-gradient-to-b from-transparent to-blue-100 overflow-x-hidden">
-        <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left ${lora.className} px-6`}>
-          Committees
-        </h1>
-        <p className="text-md md:text-lg font-light mb-2 text-left px-6">
-          Presenting the committees for VITMUN'25
-        </p>
-        <div className="grid gap-0 md:gap-x-4 lg:gap-x-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="h-full pt-28 bg-gradient-to-b from-transparent to-blue-100 ">
+        <div className="grid gap-0 md:gap-x-4 lg:gap-x-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center">
           {committees.map((committee) => (
             <CommitteeCard
               key={committee.name}

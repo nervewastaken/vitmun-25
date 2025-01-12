@@ -93,6 +93,7 @@ const AboutMunsoc = () => {
                 width={500}
                 height={400}
                 draggable="false"
+
                 className="rounded-lg"
               />
             </div>
