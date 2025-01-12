@@ -8,8 +8,8 @@ const latoBold = Inter({ subsets: ["latin"], weight: "900" });
 
 const AboutMunsoc = () => {
   return (
-    <div className="text-black font-medium text-xl">
-      <div className="w-[90%] mx-auto py-24 flex flex-col gap-16">
+    <div className="text-black font-medium text-xl bg-gradient-to-l from-transparent to-blue-100">
+      <div className="w-[90%] mx-auto pt-24 flex flex-col gap-16">
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <motion.div

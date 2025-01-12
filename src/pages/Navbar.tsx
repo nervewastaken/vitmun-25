@@ -19,9 +19,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed h-[12.5vh] w-[100vw] ${karma.className} z-50 bg-white`}
-    >
+    <nav className={`fixed h-[10vh] w-[100vw] ${karma.className} z-50 bg-white bg-gradient-to-l from-transparent to-blue-100`}>
       <div className="flex flex-row items-center h-full w-full relative px-8">
         <Link href="https://vit.ac.in/" target="_blank" passHref>
           <Image src="/vit-logo.svg" height={150} width={150} alt="VIT Logo" />
@@ -37,7 +35,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-36">
+        <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-24">
           <ul className="flex flex-row gap-x-8 text-[3vh]">
             <li className="hover:text-[#54B3EA]">
               <Link href="/">HOME</Link>
@@ -45,26 +43,22 @@ export default function Navbar() {
             <li className="hover:text-[#54B3EA]">
               <Link href="/committees">COMMITTEES</Link>
             </li>
-            <li className="hover:text-[#54B3EA]">
+            {/* <li className="hover:text-[#54B3EA]">
               <Link href="/resources">RESOURCES</Link>
             </li>
             <li className="hover:text-[#54B3EA]">
               <Link href="/allotments">ALLOTMENTS</Link>
-            </li>
+            </li> */}
           </ul>
           <Link href="/pay-now" passHref>
-            <button className="bg-[#62B4E2] w-[10vw] text-[3vh] p-2 text-white rounded-md hover:bg-[#50a0c8] transition">
+            <button className={`bg-[#62B4E2] w-[10vw] text-[3vh] p-2 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas`}>
               PAY NOW
             </button>
           </Link>
         </div>
 
         {/* Mobile Menu */}
-        <div
-          className={`${
-            isMenuOpen ? "flex" : "hidden"
-          } md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh]`}
-        >
+        <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh] bg-gradient-to-l from-transparent to-blue-100`}>
           <div className="flex flex-col w-full p-4 text-center items-center justify-center">
             <ul className="flex flex-col gap-y-8 w-full text-[2vh]">
               <li>
@@ -85,7 +79,7 @@ export default function Navbar() {
                   COMMITTEES
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/resources"
                   onClick={toggleMenu}
@@ -102,18 +96,13 @@ export default function Navbar() {
                 >
                   ALLOTMENTS
                 </Link>
-              </li>
-              <li>
-                <Link href={"stuff.com"} className="mt-4">
-                  <button
-                    onClick={toggleMenu}
-                    className="bg-[#62B4E2] w-full text-[2vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition"
-                  >
-                    PAY NOW
-                  </button>
-                </Link>
-              </li>
+              </li> */}
             </ul>
+            <Link href="/pay-now" passHref className="mt-4">
+              <button onClick={toggleMenu} className="bg-[#62B4E2] w-full text-[2.5vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas">
+                PAY NOW
+              </button>
+            </Link>
 
             <div className="mt-[6vh] w-full relative inset-0 rounded-full flex flex-col items-center justify-center">
               <Image

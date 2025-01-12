@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // For redirection
 import { useToast } from "@/hooks/use-toast"; // Shadcn toast hook
 import { Lora } from "next/font/google";
-import { ReactLenis } from "@studio-freight/react-lenis";
 import Navbar from "@/pages/Navbar";
 
 const lora = Lora({
@@ -217,19 +216,8 @@ const InternalDelegateForm = () => {
   return (
     <>
     <Navbar/>
-    <ReactLenis
-        root
-        options={{
-          lerp: 0.04,
-          duration: 2.5,
-          smoothWheel: true,
-          syncTouch: true,
-          syncTouchLerp: 0.04,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          orientation: "vertical",
-        }}
-      >
-        <div className="px-4 sm:px-8 lg:px-20 py-6">
+    
+        <div className="px-4 sm:px-8 lg:px-20 pt-[7vh] bg-gradient-to-l from-transparent to-blue-100">
       <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-left mt-8"
       >Internal Individual Registration Form</h1>
       <p className="text-md md:text-lg font-light mb-6 text-left">
@@ -432,7 +420,7 @@ const InternalDelegateForm = () => {
       </form>
       <NeedHelp/>
     </div>
-      </ReactLenis></>
+    </>
     
     
   );

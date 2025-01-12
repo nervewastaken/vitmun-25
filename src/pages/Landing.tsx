@@ -112,12 +112,11 @@ const Landing = () => {
 </div>
 
 
-            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 font-semibold relative justify-center items-center">
+            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 lg:font-semibold relative justify-center items-center">
   <div className="z-10 ">
     <button
       onClick={handleInd}
-
-      className="font-bebas text-[1.6vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
+      className="font-bebas text-[2.5vh] lg:text-[3.5vh] bg-white py-1 px-6 lg:px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
     >
       INDIVIDUAL REGISTRATION
     </button>
@@ -139,7 +138,7 @@ const Landing = () => {
             />
           </button>
         </div>
-        <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[1.6vh] lg:text-[2vh] ">
+        <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[2.5vh] lg:text-[3vh] ">
           <Link href="/registrations/internal">
             <button className="font-bebas  bg-white py-2 px-8 border rounded-3xl z-10">
               VIT VELLORE STUDENT
@@ -158,8 +157,7 @@ const Landing = () => {
 
   <div className="z-10 -mt-[4vh] lg:mt-0">
     <Link href="/registrations/delegation">
-
-      <button className="font-bebas text-[1.6vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
+      <button className="font-bebas text-[2.5vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
         DELEGATION REGISTRATION
       </button>
     </Link>
