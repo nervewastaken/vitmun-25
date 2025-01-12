@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 import {
   SignedIn,
@@ -94,6 +95,7 @@ const AdminPage = () => {
   const [internalDelegates, setInternalDelegates] = useState<Delegate[]>([]);
   const [delegations, setDelegations] = useState<Delegation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showUnallottedOnly, setShowUnallottedOnly] = useState(false);
 
   // Fetch data from MongoDB
   const fetchData = async () => {
@@ -207,6 +209,16 @@ const AdminPage = () => {
     }
   };
 
+  const filterDelegates = (delegates: Delegate[]) => {
+    if (showUnallottedOnly) {
+      return delegates.filter(
+        (delegate) =>
+          !delegate.allotment_committee || !delegate.allotment_portfolio
+      );
+    }
+    return delegates;
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -249,7 +261,21 @@ const AdminPage = () => {
               >
                 Allotments
               </Link>
-              <UserButton/>
+              <UserButton />
+
+              <div className="flex items-center space-x-4 mb-6">
+                <Switch
+                  id="showUnallotted"
+                  checked={showUnallottedOnly}
+                  onCheckedChange={setShowUnallottedOnly} // Update state when toggled
+                />
+                <label
+                  htmlFor="showUnallotted"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Show only unallotted delegates
+                </label>
+              </div>
             </div>
           </div>
         </nav>
@@ -272,7 +298,7 @@ const AdminPage = () => {
         <section id="external">
           <div className="text-4xl p-24 text-center">External Delegates</div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
-            {externalDelegates.map((external) => (
+            {filterDelegates(externalDelegates).map((external) => (
               <Card key={external._id} className="w-full">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -512,7 +538,7 @@ const AdminPage = () => {
         <section id="internal" className="mb-10 ">
           <div className="text-4xl p-24 text-center">Internal Delegates</div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
-            {internalDelegates.map((internal) => (
+            {filterDelegates(internalDelegates).map((internal) => (
               <Card key={internal._id} className="w-full">
                 <CardHeader>
                   <div className="flex items-center justify-between">
