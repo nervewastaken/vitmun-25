@@ -16,9 +16,16 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "VITMUN'25 | Model United Nations",
-  description:
-    `Charting peace on a steady course. Through every voice, a path refined, Where silence speaks, and fears are shed. A handshake seals what hearts convey, Uniting minds where tensions lay.`,
-  keywords: ["VITMUN", "Model United Nations", "VIT", "Debate", "Networking","MUN","Vellore Institute of Technology"],
+  description: `Charting peace on a steady course. Through every voice, a path refined, Where silence speaks, and fears are shed. A handshake seals what hearts convey, Uniting minds where tensions lay.`,
+  keywords: [
+    "VITMUN",
+    "Model United Nations",
+    "VIT",
+    "Debate",
+    "Networking",
+    "MUN",
+    "Vellore Institute of Technology",
+  ],
   authors: [{ name: "VITMUN Team", url: "https://vitmun.vit.ac.in" }],
   openGraph: {
     title: "VITMUN'25 | Model United Nations",
