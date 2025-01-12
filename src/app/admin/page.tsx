@@ -231,12 +231,10 @@ const AdminPage = () => {
     <>
       <SignedIn>
         {/* Fixed Navbar */}
-        <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50 ">
+        <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
           <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
-            <span className="text-lg font-bold mx-auto sm:mx-0">
-              Admin Panel- VITMUN 25
-            </span>
-            <div className="hidden sm:flex space-x-4">
+            <span className="text-lg font-bold">Admin Panel- VITMUN 25</span>
+            <div className="flex items-center space-x-6">
               <Link
                 href="#internal"
                 className="px-4 py-2 rounded hover:bg-blue-700 transition"
@@ -261,21 +259,22 @@ const AdminPage = () => {
               >
                 Allotments
               </Link>
-              <UserButton />
 
-              <div className="flex items-center space-x-4 mb-6">
+              <div className="flex items-center space-x-3">
                 <Switch
                   id="showUnallotted"
                   checked={showUnallottedOnly}
-                  onCheckedChange={setShowUnallottedOnly} // Update state when toggled
+                  onCheckedChange={setShowUnallottedOnly}
                 />
                 <label
                   htmlFor="showUnallotted"
-                  className="text-sm font-medium text-gray-700"
+                  className="text-sm font-medium text-gray-200"
                 >
-                  Show only unallotted delegates
+                  Show only unallotted
                 </label>
               </div>
+
+              <UserButton />
             </div>
           </div>
         </nav>
