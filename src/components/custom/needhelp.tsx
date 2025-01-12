@@ -96,6 +96,7 @@ const NeedHelp = () => {
                 height={500}
                 alt="QR-CODE"
                 src="/qr-code.webp"
+                draggable="false"
                 className="w-full h-full"
               />
             </div>

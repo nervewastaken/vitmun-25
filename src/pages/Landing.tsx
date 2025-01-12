@@ -38,19 +38,23 @@ const Landing = () => {
           />
 
 <div
-      className="absolute inset-0 flex flex-col items-center z-10 border-b-[1.5vh] border-transparent select-none"
+
+      className="absolute inset-0 flex flex-col items-center justify-center z-10 border-b-[1.5vh] border-transparent select-none"
       style={{ borderImage: "url('/blue.jpg') 20 stretch" }}
     >
-      <div className="flex whitespace-nowrap lg:justify-center">
+      <div className="flex whitespace-nowrap">
         {Array.from("7 - 9 MAR 2025").map((char, index) => (
           <span
             key={index}
-            className={`text-[10vh] mt-[6vh] lg:mt-0 lg:text-[30vh] transition-all duration-300 origin-center ${bebasNeue.className}`}
+            className={`text-[7vh] mt-[6vh] lg:text-[25vh]  transition-all duration-300 origin-center ${bebasNeue.className}`}
+
           >
             <ImageFilledText
               text={char === " " ? "\u00A0" : char}
               imageUrl="/hero_font.svg"
-              className="whitespace-nowrap"
+
+              className="whitespace-nowrap lg:hover:scale-[1.3]"
+
             />
           </span>
         ))}
@@ -112,7 +116,8 @@ const Landing = () => {
   <div className="z-10 ">
     <button
       onClick={handleInd}
-      className="font-bebas text-[1.2vh] lg:text-[3.5vh] bg-white py-1 px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
+
+      className="font-bebas text-[1.6vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-10  shadow-2xl hover:bg-slate-100"
     >
       INDIVIDUAL REGISTRATION
     </button>
@@ -134,7 +139,7 @@ const Landing = () => {
             />
           </button>
         </div>
-        <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[1.2vh] lg:text-[2vh] ">
+        <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[1.6vh] lg:text-[2vh] ">
           <Link href="/registrations/internal">
             <button className="font-bebas  bg-white py-2 px-8 border rounded-3xl z-10">
               VIT VELLORE STUDENT
@@ -153,7 +158,8 @@ const Landing = () => {
 
   <div className="z-10 -mt-[4vh] lg:mt-0">
     <Link href="/registrations/delegation">
-      <button className="font-bebas text-[1.2vh] lg:text-[3.5vh] bg-white py-1 px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
+
+      <button className="font-bebas text-[1.6vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
         DELEGATION REGISTRATION
       </button>
     </Link>
@@ -172,7 +178,7 @@ const Landing = () => {
         alt="castle"
         width={960}
         height={540} 
-        className="h-[20vh] max-w-[60vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh]  left-0 z-0 overflow-hidden"
+        className="h-[20vh] max-w-[60vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[6vh]  left-0 z-0 overflow-hidden"
       />
 
       <Image
@@ -180,7 +186,7 @@ const Landing = () => {
         alt="castle"
         width={960}  
         height={540} 
-        className="h-[20vh] max-w-[60vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[8vh] transform scale-x-[-1] right-0 z-0 overflow-hidden"
+        className="h-[20vh] max-w-[60vw] lg:h-[50vh] lg:max-w-[30vw] absolute bottom-[5vh] lg:bottom-[6vh] transform scale-x-[-1] right-0 z-0 overflow-hidden"
       />
 
       <div>

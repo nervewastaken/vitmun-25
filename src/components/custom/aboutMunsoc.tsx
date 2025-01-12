@@ -23,6 +23,7 @@ const AboutMunsoc = () => {
               <Image
                 src="/mun2.svg"
                 alt="VITMUN 1"
+                draggable="false"
                 width={500}
                 height={400}
                 className="rounded-lg"
@@ -91,6 +92,8 @@ const AboutMunsoc = () => {
                 alt="VITMUN 2"
                 width={500}
                 height={400}
+                draggable="false"
+
                 className="rounded-lg"
               />
             </div>
