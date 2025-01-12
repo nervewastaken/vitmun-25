@@ -5,11 +5,16 @@ import { useState } from "react";
 import { Menu} from "lucide-react";
 import "../app/globals.css";
 import ImageFilledText from "@/components/ui/ImageFilledText";
+import { Montaga, Montserrat } from "next/font/google";
 
 const karma = Karma({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
+
+const montaga = Montaga({ subsets: ["latin"], weight: "400" });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
+
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -113,20 +118,28 @@ export default function Navbar() {
                 className="h-auto w-[20vw] rounded-full bg-white"
               />
 
-              <div className="font-bebas font-bold text-center text-[5vh]">
-                VIT
-                <ImageFilledText text="MUN" imageUrl="/blue.jpg" className="" />
-                <Image
-                  src="/bird.svg"
-                  width={24}
-                  height={24}
-                  alt="bird"
-                  className="inline"
-                />
-              </div>
-              <p className="text-[1.5vh] text-black border border-black px-4 rounded-3xl text-center">
-                WHERE YOUR VOICE MATTERS
-              </p>
+              <div className="flex flex-col items-center justify-center">
+  <div className="font-bold text-[5vh] lg:text-[6vh] select-none flex justify-center">
+    <span className={`${montaga.className} text-center`}>VIT</span>
+    <ImageFilledText
+      text="MUN"
+      imageUrl="/blue.jpg"
+      className={`${montserrat.className} text-center`}
+    />
+    <Image
+      src="/bird.svg"
+      width={24}
+      height={24}
+      alt="bird"
+      className="inline -mt-12"
+    />
+  </div>
+  <div>
+    <p className="text-[1.5vh] lg:text-[1.75vh] text-black border border-black justify-center px-4 rounded-3xl select-none italic text-center">
+      WHERE YOUR VOICE MATTERS
+    </p>
+  </div>
+</div>
             </div>
           </div>
         </div>
