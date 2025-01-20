@@ -14,6 +14,6 @@ ENV CLERK_SECRET_KEY=sk_test_DDAQKkklUQfb7ClL0Pq449T3nHHHMPCLgUKhKpFfNS
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["npm","run", "start"]
