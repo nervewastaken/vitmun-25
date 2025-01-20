@@ -53,7 +53,7 @@ const Landing = () => {
               text={char === " " ? "\u00A0" : char}
               imageUrl="/hero_font.svg"
 
-              className="whitespace-nowrap lg:hover:scale-[1.3]"
+              className="whitespace-nowrap"
 
             />
           </span>

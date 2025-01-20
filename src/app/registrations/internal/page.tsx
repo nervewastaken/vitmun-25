@@ -98,7 +98,7 @@ const InternalDelegateForm = () => {
     // Validate registration number
     if (
       formData.registration_number &&
-      !/^\d[A-Za-z]{3}\d{4}$/.test(formData.registration_number)
+      !/^\d{2}[A-Za-z]{3}\d{4}$/.test(formData.registration_number)
     ) {
       toast({
         variant: "destructive",
