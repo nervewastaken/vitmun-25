@@ -1,9 +1,32 @@
 version: "3.8"
 
+networks:
+  vitmun-network:
+    driver: bridge
+
+volumes:
+  mongo-data: # Declare an external volume
+  
 services:
-  vitmun:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/delegateinfo
+    depends_on:
+      - mongo
+    networks:
+      - vitmun-network
+
+  mongo:
+    image: mongo:6.0
+    container_name: vitmun-mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - vitmun-network
+    volumes:
+      - mongo-data:/data/db # Mount the external volume

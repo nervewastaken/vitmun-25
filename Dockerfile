@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ENV MONGODB_URI=mongodb+srv://nerve:2382@delegateinfo.algz5.mongodb.net/?retryWrites=true&w=majority&appName=delegateinfo
+ENV MONGODB_URI=mongodb://mongo:27017/delegateinfo
 ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_c3VwZXItc3R1cmdlb24tMzEuY2xlcmsuYWNjb3VudHMuZGV2JA
 ENV CLERK_SECRET_KEY=sk_test_DDAQKkklUQfb7ClL0Pq449T3nHHHMPCLgUKhKpFfNS
 

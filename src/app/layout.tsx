@@ -29,7 +29,8 @@ export const metadata: Metadata = {
   authors: [{ name: "VITMUN Team", url: "https://vitmun.vit.ac.in" }],
   openGraph: {
     title: "VITMUN'25 | Model United Nations",
-    description: "Where your voice matters. Join the debate!",
+    description:
+      "Charting peace on a steady course. Through every voice, a path refined, Where silence speaks, and fears are shed. A handshake seals what hearts convey, Uniting minds where tensions lay.",
     url: "https://vitmun.vit.ac.in",
     siteName: "VITMUN'25",
     images: [
