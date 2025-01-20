@@ -5,12 +5,12 @@ import { getAuth } from "@clerk/nextjs/server";
 
 export async function DELETE(req: NextRequest) {
   // Get authentication details
-  const { userId } = getAuth(req);
+  // const { userId } = getAuth(req);
 
-  // If not authenticated, return a 401 Unauthorized response
-  if (!userId) {
-    return NextResponse.json({ error: "Bad auth!" }, { status: 401 });
-  }
+  // // If not authenticated, return a 401 Unauthorized response
+  // if (!userId) {
+  //   return NextResponse.json({ error: "Bad auth!" }, { status: 401 });
+  // }
 
   try {
     // Parse the query parameters
