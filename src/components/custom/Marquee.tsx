@@ -15,12 +15,14 @@ const Marquee: React.FC<MarqueeProps> = ({ text1, text2 }) => {
         {[...Array(8)].map((_, index) => (
           <React.Fragment key={index}>
             {/* SVG Icon */}
-              <Image src="/trident.svg" width={36} height={36} alt="trident" />
-          
+            <Image src="/trident.svg" width={36} height={36} alt="trident" />
+          &nbsp;
             {/* Text 1 */}
-            <div className="inline-block mx-6">{text1}</div>
-            {/* Text 2 */}
-            <div className="inline-block mr-6">{text2}</div>
+            &nbsp;&nbsp;<div className="inline-block mr-6 mt-[1mm]">{text1}</div>
+            
+            {/* Text 2 with added margin-top */}
+            <div className="inline-block mr-6 mt-[1mm]">{text2}</div>
+            
           </React.Fragment>
         ))}
       </div>

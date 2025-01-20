@@ -79,7 +79,7 @@ const Landing = () => {
         width={0}
         src="/globe.svg"
         alt="VITMUN"
-        draggable="false"
+        draggable="true"
         className="h-[10vh] w-[10vh] lg:h-[18vh] lg:w-[18vh]  rounded-full z-15 absolute -mt-[14vh] ml-[4vh] lg:-mt-[24vh] lg:ml-[6vh]"
       />
     </div>
@@ -88,7 +88,8 @@ const Landing = () => {
 
 
 
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center -mt-4">
+
   <div className="font-bold text-[5vh] lg:text-[6vh] select-none flex justify-center">
     <span className={`${montaga.className} text-center`}>VIT</span>
     <ImageFilledText
@@ -112,7 +113,7 @@ const Landing = () => {
 </div>
 
 
-            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 lg:font-semibold relative justify-center items-center">
+            <div className="flex flex-col lg:flex-row gap-y-0 lg:gap-x-8 lg:font-semibold relative items-center">
   <div className="z-10 ">
     <button
       onClick={handleInd}
@@ -139,29 +140,33 @@ const Landing = () => {
           </button>
         </div>
         <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[2.5vh] lg:text-[3vh] ">
-          <Link href="/registrations/internal">
-            <button className="font-bebas  bg-white py-2 px-8 border rounded-3xl z-10">
-              VIT VELLORE STUDENT
-            </button>
-          </Link>
+  <Link href="/registrations/internal">
+    <button className="font-bebas bg-white py-2 px-8 border rounded-3xl z-10 shadow-lg hover:shadow-xl transition-shadow duration-200">
+      VIT VELLORE STUDENT
+    </button>
+  </Link>
 
-          <Link href="/registrations/external">
-            <p className="font-bebas  bg-white py-2 px-8 border rounded-3xl z-10">
-              EXTERNAL PARTICIPANT
-            </p>
-          </Link>
-        </div>
+  <Link href="/registrations/external">
+    <button className="font-bebas bg-white py-2 px-8 border rounded-3xl z-10 shadow-lg hover:shadow-xl transition-shadow duration-200">
+      EXTERNAL PARTICIPANT
+    </button>
+  </Link>
+</div>
+
       </div>
     </div>
   )}
 
-  <div className="z-10 -mt-[4vh] lg:mt-0">
-    <Link href="/registrations/delegation">
-      <button className="font-bebas text-[2.5vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-30 shadow-2xl gap-y-0 hover:bg-slate-100">
-        DELEGATION REGISTRATION
-      </button>
-    </Link>
-  </div>
+<div className="z-10 -mt-[4vh] lg:mt-0">
+  <Link
+    href="/registrations/delegation"
+    className="font-bebas text-[2.5vh] lg:text-[3.5vh] bg-white py-1 px-5 lg:px-8 border rounded-3xl z-30 shadow-2xl hover:bg-slate-100 focus:outline-none flex justify-center items-center mt-7"
+  >
+    DELEGATION REGISTRATION
+  </Link>
+</div>
+
+
 </div>
 
           </div>
