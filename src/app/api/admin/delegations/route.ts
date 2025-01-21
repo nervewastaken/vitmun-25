@@ -5,11 +5,11 @@ import { getAuth } from "@clerk/nextjs/server";
 export async function GET(req: NextRequest) {
   try {
     // Authenticate the user
-    const { userId } = getAuth(req);
+    // const { userId } = getAuth(req);
 
-    if (!userId) {
-      return NextResponse.json({ error: "Bad Auth!" }, { status: 401 });
-    }
+    // if (!userId) {
+    //   return NextResponse.json({ error: "Bad Auth!" }, { status: 401 });
+    // }
 
     // Fetch data from MongoDB
     const client = await clientPromise;
