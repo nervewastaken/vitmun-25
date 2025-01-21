@@ -10,8 +10,16 @@ jobs:
   manage-docker-containers:
     runs-on: self-hosted
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Debug environment
+        run: |
+          echo "User: $(whoami)"
+          echo "Current Directory: $(pwd)"
+          echo "Docker version:"
+          docker --version
+          echo "Docker Compose version:"
+          docker-compose --version
+          echo "List running containers:"
+          docker ps
 
       - name: Stop all running containers
         run: |
@@ -22,10 +30,10 @@ jobs:
         run: |
           echo "Stopping and removing Docker Compose containers..."
           docker-compose down
-        working-directory: ./your-docker-compose-directory
+        working-directory: /munsoc/vitmun-25
 
       - name: Run docker-compose up
         run: |
           echo "Starting Docker Compose services..."
           docker-compose up -d
-        working-directory: ./your-docker-compose-directory
+        working-directory: /munsoc/vitmun-25
