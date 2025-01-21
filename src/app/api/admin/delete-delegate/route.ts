@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 import clientPromise from "../../../../../lib/mongodb";
 import { NextResponse, NextRequest } from "next/server";
-import { getAuth } from "@clerk/nextjs/server";
 
 export async function DELETE(req: NextRequest) {
   // Get authentication details

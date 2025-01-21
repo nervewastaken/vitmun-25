@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "../../../../../lib/mongodb";
-import { getAuth } from "@clerk/nextjs/server";
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,6 +11,8 @@ export async function GET(req: NextRequest) {
     // }
 
     // Fetch data from MongoDB
+    const { searchParams } = new URL(req.url);
+    console.log(searchParams)
     const client = await clientPromise;
     const db = client.db("delegateallotments");
     const collection = db.collection("delegation");
