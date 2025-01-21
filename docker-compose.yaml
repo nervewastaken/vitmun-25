@@ -1,32 +1,48 @@
 version: "3.8"
 
+# Define networks
 networks:
   vitmun-network:
     driver: bridge
 
+# Define volumes
 volumes:
-  mongo-data: # Declare an external volume
-  
+  mongo-data: # External volume for MongoDB data persistence
+
+# Define services
 services:
+  # App (web) service
   app:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
-    environment:
-      MONGODB_URI: mongodb://mongo:27017/delegateinfo
+      
     depends_on:
       - mongo
     networks:
       - vitmun-network
+    # Development mode: watch files for changes and sync
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./next.config.js
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: .
+          target: /app
+          action: sync
 
+  # MongoDB service
   mongo:
     image: mongo:6.0
     container_name: vitmun-mongo
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db # Mount the volume to persist data
     networks:
       - vitmun-network
-    volumes:
-      - mongo-data:/data/db # Mount the external volume
