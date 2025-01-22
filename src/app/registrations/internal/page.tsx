@@ -98,7 +98,7 @@ const InternalDelegateForm = () => {
     // Validate registration number
     if (
       formData.registration_number &&
-      !/^\d[A-Za-z]{3}\d{4}$/.test(formData.registration_number)
+      !/^\d{2}[A-Za-z]{3}\d{4}$/.test(formData.registration_number)
     ) {
       toast({
         variant: "destructive",
@@ -358,7 +358,7 @@ const InternalDelegateForm = () => {
               </Button>
             </div>
             <p className="text-lg md:text-xl mb-1 font-bold">
-              Registration fee per delegate is Rs. 1900 (inclusive of GST).
+              Registration fee per delegate is Rs. 1800 (inclusive of GST).
               Payment link will be mailed once allotment is confirmed
             </p>
             {[1, 2, 3].map((pref) => (

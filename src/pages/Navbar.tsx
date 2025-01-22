@@ -25,8 +25,8 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed h-[10vh] w-[100vw] ${karma.className} z-50 bg-white bg-gradient-to-l from-transparent to-blue-100`}>
-      <div className="flex flex-row items-center h-full w-full relative px-8">
-        <Link href="https://vit.ac.in/" target="_blank" passHref>
+      <div className="flex flex-row items-center h-full w-full relative px-4 lg:px-16">
+        <Link href="/">
           <Image src="/vit-logo.svg" height={150} width={150} alt="VIT Logo" />
         </Link>
 
@@ -55,17 +55,17 @@ export default function Navbar() {
               <Link href="/allotments">ALLOTMENTS</Link>
             </li> */}
           </ul>
-          <Link href="/pay-now" passHref>
+          {/* <Link href="/pay-now" passHref>
             <button className={`bg-[#62B4E2] w-[10vw] text-[3vh] p-2 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas`}>
               PAY NOW
             </button>
-          </Link>
+          </Link> */}
         </div>
 
         {/* Mobile Menu */}
         <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh] bg-gradient-to-l from-transparent to-blue-100`}>
           <div className="flex flex-col w-full p-4 text-center items-center justify-center">
-            <ul className="flex flex-col gap-y-8 w-full text-[2vh]">
+            <ul className="flex flex-col gap-y-8 w-full text-[4vh]">
               <li>
                 <Link
                   href="/"
@@ -103,11 +103,11 @@ export default function Navbar() {
                 </Link>
               </li> */}
             </ul>
-            <Link href="/pay-now" passHref className="mt-4">
+            {/* <Link href="/pay-now" passHref className="mt-4">
               <button onClick={toggleMenu} className="bg-[#62B4E2] w-full text-[2.5vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas">
                 PAY NOW
               </button>
-            </Link>
+            </Link> */}
 
             <div className="mt-[6vh] w-full relative inset-0 rounded-full flex flex-col items-center justify-center">
               <Image
@@ -115,7 +115,7 @@ export default function Navbar() {
                 width={0}
                 src="/globe.svg"
                 alt="VITMUN"
-                className="h-auto w-[20vw] rounded-full bg-white"
+                className="h-auto w-[20vw] rounded-full"
               />
 
               <div className="flex flex-col items-center justify-center">

@@ -3,17 +3,11 @@
 import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 
-import {
-  SignedIn,
-  SignedOut,
-  RedirectToSignIn,
-  UserButton,
-} from "@clerk/nextjs";
 
 import { Trash } from "lucide-react";
 
-import { Fragment } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -91,15 +85,64 @@ interface Delegation {
 }
 
 const AdminPage = () => {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+
   const [externalDelegates, setExternalDelegates] = useState<Delegate[]>([]);
   const [internalDelegates, setInternalDelegates] = useState<Delegate[]>([]);
   const [delegations, setDelegations] = useState<Delegation[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUnallottedOnly, setShowUnallottedOnly] = useState(false);
 
+const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoginError("");
+    
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        sessionStorage.setItem('isAdminLoggedIn', 'true');
+        setIsAuthenticated(true);
+        setUsername("");
+        setPassword("");
+        await fetchData();
+      } else {
+        setLoginError(data.message || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("An error occurred during login");
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('isAdminLoggedIn');
+    setIsAuthenticated(false);
+    setExternalDelegates([]);
+    setInternalDelegates([]);
+    setDelegations([]);
+    router.push("/admin");
+  };
   // Fetch data from MongoDB
   const fetchData = async () => {
     try {
+      const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
+      if (!isLoggedIn) {
+        setIsAuthenticated(false);
+        return;
+      }
       const [externalResponse, internalResponse, delegationResponse] =
         await Promise.all([
           fetch("/api/admin/external-delegates"),
@@ -107,6 +150,12 @@ const AdminPage = () => {
           fetch("/api/admin/delegations"),
         ]);
 
+        if (externalResponse.status === 401 || 
+          internalResponse.status === 401 || 
+          delegationResponse.status === 401) {
+        handleLogout();
+        return;
+      }
       const externalData = await externalResponse.json();
       const internalData = await internalResponse.json();
       const delegationData = await delegationResponse.json();
@@ -116,6 +165,8 @@ const AdminPage = () => {
       setDelegations(delegationData.data || []);
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error instanceof Error && error.message.includes('unauthorized')) {
+        handleLogout();}
     } finally {
       setLoading(false);
     }
@@ -220,16 +271,79 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    const checkAuth = async () => {
+      const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
+      if (isLoggedIn === 'true') {
+        setIsAuthenticated(true);
+        await fetchData();
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
+  
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <Card className="w-[400px]">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-center">VITMUN Admin Login</CardTitle>
+            <CardDescription className="text-center">Enter your credentials to access the admin panel</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="Enter admin username"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="Enter admin password"
+                />
+              </div>
+              {loginError && (
+                <div className="p-3 rounded bg-red-50 text-red-600 text-sm">
+                  {loginError}
+                </div>
+              )}
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
     <>
-      <SignedIn>
         {/* Fixed Navbar */}
         <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
           <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
@@ -274,7 +388,29 @@ const AdminPage = () => {
                 </label>
               </div>
 
-              <UserButton />
+              <Button 
+              variant="secondary"
+              onClick={handleLogout}
+              className="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded flex items-center gap-2"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="18" 
+                height="18" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Logout
+            </Button>
+              
             </div>
           </div>
         </nav>
@@ -794,12 +930,9 @@ const AdminPage = () => {
             ))}
           </div>
         </section>
-      </SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
     </>
   );
 };
+
 
 export default AdminPage;
