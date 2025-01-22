@@ -18,11 +18,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
-      
     depends_on:
       - mongo
     networks:
       - vitmun-network
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
     # Development mode: watch files for changes and sync
     develop:
       watch:
@@ -40,9 +41,10 @@ services:
   mongo:
     image: mongo:6.0
     container_name: vitmun-mongo
-    ports:
-      - "27017:27017"
     volumes:
-      - mongo-data:/data/db # Mount the volume to persist data
+      - mongo-data:/data/db
     networks:
       - vitmun-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
