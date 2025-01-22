@@ -50,10 +50,10 @@ export default function Navbar() {
             </li>
             {/* <li className="hover:text-[#54B3EA]">
               <Link href="/resources">RESOURCES</Link>
-            </li>
-            <li className="hover:text-[#54B3EA]">
-              <Link href="/allotments">ALLOTMENTS</Link>
             </li> */}
+            <li className="hover:text-[#54B3EA]">
+              <Link target="_blank" href="https://docs.google.com/spreadsheets/d/1uWmQmWyDJIISxIHaRMPpfOtzxMfI686Z1lvbcd9w9dY/edit?usp=sharing">ALLOTMENTS</Link>
+            </li>
           </ul>
           {/* <Link href="/pay-now" passHref>
             <button className={`bg-[#62B4E2] w-[10vw] text-[3vh] p-2 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas`}>
@@ -65,7 +65,7 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-20 h-[90vh] bg-gradient-to-l from-transparent to-blue-100`}>
           <div className="flex flex-col w-full p-4 text-center items-center justify-center">
-            <ul className="flex flex-col gap-y-8 w-full text-[4vh]">
+            <ul className="flex flex-col gap-y-8 w-full text-[3.5vh]">
               <li>
                 <Link
                   href="/"
@@ -92,16 +92,17 @@ export default function Navbar() {
                 >
                   RESOURCES
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
-                  href="/allotments"
+                  target="_blank"
+                  href="https://docs.google.com/spreadsheets/d/1uWmQmWyDJIISxIHaRMPpfOtzxMfI686Z1lvbcd9w9dY/edit?gid=0#gid=0"
                   onClick={toggleMenu}
                   className="hover:text-[#54B3EA]"
                 >
                   ALLOTMENTS
                 </Link>
-              </li> */}
+              </li>
             </ul>
             {/* <Link href="/pay-now" passHref className="mt-4">
               <button onClick={toggleMenu} className="bg-[#62B4E2] w-full text-[2.5vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas">
