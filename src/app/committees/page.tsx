@@ -42,11 +42,11 @@ const CommitteesPage = () => {
   return (
     <>
       <Navbar />
-      <div className="relative pt-[10vh] h-auto max-w-[100vw] overflow-hidden bg-gradient-to-l from-transparent to-blue-100">
-        <h1 className={`text-2xl md:text-3xl font-semibold mb-2 text-left  px-6 ${lato.className}`}>
+      <div className="relative pt-[12vh] h-auto max-w-[100vw] overflow-hidden bg-gradient-to-l from-transparent to-blue-100">
+        <h1 className={`text-2xl md:text-4xl font-semibold mb-2 text-left  px-6 ${lato.className}`}>
           Committees
         </h1>
-        <p className="text-md md:text-lg font-light mb-4 text-left px-6">
+        <p className="text-md md:text-2xl font-light mb-4 text-left px-6">
           Presenting the committees for VITMUN'25
         </p>
         <div className={`grid gap-4 md:gap-x-6 lg:gap-x-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-4 ${lora.className}`}>

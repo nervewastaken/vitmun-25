@@ -52,17 +52,18 @@ const Landing = ( { onLoad } ) => {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const promises = imageSources.map((src) => {
-          return new Promise((resolve, reject) => {
+        const promises: Promise<void>[] = imageSources.map((src) => {
+          return new Promise<void>((resolve, reject) => {
             const img = new Image();
             img.src = src;
-            img.onload = resolve;
+            img.onload = () => resolve();
             img.onerror = () => {
               console.warn(`Failed to load image: ${src}`);
-              resolve(); // Still resolve to avoid blocking if one image fails
+              resolve(); 
             };
           });
         });
+        
 
         await Promise.all(promises);
         setLoading(false);
@@ -70,7 +71,7 @@ const Landing = ( { onLoad } ) => {
       } catch (error) {
         console.error('Error loading images:', error);
         setLoading(false);
-        onLoad(); // Still call onLoad even if there's an error
+        onLoad();
       }
     };
 
