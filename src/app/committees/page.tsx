@@ -24,8 +24,8 @@ const committees = [
   { name: "UNGA-SOCHUM", imageWhite: "/committee/sochum.svg", imageBlack: "/committee/sochum2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
   { name: "UNSC", imageWhite: "/committee/unsc.svg", imageBlack: "/committee/unsc2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
   { name: "DISEC", imageWhite: "/committee/disec.svg", imageBlack: "/committee/disec2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "AIPPM", imageWhite: "/committee/aippm.svg", imageBlack: "/committee/aippm2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
   { name: "ORF", imageWhite: "/committee/orf.svg", imageBlack: "/committee/orf2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "AIPPM", imageWhite: "/committee/aippm.svg", imageBlack: "/committee/aippm2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
 ];
 
 const CommitteesPage = () => {
