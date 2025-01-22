@@ -1,18 +1,18 @@
-import {
-  ClerkProvider,
-  //SignInButton,
-} from "@clerk/nextjs";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "700", "900"],
-  variable: "--font-roboto", // CSS variable to use in styles
+  variable: "--font-roboto",
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "VITMUN'25 | Model United Nations",
@@ -49,9 +49,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "VITMUN'25 | Model United Nations",
     description: "Where your voice matters. Join the debate!",
-    images: ["/team.png"], // Same image for Twitter
+    images: ["/team.png"],
   },
-  viewport: "width=device-width, initial-scale=1.0", // For mobile responsiveness
 };
 
 export default function RootLayout({
@@ -60,13 +59,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider afterSignOutUrl={"/"}>
-      <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
-        <body>
-          {children}
-          <Toaster />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning className={`${roboto.variable}`}>
+      <body>
+        {children}
+        <Toaster />
+      </body>
+    </html>
   );
 }
