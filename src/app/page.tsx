@@ -1,23 +1,32 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import NeedHelp from "@/components/custom/needhelp";
-import Landing from "../pages/Landing"
-import Navbar from "../pages/Navbar"
+import Landing from "../pages/Landing";
+import Navbar from "../pages/Navbar";
 import AboutMunsoc from "@/components/custom/aboutMunsoc";
 
 export default function Home() {
-  
+  const [isLandingLoaded, setIsLandingLoaded] = useState(false);
 
-  // Redirect if the user is authenticated
-  
+  const handleLandingLoad = () => {
+    setIsLandingLoaded(true);
+  };
 
   return (
     <div>
-      <Navbar />
-      <Landing />
-      <AboutMunsoc/>
-      <NeedHelp/>
-      {/* <AboutUs /> */}
+      {isLandingLoaded && (
+        <>
+          <Navbar />
+        </>
+      )}
+      <Landing onLoad={handleLandingLoad} />
+      {isLandingLoaded && (
+        <>
+          <AboutMunsoc />
+          <NeedHelp />
+        </>
+      )}
     </div>
   );
 }
