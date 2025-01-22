@@ -36,7 +36,7 @@ const Loader = () => (
   </div>
 );
 
-const Landing = () => {
+const Landing = ( { onLoad } ) => {
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -51,20 +51,31 @@ const Landing = () => {
 
   useEffect(() => {
     const loadImages = async () => {
-      const promises = imageSources.map((src) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = resolve;
-          img.onerror = resolve;
+      try {
+        const promises = imageSources.map((src) => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = resolve;
+            img.onerror = () => {
+              console.warn(`Failed to load image: ${src}`);
+              resolve(); // Still resolve to avoid blocking if one image fails
+            };
+          });
         });
-      });
-      await Promise.all(promises);
-      setLoading(false);
+
+        await Promise.all(promises);
+        setLoading(false);
+        onLoad(); // Call onLoad only after all images are loaded
+      } catch (error) {
+        console.error('Error loading images:', error);
+        setLoading(false);
+        onLoad(); // Still call onLoad even if there's an error
+      }
     };
 
     loadImages();
-  }, []);
+  }, [onLoad]);
 
   const handleInd = () => setShowPopup(true);
   const closePopup = () => setShowPopup(false);
