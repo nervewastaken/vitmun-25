@@ -111,7 +111,7 @@ const Landing = ( { onLoad } ) => {
                       <ImageFilledText
                         text={char === " " ? "\u00A0" : char}
                         imageUrl="/hero_font.svg"
-                        className="whitespace-nowrap"
+                        className="whitespace-nowrap lg:hover:scale-[1.3]"
                       />
                     </span>
                   ))}
