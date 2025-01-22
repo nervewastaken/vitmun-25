@@ -352,7 +352,7 @@ const InternalDelegateForm = () => {
                 type="button"
                 size="xsm"
                 className="ml-4 mt-[0.33rem]"
-                onClick={() => window.open("https://www.google.com", "_blank")}
+                onClick={() => window.open("https://docs.google.com/spreadsheets/d/1uWmQmWyDJIISxIHaRMPpfOtzxMfI686Z1lvbcd9w9dY/edit?usp=sharing", "_blank")}
               >
                 DELEGATE MATRIX
               </Button>
