@@ -385,7 +385,7 @@ const ExternalDelegateForm = () => {
               </Button>
             </div>
             <p className="text-lg md:text-xl mb-1 font-bold">
-              Registration fee per delegate is Rs. 1900 (inclusive of GST).
+              Registration fee per delegate is Rs. 2000 (inclusive of GST).
               Payment link will be mailed once allotment is confirmed
             </p>
             {[1, 2, 3].map((pref) => (
