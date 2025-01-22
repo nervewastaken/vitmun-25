@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import NeedHelp from "@/components/custom/needhelp";
 import Landing from "../pages/Landing";
 import Navbar from "../pages/Navbar";
