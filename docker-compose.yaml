@@ -41,6 +41,8 @@ services:
   mongo:
     image: mongo:6.0
     container_name: vitmun-mongo
+    ports:
+    - "27017:27017" 
     volumes:
       - mongo-data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
