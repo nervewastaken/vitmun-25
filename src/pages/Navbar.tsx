@@ -73,8 +73,8 @@ export default function Navbar() {
                 </button>
                 {isDropdownOpen && (
                   <ul className="absolute top-full mt-2 bg-white border border-gray-200 shadow-lg rounded-lg w-[15vw]">
-                    <li className="px-4 py-2 hover:bg-gray-100">
-                      <Link href="https://drive.google.com/file/d/1UhHYEbJeCZkzTPwWwjk3vIlb3_OFMsuz/view?usp=drive_link" target="blank">Conference Brochure</Link>
+                    <li className="px-4 py-2 hover:text-[#54B3EA]">
+                      <Link href="https://drive.google.com/file/d/1UhHYEbJeCZkzTPwWwjk3vIlb3_OFMsuz/view?usp=drive_link" target="blank">CONFERENCE BROCHURE</Link>
                     </li>
                   </ul>
                 )}
@@ -116,8 +116,8 @@ export default function Navbar() {
                       {isDropdownOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
                     </div>
                     {isDropdownOpen && (
-                      <ul className="mt-2 bg-white border border-gray-200 shadow-lg rounded-lg w-[70vw]">
-                        <li className="px-4 py-2 hover:bg-gray-100 text-[2.5vh]">
+                      <ul className="mt-2  w-[70vw]">
+                        <li className="px-4 py-2 hover:text-[#54B3EA] text-[2.5vh]">
                           <Link 
                             href="https://drive.google.com/file/d/1UhHYEbJeCZkzTPwWwjk3vIlb3_OFMsuz/view?usp=drive_link" 
                             target="blank"
@@ -126,7 +126,7 @@ export default function Navbar() {
                               toggleMenu();
                             }}
                           >
-                            Conference Brochure
+                            CONFERENCE BROCHURE
                           </Link>
                         </li>
                       </ul>
