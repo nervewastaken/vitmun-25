@@ -7,7 +7,9 @@ import Link from "next/link";
 import ImageFilledText from "@/components/ui/ImageFilledText";
 import { Bebas_Neue } from "next/font/google";
 import { Montaga, Montserrat } from "next/font/google";
+import { motion } from "framer-motion";
 
+const characters = Array.from("7 - 9 MAR 2025");
 const bebasNeue = Bebas_Neue({ subsets: ["latin"], weight: "400" });
 const montaga = Montaga({ subsets: ["latin"], weight: "400" });
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
@@ -103,18 +105,34 @@ const Landing = ( { onLoad } ) => {
                 style={{ borderImage: "url('/blue.jpg') 20 stretch" }}
               >
                 <div className="flex whitespace-nowrap">
-  {Array.from("7 - 9 MAR 2025").map((char, index) => (
-    <span
-      key={index}
-      className={`text-[7vh] mt-[6vh] lg:text-[25vh] transition-all duration-1000 ease-in-out origin-center ${bebasNeue.className}`}
+                {characters.map((char, index) => (
+  <motion.span
+    key={index}
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{
+      type: "spring",
+      stiffness: 120,
+      damping: 20,
+      delay: index * 0.05, // Stagger effect
+    }}
+    className={`text-[7vh] mt-[6vh] lg:text-[25vh] origin-center ${bebasNeue.className}`}
+  >
+    <motion.div
+      whileHover={{
+        scale: 1.4,
+        transition: { type: "spring", stiffness: 300, damping: 20 },
+      }}
+      className="whitespace-nowrap"
     >
       <ImageFilledText
         text={char === " " ? "\u00A0" : char}
         imageUrl="/hero_font.svg"
-        className="whitespace-nowrap lg:hover:scale-[1.3]"
       />
-    </span>
-  ))}
+    </motion.div>
+  </motion.span>
+))}
+
 </div>
 
               </div>
