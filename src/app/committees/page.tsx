@@ -59,7 +59,6 @@ const CommitteesPage = () => {
               imageBlack={committee.imageBlack}
               name={committee.name}
               onClick={() => handleCommitteeClick(committee)}
-              onClick={() => handleCommitteeClick(committee)}
               isSelected={selectedCommittee?.name === committee.name}
             />
           ))}
