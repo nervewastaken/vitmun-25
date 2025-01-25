@@ -19,13 +19,13 @@ const lato = Lato({
 });
 
 const committees = [
-  { name: "CHAOS", imageWhite: "/committee/chaos.svg", imageBlack: "/committee/chaos2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "JHES", imageWhite: "/committee/jhes.svg", imageBlack: "/committee/jhes2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "UNGA-SOCHUM", imageWhite: "/committee/sochum.svg", imageBlack: "/committee/sochum2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "UNSC", imageWhite: "/committee/unsc.svg", imageBlack: "/committee/unsc2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "DISEC", imageWhite: "/committee/disec.svg", imageBlack: "/committee/disec2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "AIPPM", imageWhite: "/committee/aippm.svg", imageBlack: "/committee/aippm2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "ORF", imageWhite: "/committee/orf.svg", imageBlack: "/committee/orf2.svg", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "CHAOS", imageWhite: "/committee/chaos.png", imageBlack: "/committee/chaos2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "JHES", imageWhite: "/committee/jhes.png", imageBlack: "/committee/jhes2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "UNGA-SOCHUM", imageWhite: "/committee/sochum.png", imageBlack: "/committee/sochum2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "UNSC", imageWhite: "/committee/unsc.png", imageBlack: "/committee/unsc2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "DISEC", imageWhite: "/committee/disec.png", imageBlack: "/committee/disec2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "AIPPM", imageWhite: "/committee/aippm.png", imageBlack: "/committee/aippm2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "ORF", imageWhite: "/committee/orf.png", imageBlack: "/committee/orf2.png", agenda: "TBA", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
 ];
 
 const CommitteesPage = () => {
@@ -74,7 +74,7 @@ const CommitteesPage = () => {
                 onClick={closeModal}
                 aria-label="Close Modal"
               >
-                <Image src="/cross.svg" alt="Close" width={24} height={24} />
+                <Image src="/cross.png" alt="Close" width={24} height={24} />
               </button>
               <h2 className="text-3xl font-bold mb-4">{selectedCommittee.name}</h2>
               <p className="text-lg mb-4">
