@@ -103,19 +103,20 @@ const Landing = ( { onLoad } ) => {
                 style={{ borderImage: "url('/blue.jpg') 20 stretch" }}
               >
                 <div className="flex whitespace-nowrap">
-                  {Array.from("7 - 9 MAR 2025").map((char, index) => (
-                    <span
-                      key={index}
-                      className={`text-[7vh] mt-[6vh] lg:text-[25vh] transition-all duration-300 origin-center ${bebasNeue.className}`}
-                    >
-                      <ImageFilledText
-                        text={char === " " ? "\u00A0" : char}
-                        imageUrl="/hero_font.svg"
-                        className="whitespace-nowrap lg:hover:scale-[1.3]"
-                      />
-                    </span>
-                  ))}
-                </div>
+  {Array.from("7 - 9 MAR 2025").map((char, index) => (
+    <span
+      key={index}
+      className={`text-[7vh] mt-[6vh] lg:text-[25vh] transition-all duration-1000 ease-in-out origin-center ${bebasNeue.className}`}
+    >
+      <ImageFilledText
+        text={char === " " ? "\u00A0" : char}
+        imageUrl="/hero_font.svg"
+        className="whitespace-nowrap lg:hover:scale-[1.3]"
+      />
+    </span>
+  ))}
+</div>
+
               </div>
             </div>
 
@@ -187,14 +188,14 @@ const Landing = ( { onLoad } ) => {
                           alt="Close"
                         />
                       </button>
-                      <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[2.5vh] lg:text-[3vh] ">
+                      <div className="mt-[5vh] flex flex-col justify-center items-center space-y-8 text-[2.5vh] lg:text-[4.5vh] ">
                         <Link href="/registrations/internal">
-                          <button className="font-bebas bg-white py-2 px-8 border rounded-3xl z-10">
+                          <button className="font-bebas bg-white py-2 px-8 border rounded-3xl z-10 hover:bg-slate-100 hover:border-black">
                             VIT VELLORE STUDENT
                           </button>
                         </Link>
                         <Link href="/registrations/external">
-                          <p className="font-bebas bg-white py-2 px-8 border rounded-3xl z-10">
+                          <p className="font-bebas bg-white py-2 px-8 border rounded-3xl z-10 hover:bg-slate-100 hover:border-black">
                             EXTERNAL PARTICIPANT
                           </p>
                         </Link>
