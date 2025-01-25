@@ -35,14 +35,14 @@ const CommitteeCard: React.FC<CommitteeCardProps> = ({
           alt={`${name} white`}
           width={192}
           height={192}
-          className="absolute w-full h-full object-contain transition-opacity duration-300 group-hover:opacity-0"
+          className="absolute w-full h-full object-contain transition-opacity duration-300 group-hover:opacity-0 group-hover:invisible"
         />
         <Image
           src={imageBlack}
           alt={`${name} black`}
           width={192}
           height={192}
-          className="absolute w-full h-full object-contain transition-opacity duration-300 group-hover:opacity-100 opacity-0"
+          className="absolute w-full h-full object-contain transition-opacity duration-300 group-hover:opacity-100 group-hover:visible opacity-0 invisible"
         />
       </div>
       <h3 className={`text-lg font-semibold text-center ${latoBold.className}`}>{name}</h3>
