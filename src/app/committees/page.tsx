@@ -77,6 +77,7 @@ const CommitteesPage = () => {
                 aria-label="Close Modal"
               >
                 <Image src="/cross.svg" alt="Close" width={36} height={36} />
+
               </button>
               <h2 className="text-3xl font-bold mb-4">{selectedCommittee.name}</h2>
               <p className="text-lg mb-4">
