@@ -68,7 +68,7 @@ const DelegateTable = () => {
       {isMobileView ? (
         <div className="relative">
           <button
-            className="bg-gray-100 p-4 w-full rounded-lg flex justify-between items-center shadow-md"
+            className="bg-gradient-to-l from-transparent to-blue-100 p-4 w-full rounded-lg flex justify-between items-center shadow-md"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <span className="font-medium text-gray-700">{activeTab}</span>
@@ -93,7 +93,7 @@ const DelegateTable = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute bg-white shadow-md w-full mt-2 rounded-lg z-10"
+                className="absolute bg-white bg-gradient-to-l from-transparent to-blue-100 shadow-md w-full mt-2 rounded-lg z-10"
               >
                 {tabs.map((tab) => (
                   <button
@@ -116,7 +116,7 @@ const DelegateTable = () => {
           </AnimatePresence>
         </div>
       ) : (
-        <div className="flex justify-center items-center space-x-4 bg-gray-100 p-4 rounded-lg shadow-md">
+        <div className="flex justify-center items-center space-x-4 bg-gradient-to-l from-transparent to-blue-100 p-4 rounded-lg shadow-md">
           {tabs.map((tab) => (
             <motion.button
               key={tab.value}
