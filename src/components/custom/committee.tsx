@@ -9,7 +9,7 @@ interface CommitteeCardProps {
   imageWhite: string;
   imageBlack: string;
   name: string;
-  // onClick: () => void;
+  onClick: () => void;
   isSelected: boolean;
 }
 
@@ -17,12 +17,12 @@ const CommitteeCard: React.FC<CommitteeCardProps> = ({
   imageWhite,
   imageBlack,
   name,
-  //onClick,
+  onClick,
 }) => {
   return (
     <motion.div
       className={`group flex flex-col items-center cursor-pointer transition duration-300 py-5 lg:py-6 mx-20 rounded-md `}
-      //onClick={onClick}
+      onClick={onClick}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.5 }}
