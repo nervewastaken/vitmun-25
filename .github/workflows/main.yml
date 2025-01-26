@@ -1,39 +1,23 @@
-name: Manage Docker Compose
+name: Deploy Service
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  manage-docker-containers:
+  deploy:
     runs-on: self-hosted
+
     steps:
-      - name: Debug environment
-        run: |
-          echo "User: $(whoami)"
-          echo "Current Directory: $(pwd)"
-          echo "Docker version:"
-          docker --version
-          echo "Docker Compose version:"
-          docker-compose --version
-          echo "List running containers:"
-          docker ps
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Stop all running containers
-        run: |
-          echo "Stopping all running Docker containers..."
-          docker ps -q | xargs -r docker stop
+      - name: Pull Latest Code
+        run: git pull
 
-      - name: Run docker-compose down
-        run: |
-          echo "Stopping and removing Docker Compose containers..."
-          docker-compose down
-        working-directory: /munsoc/vitmun-25
+      - name: Stop and Remove Containers
+        run: docker compose down
 
-      - name: Run docker-compose up
-        run: |
-          echo "Starting Docker Compose services..."
-          docker-compose up -d
-        working-directory: /munsoc/vitmun-25
+      - name: Build and Start Containers
+        run: docker compose up --build -d
