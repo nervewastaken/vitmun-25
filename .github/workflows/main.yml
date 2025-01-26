@@ -1,12 +1,17 @@
 name: Deploy Application
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Node.js CI # Match the name of the first workflow
+    types:
+      - completed # Trigger only after the first workflow completes
     branches:
-      - main
+      - main # Trigger only for the main branch
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if the first workflow succeeded
     runs-on: self-hosted
     steps:
       - name: Check out code
