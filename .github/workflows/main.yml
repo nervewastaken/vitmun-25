@@ -20,4 +20,4 @@ jobs:
         run: docker compose down
 
       - name: Build and Start Containers
-        run: docker compose up --build -d
+        run: docker compose up --build 
