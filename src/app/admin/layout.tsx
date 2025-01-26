@@ -1,5 +1,5 @@
 // app/admin/layout.tsx
-//test
+//test2
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
