@@ -1,39 +1,31 @@
-name: Manage Docker Compose
+name: Deploy Application
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Node.js CI # Match the name of the first workflow
+    types:
+      - completed # Trigger only after the first workflow completes
     branches:
-      - main
-  workflow_dispatch:
+      - main # Trigger only for the main branch
 
 jobs:
-  manage-docker-containers:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only run if the first workflow succeeded
     runs-on: self-hosted
     steps:
-      - name: Debug environment
-        run: |
-          echo "User: $(whoami)"
-          echo "Current Directory: $(pwd)"
-          echo "Docker version:"
-          docker --version
-          echo "Docker Compose version:"
-          docker-compose --version
-          echo "List running containers:"
-          docker ps
+      - name: Check out code
+        uses: actions/checkout@v3
 
-      - name: Stop all running containers
+      - name: Set up environment variables
         run: |
-          echo "Stopping all running Docker containers..."
-          docker ps -q | xargs -r docker stop
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+          echo "MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}" >> .env
+          echo "MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" >> .env
+          echo "ADMIN_USERNAME=${{secrets.ADMIN_USERNAME}}" >> .env
+          echo "ADMIN_PASSWORD=${{secrets.ADMIN_PASSWORD}}" >> .env
 
-      - name: Run docker-compose down
+      - name: Build and Run Docker Compose
         run: |
-          echo "Stopping and removing Docker Compose containers..."
-          docker-compose down
-        working-directory: /munsoc/vitmun-25
-
-      - name: Run docker-compose up
-        run: |
-          echo "Starting Docker Compose services..."
-          docker-compose up -d
-        working-directory: /munsoc/vitmun-25
+          docker compose down
+          docker compose up --build -d
