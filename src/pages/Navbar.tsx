@@ -55,7 +55,7 @@ export default function Navbar() {
             )}
           </button>
 
-          <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-24">
+          <div className="hidden md:flex flex-row justify-end items-center w-full gap-x-12">
             <ul className="flex flex-row gap-x-8 text-[3vh]">
               <li className="hover:text-[#54B3EA]">
                 <Link href="/">HOME</Link>
@@ -82,7 +82,13 @@ export default function Navbar() {
               <li className="hover:text-[#54B3EA]">
                 <Link target="_blank" href="https://docs.google.com/spreadsheets/d/1uWmQmWyDJIISxIHaRMPpfOtzxMfI686Z1lvbcd9w9dY/edit?usp=sharing">ALLOTMENTS</Link>
               </li>
+              
             </ul>
+            <Link target="_blank" href="https://events.vit.ac.in/events/vitmun" passHref>
+            <button className={`bg-[#62B4E2] w-[10vw] text-[3vh] p-2 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas`}>
+              PAY NOW
+            </button>
+            </Link>
           </div>
 
           <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 h-[90vh] bg-gradient-to-l from-transparent to-blue-100`}>
@@ -144,7 +150,11 @@ export default function Navbar() {
                   </Link>
                 </li>
               </ul>
-
+               <Link target="_blank" href="https://events.vit.ac.in/events/vitmun" passHref className="mt-4">
+              <button onClick={toggleMenu} className="bg-[#62B4E2] w-full text-[3vh] p-4 text-white rounded-md hover:bg-[#50a0c8] transition font-bebas">
+                PAY NOW
+              </button>
+            </Link>
               <div className="mt-[6vh] w-full relative inset-0 rounded-full flex flex-col items-center justify-center">
                 <Image
                   height={0}

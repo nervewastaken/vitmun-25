@@ -114,7 +114,7 @@ const Landing = ( { onLoad } ) => {
       type: "spring",
       stiffness: 120,
       damping: 20,
-      //delay: index * 0.05, // Stagger effect
+      delay: index * 0.2, // Stagger effect
     }}
     className={`text-[7vh] mt-[6vh] lg:text-[25vh] origin-center ${bebasNeue.className}`}
   >
