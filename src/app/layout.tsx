@@ -36,8 +36,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://vitmun.vit.ac.in/team.png", // Full URL to the image
-        width: 1200,
-        height: 630,
+        width: 600,
+        height: 600,
         alt: "VITMUN'25 Team Photo",
         type: "image/png",
       },
