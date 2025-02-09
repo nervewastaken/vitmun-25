@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
-
+import * as XLSX from "xlsx";
 
 import { Trash } from "lucide-react";
 
@@ -97,10 +97,10 @@ const AdminPage = () => {
   const [loading, setLoading] = useState(true);
   const [showUnallottedOnly, setShowUnallottedOnly] = useState(false);
 
-const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError("");
-    
+
     try {
       const response = await fetch("/api/admin/login", {
         method: "POST",
@@ -113,7 +113,7 @@ const handleLogin = async (e) => {
       const data = await response.json();
 
       if (response.ok) {
-        sessionStorage.setItem('isAdminLoggedIn', 'true');
+        sessionStorage.setItem("isAdminLoggedIn", "true");
         setIsAuthenticated(true);
         setUsername("");
         setPassword("");
@@ -128,7 +128,7 @@ const handleLogin = async (e) => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('isAdminLoggedIn');
+    sessionStorage.removeItem("isAdminLoggedIn");
     setIsAuthenticated(false);
     setExternalDelegates([]);
     setInternalDelegates([]);
@@ -138,7 +138,7 @@ const handleLogin = async (e) => {
   // Fetch data from MongoDB
   const fetchData = async () => {
     try {
-      const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
+      const isLoggedIn = sessionStorage.getItem("isAdminLoggedIn");
       if (!isLoggedIn) {
         setIsAuthenticated(false);
         return;
@@ -150,9 +150,11 @@ const handleLogin = async (e) => {
           fetch("/api/admin/delegations"),
         ]);
 
-        if (externalResponse.status === 401 || 
-          internalResponse.status === 401 || 
-          delegationResponse.status === 401) {
+      if (
+        externalResponse.status === 401 ||
+        internalResponse.status === 401 ||
+        delegationResponse.status === 401
+      ) {
         handleLogout();
         return;
       }
@@ -165,8 +167,9 @@ const handleLogin = async (e) => {
       setDelegations(delegationData.data || []);
     } catch (error) {
       console.error("Error fetching data:", error);
-      if (error instanceof Error && error.message.includes('unauthorized')) {
-        handleLogout();}
+      if (error instanceof Error && error.message.includes("unauthorized")) {
+        handleLogout();
+      }
     } finally {
       setLoading(false);
     }
@@ -270,10 +273,63 @@ const handleLogin = async (e) => {
     return delegates;
   };
 
+  const generateExcel = () => {
+    const data = {
+      internal: internalDelegates,
+      external: externalDelegates,
+      delegations: delegations,
+    };
+
+    const workbook = XLSX.utils.book_new();
+
+    Object.entries(data).forEach(([sheetName, sheetData]) => {
+      if (sheetData.length > 0) {
+        const formattedData = sheetData.map((entry) => {
+          const newEntry = { ...entry };
+
+          // Remove unwanted fields
+          delete newEntry._id;
+          delete newEntry.committee_preferences;
+          delete newEntry.experience;
+
+          // Expand committee preferences
+          if (entry.committee_preferences) {
+            for (let i = 1; i <= 3; i++) {
+              const preferenceKey = `preference_${i}`;
+              newEntry[`Committee ${i}`] =
+                entry.committee_preferences[preferenceKey]?.committee || "";
+              newEntry[`Preference ${i}`] =
+                entry.committee_preferences[preferenceKey]?.allotments?.join(
+                  ", "
+                ) || "";
+            }
+          }
+
+          // Expand experience details
+          if (entry.experience) {
+            newEntry["Delegate MUNs"] = entry.experience.delegate?.muns || "";
+            newEntry["Delegate Experience"] =
+              entry.experience.delegate?.experience || "";
+            newEntry["EB MUNs"] = entry.experience.eb?.muns || "";
+            newEntry["EB Experience"] = entry.experience.eb?.experience || "";
+          }
+
+          return newEntry;
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(formattedData);
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+      }
+    });
+
+    // Create and download the Excel file
+    XLSX.writeFile(workbook, "delegate_allotments.xlsx");
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
-      const isLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
-      if (isLoggedIn === 'true') {
+      const isLoggedIn = sessionStorage.getItem("isAdminLoggedIn");
+      if (isLoggedIn === "true") {
         setIsAuthenticated(true);
         await fetchData();
       }
@@ -282,8 +338,6 @@ const handleLogin = async (e) => {
 
     checkAuth();
   }, []);
-
-  
 
   if (loading) {
     return (
@@ -298,8 +352,12 @@ const handleLogin = async (e) => {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <Card className="w-[400px]">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">VITMUN Admin Login</CardTitle>
-            <CardDescription className="text-center">Enter your credentials to access the admin panel</CardDescription>
+            <CardTitle className="text-2xl font-bold text-center">
+              VITMUN Admin Login
+            </CardTitle>
+            <CardDescription className="text-center">
+              Enter your credentials to access the admin panel
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
@@ -344,64 +402,64 @@ const handleLogin = async (e) => {
 
   return (
     <>
-        {/* Fixed Navbar */}
-        <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
-          <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
-            <span className="text-lg font-bold">Admin Panel- VITMUN 25</span>
-            <div className="flex items-center space-x-6">
-              <Link
-                href="#internal"
-                className="px-4 py-2 rounded hover:bg-blue-700 transition"
-              >
-                Internal
-              </Link>
-              <Link
-                href="#external"
-                className="px-4 py-2 rounded hover:bg-blue-700 transition"
-              >
-                External
-              </Link>
-              <Link
-                href="#delegations"
-                className="px-4 py-2 rounded hover:bg-blue-700 transition"
-              >
-                Delegations
-              </Link>
-              <Link
-                href="../allotments"
-                className="px-4 py-2 rounded hover:bg-blue-700 transition"
-              >
-                Allotments
-              </Link>
+      {/* Fixed Navbar */}
+      <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+          <span className="text-lg font-bold">Admin Panel- VITMUN 25</span>
+          <div className="flex items-center space-x-6">
+            <Link
+              href="#internal"
+              className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              Internal
+            </Link>
+            <Link
+              href="#external"
+              className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              External
+            </Link>
+            <Link
+              href="#delegations"
+              className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              Delegations
+            </Link>
+            <Link
+              href="../allotments"
+              className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              Allotments
+            </Link>
 
-              <div className="flex items-center space-x-3">
-                <Switch
-                  id="showUnallotted"
-                  checked={showUnallottedOnly}
-                  onCheckedChange={setShowUnallottedOnly}
-                />
-                <label
-                  htmlFor="showUnallotted"
-                  className="text-sm font-medium text-gray-200"
-                >
-                  Show only unallotted
-                </label>
-              </div>
+            <div className="flex items-center space-x-3">
+              <Switch
+                id="showUnallotted"
+                checked={showUnallottedOnly}
+                onCheckedChange={setShowUnallottedOnly}
+              />
+              <label
+                htmlFor="showUnallotted"
+                className="text-sm font-medium text-gray-200"
+              >
+                Show only unallotted
+              </label>
+            </div>
 
-              <Button 
+            <Button
               variant="secondary"
               onClick={handleLogout}
               className="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded flex items-center gap-2"
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="18" 
-                height="18" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -410,529 +468,531 @@ const handleLogin = async (e) => {
               </svg>
               Logout
             </Button>
-              
-            </div>
+            <Button
+              onClick={generateExcel}
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              Download Excel
+            </Button>
           </div>
-        </nav>
-
-        {/* Content Section */}
-        <div id="top" className="p-6 mt-16 bg-gray-100 rounded-lg shadow-md">
-          <ul className="list-disc pl-8 space-y-2 text-gray-700">
-            <li>
-              Use <span className="font-semibold">Ctrl+F</span> or{" "}
-              <span className="font-semibold">Cmd+F</span> to search for
-              delegates.
-            </li>
-            <li>
-              <span className="font-semibold text-red-600">DO NOT FORGET</span>{" "}
-              to save your changes.
-            </li>
-          </ul>
         </div>
+      </nav>
 
-        <section id="external">
-          <div className="text-4xl p-24 text-center">External Delegates</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
-            {filterDelegates(externalDelegates).map((external) => (
-              <Card key={external._id} className="w-full">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold">
-                      {external.participant_name || "Name not provided"}
-                    </CardTitle>
-                    <Button
-                      variant="destructive"
-                      className="flex items-center space-x-2"
-                      onClick={() => deleteDelegate("external", external._id)} // Replace "external" with "internal" for internal delegates
-                    >
-                      <Trash className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <CardDescription>
-                    <strong>Allotment Committee:</strong>{" "}
-                    {external.allotment_committee || "Not Assigned"}
-                    <br />
-                    <strong>Portfolio:</strong>{" "}
-                    {external.allotment_portfolio || "Not Assigned"}
-                    <br />
-                    <strong>Paid:</strong> {external.paid ? "Yes" : "No"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Accordion type="single" collapsible>
-                    {/* Personal Details */}
-                    <AccordionItem value="personalDetails">
-                      <AccordionTrigger>Personal Details</AccordionTrigger>
-                      <AccordionContent>
-                        <p>
-                          <strong>Contact Number:</strong>{" "}
-                          {external.contact_number || "Not Provided"}
-                        </p>
-                        <p>
-                          <strong>Email:</strong>{" "}
-                          {external.email_id || "Not Provided"}
-                        </p>
-                        <p>
-                          <strong>Gender:</strong>{" "}
-                          {external.gender || "Not Provided"}
-                        </p>
-                        <p>
-                          <strong>Accommodation:</strong>{" "}
-                          {external.accommodation || "Not Provided"}
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
+      {/* Content Section */}
+      <div id="top" className="p-6 mt-16 bg-gray-100 rounded-lg shadow-md">
+        <ul className="list-disc pl-8 space-y-2 text-gray-700">
+          <li>
+            Use <span className="font-semibold">Ctrl+F</span> or{" "}
+            <span className="font-semibold">Cmd+F</span> to search for
+            delegates.
+          </li>
+          <li>
+            <span className="font-semibold text-red-600">DO NOT FORGET</span> to
+            save your changes.
+          </li>
+        </ul>
+      </div>
 
-                    {/* Committee Preferences */}
-                    <AccordionItem value="preferences">
-                      <AccordionTrigger>Preferences</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          {Object.entries(
-                            external.committee_preferences || {}
-                          ).map(
-                            (
-                              [preferenceKey, preferenceValue],
-                              committeeIndex
-                            ) => (
-                              <div key={preferenceKey} className="space-y-1">
-                                {/* Committee Header */}
-                                <p className="text-lg font-semibold">
-                                  {committeeIndex + 1}){" "}
-                                  {preferenceValue.committee || "Not Assigned"}
-                                </p>
+      <section id="external">
+        <div className="text-4xl p-24 text-center">External Delegates</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
+          {filterDelegates(externalDelegates).map((external) => (
+            <Card key={external._id} className="w-full">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold">
+                    {external.participant_name || "Name not provided"}
+                  </CardTitle>
+                  <Button
+                    variant="destructive"
+                    className="flex items-center space-x-2"
+                    onClick={() => deleteDelegate("external", external._id)} // Replace "external" with "internal" for internal delegates
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
+                <CardDescription>
+                  <strong>Allotment Committee:</strong>{" "}
+                  {external.allotment_committee || "Not Assigned"}
+                  <br />
+                  <strong>Portfolio:</strong>{" "}
+                  {external.allotment_portfolio || "Not Assigned"}
+                  <br />
+                  <strong>Paid:</strong> {external.paid ? "Yes" : "No"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible>
+                  {/* Personal Details */}
+                  <AccordionItem value="personalDetails">
+                    <AccordionTrigger>Personal Details</AccordionTrigger>
+                    <AccordionContent>
+                      <p>
+                        <strong>Contact Number:</strong>{" "}
+                        {external.contact_number || "Not Provided"}
+                      </p>
+                      <p>
+                        <strong>Email:</strong>{" "}
+                        {external.email_id || "Not Provided"}
+                      </p>
+                      <p>
+                        <strong>Gender:</strong>{" "}
+                        {external.gender || "Not Provided"}
+                      </p>
+                      <p>
+                        <strong>Accommodation:</strong>{" "}
+                        {external.accommodation || "Not Provided"}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
 
-                                {/* Allotments */}
-                                <ul className="space-y-1 ">
-                                  {preferenceValue.allotments.map(
-                                    (allotment, preferenceIndex) => (
-                                      <li key={preferenceIndex}>
-                                        {String.fromCharCode(
-                                          97 + preferenceIndex
-                                        )}
-                                        ) {allotment || "Not Assigned"}
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
-                            )
-                          )}
+                  {/* Committee Preferences */}
+                  <AccordionItem value="preferences">
+                    <AccordionTrigger>Preferences</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {Object.entries(
+                          external.committee_preferences || {}
+                        ).map(
+                          (
+                            [preferenceKey, preferenceValue],
+                            committeeIndex
+                          ) => (
+                            <div key={preferenceKey} className="space-y-1">
+                              {/* Committee Header */}
+                              <p className="text-lg font-semibold">
+                                {committeeIndex + 1}){" "}
+                                {preferenceValue.committee || "Not Assigned"}
+                              </p>
+
+                              {/* Allotments */}
+                              <ul className="space-y-1 ">
+                                {preferenceValue.allotments.map(
+                                  (allotment, preferenceIndex) => (
+                                    <li key={preferenceIndex}>
+                                      {String.fromCharCode(
+                                        97 + preferenceIndex
+                                      )}
+                                      ) {allotment || "Not Assigned"}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  {/* MUN Experience */}
+                  <AccordionItem value="mun-exp">
+                    <AccordionTrigger>MUN Experience</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Delegate Experience */}
+                        <div>
+                          <p>
+                            <strong>MUNs as Delegate:</strong>{" "}
+                            {external.experience?.delegate?.muns || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Details:</strong>{" "}
+                            {external.experience?.delegate?.experience || "N/A"}
+                          </p>
                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
 
-                    {/* MUN Experience */}
-                    <AccordionItem value="mun-exp">
-                      <AccordionTrigger>MUN Experience</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {/* Delegate Experience */}
-                          <div>
-                            <p>
-                              <strong>MUNs as Delegate:</strong>{" "}
-                              {external.experience?.delegate?.muns || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Details:</strong>{" "}
-                              {external.experience?.delegate?.experience ||
-                                "N/A"}
-                            </p>
-                          </div>
-
-                          {/* EB Experience */}
-                          <div>
-                            <p>
-                              <strong>MUNs as EB:</strong>{" "}
-                              {external.experience?.eb?.muns || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Details:</strong>{" "}
-                              {external.experience?.eb?.experience || "N/A"}
-                            </p>
-                          </div>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button variant="outline">Edit Allotment</Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                      <SheetHeader>
-                        <SheetTitle>Edit Allotment Details</SheetTitle>
-                        <SheetDescription>
-                          Make changes to allotment details and save them.
-                        </SheetDescription>
-                      </SheetHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label
-                            htmlFor="allotment_committee"
-                            className="text-right"
-                          >
-                            Committee
-                          </Label>
-                          <select
-                            id="allotment_committee"
-                            defaultValue={external.allotment_committee || ""}
-                            onChange={(e) =>
-                              handleExternalChange(
-                                external._id,
-                                "allotment_committee",
-                                e.target.value
-                              )
-                            }
-                            className="col-span-3 border rounded-md px-3 py-2"
-                          >
-                            <option value="" disabled>
-                              Select Committee
-                            </option>
-                            <option value="UNGA-DISEC">UNGA-DISEC</option>
-                            <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
-                            <option value="UNSC">UNSC</option>
-                            <option value="JHES">
-                              Jackson Hole Economic Symposium (JHES)
-                            </option>
-                            <option value="CHAOS">CHAOS</option>
-                            <option value="AIPPM">AIPPM</option>
-                            <option value="ORF">ORF</option>
-                          </select>
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label
-                            htmlFor="allotment_portfolio"
-                            className="text-right"
-                          >
-                            Portfolio
-                          </Label>
-                          <Input
-                            id="allotment_portfolio"
-                            defaultValue={external.allotment_portfolio}
-                            onChange={(e) =>
-                              handleExternalChange(
-                                external._id,
-                                "allotment_portfolio",
-                                e.target.value
-                              )
-                            }
-                            placeholder="Allotment Portfolio"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="paid" className="text-right">
-                            Paid
-                          </Label>
-                          <select
-                            id="paid"
-                            defaultValue={external.paid.toString()}
-                            onChange={(e) =>
-                              handleExternalChange(
-                                external._id,
-                                "paid",
-                                e.target.value === "true"
-                              )
-                            }
-                            className="col-span-3 border rounded-md px-3 py-2"
-                          >
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                          </select>
+                        {/* EB Experience */}
+                        <div>
+                          <p>
+                            <strong>MUNs as EB:</strong>{" "}
+                            {external.experience?.eb?.muns || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Details:</strong>{" "}
+                            {external.experience?.eb?.experience || "N/A"}
+                          </p>
                         </div>
                       </div>
-                      <SheetFooter>
-                        <SheetClose asChild>
-                          <Button
-                            onClick={() =>
-                              updateDelegate(
-                                "external",
-                                external._id,
-                                external.allotment_committee,
-                                external.allotment_portfolio,
-                                external.paid
-                              )
-                            }
-                          >
-                            Save Changes
-                          </Button>
-                        </SheetClose>
-                      </SheetFooter>
-                    </SheetContent>
-                  </Sheet>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Internal Delegates Section */}
-        <section id="internal" className="mb-10 ">
-          <div className="text-4xl p-24 text-center">Internal Delegates</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
-            {filterDelegates(internalDelegates).map((internal) => (
-              <Card key={internal._id} className="w-full">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold">
-                      {internal.participant_name || "Name not provided"}
-                    </CardTitle>
-                    <Button
-                      variant="destructive"
-                      className="flex items-center space-x-2"
-                      onClick={() => deleteDelegate("internal", internal._id)}
-                    >
-                      <Trash className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <CardDescription>
-                    <strong>Allotment Committee:</strong>{" "}
-                    {internal.allotment_committee || "Not Assigned"}
-                    <br />
-                    <strong>Portfolio:</strong>{" "}
-                    {internal.allotment_portfolio || "Not Assigned"}
-                    <br />
-                    <strong>Paid:</strong> {internal.paid ? "Yes" : "No"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Accordion type="single" collapsible>
-                    {/* Personal Details */}
-                    <AccordionItem value="personalDetails">
-                      <AccordionTrigger>Personal Details</AccordionTrigger>
-                      <AccordionContent>
-                        <p>
-                          <strong>Registration Number:</strong>{" "}
-                          {internal.registration_number || "Not Provided"}
-                        </p>
-                        <p>
-                          <strong>Contact Number:</strong>{" "}
-                          {internal.contact_number || "Not Provided"}
-                        </p>
-                        <p>
-                          <strong>Email:</strong>{" "}
-                          {internal.email_id || "Not Provided"}
-                        </p>
-                      </AccordionContent>
-                    </AccordionItem>
-
-                    {/* Committee Preferences */}
-                    <AccordionItem value="preferences">
-                      <AccordionTrigger>Preferences</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          {Object.entries(
-                            internal.committee_preferences || {}
-                          ).map(
-                            (
-                              [preferenceKey, preferenceValue],
-                              committeeIndex
-                            ) => (
-                              <div key={preferenceKey} className="space-y-1">
-                                {/* Committee Header */}
-                                <p className="text-lg font-semibold">
-                                  {committeeIndex + 1}){" "}
-                                  {preferenceValue.committee || "Not Assigned"}
-                                </p>
-
-                                {/* Allotments */}
-                                <ul className="space-y-1 ">
-                                  {preferenceValue.allotments.map(
-                                    (allotment, preferenceIndex) => (
-                                      <li key={preferenceIndex}>
-                                        {String.fromCharCode(
-                                          97 + preferenceIndex
-                                        )}
-                                        ) {allotment || "Not Assigned"}
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline">Edit Allotment</Button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Edit Allotment Details</SheetTitle>
+                      <SheetDescription>
+                        Make changes to allotment details and save them.
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label
+                          htmlFor="allotment_committee"
+                          className="text-right"
+                        >
+                          Committee
+                        </Label>
+                        <select
+                          id="allotment_committee"
+                          defaultValue={external.allotment_committee || ""}
+                          onChange={(e) =>
+                            handleExternalChange(
+                              external._id,
+                              "allotment_committee",
+                              e.target.value
                             )
-                          )}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="mun-exp">
-                      <AccordionTrigger>MUN Experience</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {/* Delegate Experience */}
-                          <div>
-                            <p>
-                              <strong>MUNs as Delegate:</strong>{" "}
-                              {internal.experience?.delegate?.muns || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Details:</strong>{" "}
-                              {internal.experience?.delegate?.experience ||
-                                "N/A"}
-                            </p>
-                          </div>
+                          }
+                          className="col-span-3 border rounded-md px-3 py-2"
+                        >
+                          <option value="" disabled>
+                            Select Committee
+                          </option>
+                          <option value="UNGA-DISEC">UNGA-DISEC</option>
+                          <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
+                          <option value="UNSC">UNSC</option>
+                          <option value="JHES">
+                            Jackson Hole Economic Symposium (JHES)
+                          </option>
+                          <option value="CHAOS">CHAOS</option>
+                          <option value="AIPPM">AIPPM</option>
+                          <option value="ORF">ORF</option>
+                        </select>
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label
+                          htmlFor="allotment_portfolio"
+                          className="text-right"
+                        >
+                          Portfolio
+                        </Label>
+                        <Input
+                          id="allotment_portfolio"
+                          defaultValue={external.allotment_portfolio}
+                          onChange={(e) =>
+                            handleExternalChange(
+                              external._id,
+                              "allotment_portfolio",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Allotment Portfolio"
+                          className="col-span-3"
+                        />
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="paid" className="text-right">
+                          Paid
+                        </Label>
+                        <select
+                          id="paid"
+                          defaultValue={external.paid.toString()}
+                          onChange={(e) =>
+                            handleExternalChange(
+                              external._id,
+                              "paid",
+                              e.target.value === "true"
+                            )
+                          }
+                          className="col-span-3 border rounded-md px-3 py-2"
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <SheetFooter>
+                      <SheetClose asChild>
+                        <Button
+                          onClick={() =>
+                            updateDelegate(
+                              "external",
+                              external._id,
+                              external.allotment_committee,
+                              external.allotment_portfolio,
+                              external.paid
+                            )
+                          }
+                        >
+                          Save Changes
+                        </Button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </section>
 
-                          {/* EB Experience */}
-                          <div>
-                            <p>
-                              <strong>MUNs as EB:</strong>{" "}
-                              {internal.experience?.eb?.muns || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Details:</strong>{" "}
-                              {internal.experience?.eb?.experience || "N/A"}
-                            </p>
-                          </div>
+      {/* Internal Delegates Section */}
+      <section id="internal" className="mb-10 ">
+        <div className="text-4xl p-24 text-center">Internal Delegates</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
+          {filterDelegates(internalDelegates).map((internal) => (
+            <Card key={internal._id} className="w-full">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold">
+                    {internal.participant_name || "Name not provided"}
+                  </CardTitle>
+                  <Button
+                    variant="destructive"
+                    className="flex items-center space-x-2"
+                    onClick={() => deleteDelegate("internal", internal._id)}
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
+                <CardDescription>
+                  <strong>Allotment Committee:</strong>{" "}
+                  {internal.allotment_committee || "Not Assigned"}
+                  <br />
+                  <strong>Portfolio:</strong>{" "}
+                  {internal.allotment_portfolio || "Not Assigned"}
+                  <br />
+                  <strong>Paid:</strong> {internal.paid ? "Yes" : "No"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible>
+                  {/* Personal Details */}
+                  <AccordionItem value="personalDetails">
+                    <AccordionTrigger>Personal Details</AccordionTrigger>
+                    <AccordionContent>
+                      <p>
+                        <strong>Registration Number:</strong>{" "}
+                        {internal.registration_number || "Not Provided"}
+                      </p>
+                      <p>
+                        <strong>Contact Number:</strong>{" "}
+                        {internal.contact_number || "Not Provided"}
+                      </p>
+                      <p>
+                        <strong>Email:</strong>{" "}
+                        {internal.email_id || "Not Provided"}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  {/* Committee Preferences */}
+                  <AccordionItem value="preferences">
+                    <AccordionTrigger>Preferences</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {Object.entries(
+                          internal.committee_preferences || {}
+                        ).map(
+                          (
+                            [preferenceKey, preferenceValue],
+                            committeeIndex
+                          ) => (
+                            <div key={preferenceKey} className="space-y-1">
+                              {/* Committee Header */}
+                              <p className="text-lg font-semibold">
+                                {committeeIndex + 1}){" "}
+                                {preferenceValue.committee || "Not Assigned"}
+                              </p>
+
+                              {/* Allotments */}
+                              <ul className="space-y-1 ">
+                                {preferenceValue.allotments.map(
+                                  (allotment, preferenceIndex) => (
+                                    <li key={preferenceIndex}>
+                                      {String.fromCharCode(
+                                        97 + preferenceIndex
+                                      )}
+                                      ) {allotment || "Not Assigned"}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="mun-exp">
+                    <AccordionTrigger>MUN Experience</AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Delegate Experience */}
+                        <div>
+                          <p>
+                            <strong>MUNs as Delegate:</strong>{" "}
+                            {internal.experience?.delegate?.muns || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Details:</strong>{" "}
+                            {internal.experience?.delegate?.experience || "N/A"}
+                          </p>
                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button variant="outline">Edit Allotment</Button>
-                    </SheetTrigger>
-                    <SheetContent>
-                      <SheetHeader>
-                        <SheetTitle>Edit Allotment Details</SheetTitle>
-                        <SheetDescription>
-                          Make changes to allotment details and save them.
-                        </SheetDescription>
-                      </SheetHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label
-                            htmlFor="allotment_committee"
-                            className="text-right"
-                          >
-                            Committee
-                          </Label>
-                          <select
-                            id="allotment_committee"
-                            defaultValue={internal.allotment_committee || ""}
-                            onChange={(e) =>
-                              handleInternalChange(
-                                internal._id,
-                                "allotment_committee",
-                                e.target.value
-                              )
-                            }
-                            className="col-span-3 border rounded-md px-3 py-2"
-                          >
-                            <option value="" disabled>
-                              Select Committee
-                            </option>
-                            <option value="UNGA-DISEC">UNGA-DISEC</option>
-                            <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
-                            <option value="UNSC">UNSC</option>
-                            <option value="JHES">
-                              Jackson Hole Economic Symposium (JHES)
-                            </option>
-                            <option value="CHAOS">CHAOS</option>
-                            <option value="AIPPM">AIPPM</option>
-                            <option value="ORF">ORF</option>
-                          </select>
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label
-                            htmlFor="allotment_portfolio"
-                            className="text-right"
-                          >
-                            Portfolio
-                          </Label>
-                          <Input
-                            id="allotment_portfolio"
-                            defaultValue={internal.allotment_portfolio}
-                            onChange={(e) =>
-                              handleInternalChange(
-                                internal._id,
-                                "allotment_portfolio",
-                                e.target.value
-                              )
-                            }
-                            placeholder="Allotment Portfolio"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="paid" className="text-right">
-                            Paid
-                          </Label>
-                          <select
-                            id="paid"
-                            defaultValue={internal.paid.toString()}
-                            onChange={(e) =>
-                              handleInternalChange(
-                                internal._id,
-                                "paid",
-                                e.target.value === "true"
-                              )
-                            }
-                            className="col-span-3 border rounded-md px-3 py-2"
-                          >
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                          </select>
+
+                        {/* EB Experience */}
+                        <div>
+                          <p>
+                            <strong>MUNs as EB:</strong>{" "}
+                            {internal.experience?.eb?.muns || "N/A"}
+                          </p>
+                          <p>
+                            <strong>Details:</strong>{" "}
+                            {internal.experience?.eb?.experience || "N/A"}
+                          </p>
                         </div>
                       </div>
-                      <SheetFooter>
-                        <SheetClose asChild>
-                          <Button
-                            onClick={() =>
-                              updateDelegate(
-                                "internal",
-                                internal._id,
-                                internal.allotment_committee,
-                                internal.allotment_portfolio,
-                                internal.paid
-                              )
-                            }
-                          >
-                            Save Changes
-                          </Button>
-                        </SheetClose>
-                      </SheetFooter>
-                    </SheetContent>
-                  </Sheet>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </section>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline">Edit Allotment</Button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Edit Allotment Details</SheetTitle>
+                      <SheetDescription>
+                        Make changes to allotment details and save them.
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label
+                          htmlFor="allotment_committee"
+                          className="text-right"
+                        >
+                          Committee
+                        </Label>
+                        <select
+                          id="allotment_committee"
+                          defaultValue={internal.allotment_committee || ""}
+                          onChange={(e) =>
+                            handleInternalChange(
+                              internal._id,
+                              "allotment_committee",
+                              e.target.value
+                            )
+                          }
+                          className="col-span-3 border rounded-md px-3 py-2"
+                        >
+                          <option value="" disabled>
+                            Select Committee
+                          </option>
+                          <option value="UNGA-DISEC">UNGA-DISEC</option>
+                          <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
+                          <option value="UNSC">UNSC</option>
+                          <option value="JHES">
+                            Jackson Hole Economic Symposium (JHES)
+                          </option>
+                          <option value="CHAOS">CHAOS</option>
+                          <option value="AIPPM">AIPPM</option>
+                          <option value="ORF">ORF</option>
+                        </select>
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label
+                          htmlFor="allotment_portfolio"
+                          className="text-right"
+                        >
+                          Portfolio
+                        </Label>
+                        <Input
+                          id="allotment_portfolio"
+                          defaultValue={internal.allotment_portfolio}
+                          onChange={(e) =>
+                            handleInternalChange(
+                              internal._id,
+                              "allotment_portfolio",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Allotment Portfolio"
+                          className="col-span-3"
+                        />
+                      </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="paid" className="text-right">
+                          Paid
+                        </Label>
+                        <select
+                          id="paid"
+                          defaultValue={internal.paid.toString()}
+                          onChange={(e) =>
+                            handleInternalChange(
+                              internal._id,
+                              "paid",
+                              e.target.value === "true"
+                            )
+                          }
+                          className="col-span-3 border rounded-md px-3 py-2"
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <SheetFooter>
+                      <SheetClose asChild>
+                        <Button
+                          onClick={() =>
+                            updateDelegate(
+                              "internal",
+                              internal._id,
+                              internal.allotment_committee,
+                              internal.allotment_portfolio,
+                              internal.paid
+                            )
+                          }
+                        >
+                          Save Changes
+                        </Button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </section>
 
-        {/* Delegations Section */}
-        <section id="delegations">
-          <div className="text-4xl p-8 text-center">Delegations</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {delegations.map((delegation) => (
-              <Card key={delegation._id} className="p-4">
-                <p>
-                  <strong>Organisation Name:</strong>{" "}
-                  {delegation.organisationName}
-                </p>
-                <p>
-                  <strong>Head Delegate:</strong> {delegation.headDelegate}
-                </p>
-                <p>
-                  <strong>Email:</strong> {delegation.email}
-                </p>
-                <p>
-                  <strong>Contact Number:</strong> {delegation.contactNumber}
-                </p>
-                <p>
-                  <strong>Delegation Strength:</strong>{" "}
-                  {delegation.delegationStrength}
-                </p>
-              </Card>
-            ))}
-          </div>
-        </section>
+      {/* Delegations Section */}
+      <section id="delegations">
+        <div className="text-4xl p-8 text-center">Delegations</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {delegations.map((delegation) => (
+            <Card key={delegation._id} className="p-4">
+              <p>
+                <strong>Organisation Name:</strong>{" "}
+                {delegation.organisationName}
+              </p>
+              <p>
+                <strong>Head Delegate:</strong> {delegation.headDelegate}
+              </p>
+              <p>
+                <strong>Email:</strong> {delegation.email}
+              </p>
+              <p>
+                <strong>Contact Number:</strong> {delegation.contactNumber}
+              </p>
+              <p>
+                <strong>Delegation Strength:</strong>{" "}
+                {delegation.delegationStrength}
+              </p>
+            </Card>
+          ))}
+        </div>
+      </section>
     </>
   );
 };
-
 
 export default AdminPage;

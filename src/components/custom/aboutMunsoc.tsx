@@ -39,7 +39,7 @@ const AboutMunsoc = () => {
             <h2
               className={`text-2xl md:text-4xl mb-4 ${latoBold.className}`}
             >
-              We at VITMUNSoc.
+              We are VITMUNSoc.
             </h2>
             <p className={`text-sm md:text-lg leading-relaxed ${latoThin.className}`}>
               The VIT Model United Nations Society (VITMUNSoc) is a model of
