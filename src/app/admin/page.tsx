@@ -143,6 +143,7 @@ const AdminPage = () => {
         setIsAuthenticated(false);
         return;
       }
+
       const [externalResponse, internalResponse, delegationResponse] =
         await Promise.all([
           fetch("/api/admin/external-delegates"),
@@ -158,11 +159,25 @@ const AdminPage = () => {
         handleLogout();
         return;
       }
+
       const externalData = await externalResponse.json();
       const internalData = await internalResponse.json();
       const delegationData = await delegationResponse.json();
 
-      setExternalDelegates(externalData.data || []);
+      // Filter external delegates: Skip those with missing committee preferences or experience
+      const filteredExternalDelegates = (externalData.data || []).filter(
+        (delegate: Delegate) => {
+          return (
+            delegate.committee_preferences &&
+            delegate.experience &&
+            delegate.experience.delegate &&
+            delegate.experience.eb
+          );
+        }
+      );
+
+      // Set states
+      setExternalDelegates(filteredExternalDelegates);
       setInternalDelegates(internalData.data || []);
       setDelegations(delegationData.data || []);
     } catch (error) {
@@ -930,7 +945,10 @@ const AdminPage = () => {
                         </Label>
                         <select
                           id="paid"
-                          defaultValue={internal.paid.toString()}
+                          defaultValue={(internal.paid !== undefined
+                            ? internal.paid
+                            : true
+                          ).toString()}
                           onChange={(e) =>
                             handleInternalChange(
                               internal._id,
