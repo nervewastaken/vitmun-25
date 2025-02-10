@@ -19,6 +19,7 @@ interface Delegate {
   registration_number?: string;
   committee_preferences?: unknown;
   experience?: unknown;
+  lunch?: unknown;
 }
 
 const AddExternalDelegate = () => {
@@ -146,14 +147,36 @@ const AddExternalDelegate = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="allotment_committee">Committee</Label>
-            <Input
+            {/* <Input
               id="allotment_committee"
               name="allotment_committee"
               type="text"
               value={formData.allotment_committee}
               onChange={handleChange}
               required
-            />
+            /> */}
+
+            <select
+              id="allotment_committee"
+              name="allotment_committee"
+              value={formData.allotment_committee}
+              onChange={handleChange}
+              required
+              
+            >
+              <option value="" disabled>
+                Select Committee
+              </option>
+              <option value="UNGA-DISEC">UNGA-DISEC</option>
+              <option value="UNGA-SOCHUM">UNGA-SOCHUM</option>
+              <option value="UNSC">UNSC</option>
+              <option value="JHES">
+                Jackson Hole Economic Symposium (JHES)
+              </option>
+              <option value="CHAOS">CHAOS</option>
+              <option value="AIPPM">AIPPM</option>
+              <option value="ORF">ORF</option>
+            </select>
           </div>
           <div>
             <Label htmlFor="allotment_portfolio">Portfolio</Label>

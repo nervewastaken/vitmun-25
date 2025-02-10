@@ -77,11 +77,11 @@ interface Delegate {
 
 interface Delegation {
   _id: string;
-  organisationName: string;
-  headDelegate: string;
-  email: string;
-  contactNumber: string;
-  delegationStrength: number;
+  organisation_name: string;
+  head_delegate: string;
+  email_id: string;
+  contact_number: string;
+  delegation_strength: number;
 }
 
 const AdminPage = () => {
@@ -96,6 +96,34 @@ const AdminPage = () => {
   const [delegations, setDelegations] = useState<Delegation[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUnallottedOnly, setShowUnallottedOnly] = useState(false);
+
+  const updateAllLunchStatus = async () => {
+    if (
+      !confirm(
+        "Are you sure you want to reset the lunch status for all delegates?"
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/update-lunch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Successfully reset lunch status for delegates!`);
+      } else {
+        alert("Failed to update lunch status.");
+      }
+    } catch (error) {
+      console.error("Error updating lunch status:", error);
+      alert("An error occurred while updating lunch status.");
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -466,6 +494,12 @@ const AdminPage = () => {
                 Add Delegation
               </Link>
             </div>
+            <Button
+              className="mt-6 bg-red-600 text-white hover:bg-red-700"
+              onClick={updateAllLunchStatus}
+            >
+              Reset Lunch
+            </Button>
 
             <Button
               variant="secondary"
@@ -996,20 +1030,20 @@ const AdminPage = () => {
             <Card key={delegation._id} className="p-4">
               <p>
                 <strong>Organisation Name:</strong>{" "}
-                {delegation.organisationName}
+                {delegation.organisation_name}
               </p>
               <p>
-                <strong>Head Delegate:</strong> {delegation.headDelegate}
+                <strong>Head Delegate:</strong> {delegation.head_delegate}
               </p>
               <p>
-                <strong>Email:</strong> {delegation.email}
+                <strong>Email:</strong> {delegation.email_id}
               </p>
               <p>
-                <strong>Contact Number:</strong> {delegation.contactNumber}
+                <strong>Contact Number:</strong> {delegation.contact_number}
               </p>
               <p>
                 <strong>Delegation Strength:</strong>{" "}
-                {delegation.delegationStrength}
+                {delegation.delegation_strength}
               </p>
             </Card>
           ))}
