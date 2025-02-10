@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import * as XLSX from "xlsx";
 
-import { Trash } from "lucide-react";
+// import { Trash } from "lucide-react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -175,33 +175,33 @@ const AdminPage = () => {
     }
   };
 
-  const deleteDelegate = async (type: "external" | "internal", id: string) => {
-    try {
-      const confirmation = window.confirm(
-        "Are you sure you want to delete this delegate? This action cannot be undone."
-      );
-      if (!confirmation) return;
+  // const deleteDelegate = async (type: "external" | "internal", id: string) => {
+  //   try {
+  //     const confirmation = window.confirm(
+  //       "Are you sure you want to delete this delegate? This action cannot be undone."
+  //     );
+  //     if (!confirmation) return;
 
-      const response = await fetch(
-        `/api/admin/delete-delegate?type=${type}&id=${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+  //     const response = await fetch(
+  //       `/api/admin/delete-delegate?type=${type}&id=${id}`,
+  //       {
+  //         method: "DELETE",
+  //       }
+  //     );
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      if (response.ok && result.success) {
-        alert("Delegate deleted successfully!");
-        fetchData(); // Refresh the data after deletion
-      } else {
-        alert(result.error || "Failed to delete the delegate.");
-      }
-    } catch (error) {
-      console.error("Error deleting delegate:", error);
-      alert("An error occurred while deleting the delegate.");
-    }
-  };
+  //     if (response.ok && result.success) {
+  //       alert("Delegate deleted successfully!");
+  //       fetchData(); // Refresh the data after deletion
+  //     } else {
+  //       alert(result.error || "Failed to delete the delegate.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting delegate:", error);
+  //     alert("An error occurred while deleting the delegate.");
+  //   }
+  // };
 
   const handleInternalChange = (
     id: string,
@@ -444,6 +444,12 @@ const AdminPage = () => {
               >
                 Show only unallotted
               </label>
+              <Link
+                href="/ext-del"
+                className="px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Add Delegation
+              </Link>
             </div>
 
             <Button
@@ -503,13 +509,13 @@ const AdminPage = () => {
                   <CardTitle className="text-lg font-semibold">
                     {external.participant_name || "Name not provided"}
                   </CardTitle>
-                  <Button
+                  {/* <Button
                     variant="destructive"
                     className="flex items-center space-x-2"
                     onClick={() => deleteDelegate("external", external._id)} // Replace "external" with "internal" for internal delegates
                   >
                     <Trash className="w-4 h-4" />
-                  </Button>
+                  </Button> */}
                 </div>
                 <CardDescription>
                   <strong>Allotment Committee:</strong>{" "}
@@ -691,7 +697,7 @@ const AdminPage = () => {
                         </Label>
                         <select
                           id="paid"
-                          defaultValue={external.paid.toString()}
+                          defaultValue={external.paid?.toString() || "false"}
                           onChange={(e) =>
                             handleExternalChange(
                               external._id,
@@ -742,13 +748,13 @@ const AdminPage = () => {
                   <CardTitle className="text-lg font-semibold">
                     {internal.participant_name || "Name not provided"}
                   </CardTitle>
-                  <Button
+                  {/* <Button
                     variant="destructive"
                     className="flex items-center space-x-2"
                     onClick={() => deleteDelegate("internal", internal._id)}
                   >
                     <Trash className="w-4 h-4" />
-                  </Button>
+                  </Button> */}
                 </div>
                 <CardDescription>
                   <strong>Allotment Committee:</strong>{" "}
