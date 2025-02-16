@@ -19,13 +19,13 @@ const lato = Lato({
 });
 
 const committees = [
-  { name: "CHAOS", imageWhite: "/committee/chaos.png", imageBlack: "/committee/chaos2.png", data:"Where uncertainty meets strategy", agenda: "Clausula Rebus Sic Stantibus", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "JHES", imageWhite: "/committee/jhes.png", imageBlack: "/committee/jhes2.png", data:"Where global economies converge", agenda: "How Can Central Banks Manage Inflation Caused by Trade Shocks?", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "UNGA-SOCHUM", imageWhite: "/committee/sochum.png", imageBlack: "/committee/sochum2.png", data:"Championing human rights, one debate at a time", agenda: "Transitional Justice and Accountability in ensuring Human Security.", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "UNSC", imageWhite: "/committee/unsc.png", imageBlack: "/committee/unsc2.png", data:"Power, politics, and peace. Freeze Date: 15 October 1977" ,agenda: "The Ogaden Situation", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "DISEC", imageWhite: "/committee/disec.png", imageBlack: "/committee/disec2.png", data:"Where diplomacy meets defence", agenda: "Discussing Ballistic Missile Proliferation with emphasis on the Hague Code of Conduct.", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "AIPPM", imageWhite: "/committee/aippm.png", imageBlack: "/committee/aippm2.png", data:"Where India’s political spectrum unites", agenda: "Discussing the structure and framework for a prospective UCC (Uniform Civil Code) Bill.", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
-  { name: "ORF", imageWhite: "/committee/orf.png", imageBlack: "/committee/orf2.png", data:"Shaping the future, one policy at a time. Forum: Rakshamanthan: India’s Defence Dialogue", agenda: "Future of India’s Armed Forces : Vision 2030 and beyond", board: { "Chair": "Person A", "Vice Chair": "Person B", "Scribe": "Person C" } },
+  { name: "CHAOS", imageWhite: "/committee/chaos.png", imageBlack: "/committee/chaos2.png", data:"Where uncertainty meets strategy", agenda: "Clausula Rebus Sic Stantibus", board: { "Chairperson": "Aravind Y Belur", "Vice-Chairperson": "Swastik Shukla", "Director": "Sree Pramod Ganapa & Ansh James" } },
+  { name: "JHES", imageWhite: "/committee/jhes.png", imageBlack: "/committee/jhes2.png", data:"Where global economies converge", agenda: "How Can Central Banks Manage Inflation Caused by Trade Shocks?", board: { "Chairperson": "Sanjana Vijay", "Vice-Chairperson": "Shubham Rathore", "Director": "Srivaass Ganesan" } },
+  { name: "UNGA-SOCHUM", imageWhite: "/committee/sochum.png", imageBlack: "/committee/sochum2.png", data:"Championing human rights, one debate at a time", agenda: "Transitional Justice and Accountability in ensuring Human Security.", board: { "Chairperson": "Satrajit Sahani", "Vice-Chairperson": "Siddharth Bandam", "Director": "Hrishi Samay Jetty" } },
+  { name: "UNSC", imageWhite: "/committee/unsc.png", imageBlack: "/committee/unsc2.png", data:"Power, politics, and peace. Freeze Date: 15 October 1977" ,agenda: "The Ogaden Situation", board: { "President": "Fazil Razak", "Vice-President": "Aaron Mano Cherian", "Director": "Anandu Vinod" } },
+  { name: "DISEC", imageWhite: "/committee/disec.png", imageBlack: "/committee/disec2.png", data:"Where diplomacy meets defence", agenda: "Discussing Ballistic Missile Proliferation with emphasis on the Hague Code of Conduct.", board: { "Chairperson": "Subhav Vardhan", "Vice-Chairperson": "Aritra Karak", "Director": "Guru Charan Sivakumar" } },
+  { name: "AIPPM", imageWhite: "/committee/aippm.png", imageBlack: "/committee/aippm2.png", data:"Where India’s political spectrum unites", agenda: "Discussing the structure and framework for a prospective UCC (Uniform Civil Code) Bill.", board: { "Moderator": "Aaron Mirza", "Deputy Moderator": "Tarun Malik", "Scribe": "Ayesha Batul" } },
+  { name: "ORF", imageWhite: "/committee/orf.png", imageBlack: "/committee/orf2.png", data:"Shaping the future, one policy at a time. Forum: Rakshamanthan: India’s Defence Dialogue", agenda: "Future of India’s Armed Forces : Vision 2030 and beyond", board: { "Chairperson": "Ayush R", "Vice-Chairperson": "Akash P Videsh", "Director": "Sanket Maniyar" } },
 ];
 
 const CommitteesPage = () => {
@@ -101,11 +101,11 @@ const CommitteesPage = () => {
       <p className="text-lg mb-4">
         <strong>Agenda:</strong> {selectedCommittee.agenda}
       </p>
-      {/* {Object.entries(selectedCommittee.board).map(([position, person]) => (
+      {Object.entries(selectedCommittee.board).map(([position, person]) => (
         <p key={position} className="mb-2">
           <strong>{position}:</strong> {person}
         </p>
-      ))} */}
+      ))}
     </div>
   </div>
 )}
