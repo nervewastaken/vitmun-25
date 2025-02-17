@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import * as XLSX from "xlsx";
 
-import { Trash } from "lucide-react";
+// import { Trash } from "lucide-react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -77,11 +77,11 @@ interface Delegate {
 
 interface Delegation {
   _id: string;
-  organisationName: string;
-  headDelegate: string;
-  email: string;
-  contactNumber: string;
-  delegationStrength: number;
+  organisation_name: string;
+  head_delegate: string;
+  email_id: string;
+  contact_number: string;
+  delegation_strength: number;
 }
 
 const AdminPage = () => {
@@ -96,6 +96,34 @@ const AdminPage = () => {
   const [delegations, setDelegations] = useState<Delegation[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUnallottedOnly, setShowUnallottedOnly] = useState(false);
+
+  const updateAllLunchStatus = async () => {
+    if (
+      !confirm(
+        "Are you sure you want to reset the lunch status for all delegates?"
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/update-lunch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Successfully reset lunch status for delegates!`);
+      } else {
+        alert("Failed to update lunch status.");
+      }
+    } catch (error) {
+      console.error("Error updating lunch status:", error);
+      alert("An error occurred while updating lunch status.");
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -143,6 +171,7 @@ const AdminPage = () => {
         setIsAuthenticated(false);
         return;
       }
+
       const [externalResponse, internalResponse, delegationResponse] =
         await Promise.all([
           fetch("/api/admin/external-delegates"),
@@ -158,11 +187,25 @@ const AdminPage = () => {
         handleLogout();
         return;
       }
+
       const externalData = await externalResponse.json();
       const internalData = await internalResponse.json();
       const delegationData = await delegationResponse.json();
 
-      setExternalDelegates(externalData.data || []);
+      // Filter external delegates: Skip those with missing committee preferences or experience
+      const filteredExternalDelegates = (externalData.data || []).filter(
+        (delegate: Delegate) => {
+          return (
+            delegate.committee_preferences &&
+            delegate.experience &&
+            delegate.experience.delegate &&
+            delegate.experience.eb
+          );
+        }
+      );
+
+      // Set states
+      setExternalDelegates(filteredExternalDelegates);
       setInternalDelegates(internalData.data || []);
       setDelegations(delegationData.data || []);
     } catch (error) {
@@ -175,33 +218,33 @@ const AdminPage = () => {
     }
   };
 
-  const deleteDelegate = async (type: "external" | "internal", id: string) => {
-    try {
-      const confirmation = window.confirm(
-        "Are you sure you want to delete this delegate? This action cannot be undone."
-      );
-      if (!confirmation) return;
+  // const deleteDelegate = async (type: "external" | "internal", id: string) => {
+  //   try {
+  //     const confirmation = window.confirm(
+  //       "Are you sure you want to delete this delegate? This action cannot be undone."
+  //     );
+  //     if (!confirmation) return;
 
-      const response = await fetch(
-        `/api/admin/delete-delegate?type=${type}&id=${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+  //     const response = await fetch(
+  //       `/api/admin/delete-delegate?type=${type}&id=${id}`,
+  //       {
+  //         method: "DELETE",
+  //       }
+  //     );
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      if (response.ok && result.success) {
-        alert("Delegate deleted successfully!");
-        fetchData(); // Refresh the data after deletion
-      } else {
-        alert(result.error || "Failed to delete the delegate.");
-      }
-    } catch (error) {
-      console.error("Error deleting delegate:", error);
-      alert("An error occurred while deleting the delegate.");
-    }
-  };
+  //     if (response.ok && result.success) {
+  //       alert("Delegate deleted successfully!");
+  //       fetchData(); // Refresh the data after deletion
+  //     } else {
+  //       alert(result.error || "Failed to delete the delegate.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting delegate:", error);
+  //     alert("An error occurred while deleting the delegate.");
+  //   }
+  // };
 
   const handleInternalChange = (
     id: string,
@@ -444,7 +487,19 @@ const AdminPage = () => {
               >
                 Show only unallotted
               </label>
+              <Link
+                href="/ext-del"
+                className="px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                Add Delegation
+              </Link>
             </div>
+            <Button
+              className="mt-6 bg-red-600 text-white hover:bg-red-700"
+              onClick={updateAllLunchStatus}
+            >
+              Reset Lunch
+            </Button>
 
             <Button
               variant="secondary"
@@ -503,13 +558,13 @@ const AdminPage = () => {
                   <CardTitle className="text-lg font-semibold">
                     {external.participant_name || "Name not provided"}
                   </CardTitle>
-                  <Button
+                  {/* <Button
                     variant="destructive"
                     className="flex items-center space-x-2"
                     onClick={() => deleteDelegate("external", external._id)} // Replace "external" with "internal" for internal delegates
                   >
                     <Trash className="w-4 h-4" />
-                  </Button>
+                  </Button> */}
                 </div>
                 <CardDescription>
                   <strong>Allotment Committee:</strong>{" "}
@@ -691,7 +746,7 @@ const AdminPage = () => {
                         </Label>
                         <select
                           id="paid"
-                          defaultValue={external.paid.toString()}
+                          defaultValue={external.paid?.toString() || "false"}
                           onChange={(e) =>
                             handleExternalChange(
                               external._id,
@@ -742,13 +797,13 @@ const AdminPage = () => {
                   <CardTitle className="text-lg font-semibold">
                     {internal.participant_name || "Name not provided"}
                   </CardTitle>
-                  <Button
+                  {/* <Button
                     variant="destructive"
                     className="flex items-center space-x-2"
                     onClick={() => deleteDelegate("internal", internal._id)}
                   >
                     <Trash className="w-4 h-4" />
-                  </Button>
+                  </Button> */}
                 </div>
                 <CardDescription>
                   <strong>Allotment Committee:</strong>{" "}
@@ -924,7 +979,10 @@ const AdminPage = () => {
                         </Label>
                         <select
                           id="paid"
-                          defaultValue={internal.paid.toString()}
+                          defaultValue={(internal.paid !== undefined
+                            ? internal.paid
+                            : true
+                          ).toString()}
                           onChange={(e) =>
                             handleInternalChange(
                               internal._id,
@@ -972,20 +1030,20 @@ const AdminPage = () => {
             <Card key={delegation._id} className="p-4">
               <p>
                 <strong>Organisation Name:</strong>{" "}
-                {delegation.organisationName}
+                {delegation.organisation_name}
               </p>
               <p>
-                <strong>Head Delegate:</strong> {delegation.headDelegate}
+                <strong>Head Delegate:</strong> {delegation.head_delegate}
               </p>
               <p>
-                <strong>Email:</strong> {delegation.email}
+                <strong>Email:</strong> {delegation.email_id}
               </p>
               <p>
-                <strong>Contact Number:</strong> {delegation.contactNumber}
+                <strong>Contact Number:</strong> {delegation.contact_number}
               </p>
               <p>
                 <strong>Delegation Strength:</strong>{" "}
-                {delegation.delegationStrength}
+                {delegation.delegation_strength}
               </p>
             </Card>
           ))}
