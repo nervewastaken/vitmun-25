@@ -18,7 +18,22 @@ const lato = Lato({
   variable: "--font-lato",
 });
 
-const committees = [
+type BoardPosition = 
+  | { Chairperson: string; "Vice-Chairperson": string; Director: string }
+  | { President: string; "Vice-President": string; Director: string }
+  | { Moderator: string; "Deputy Moderator": string; Scribe: string };
+
+// Define the committee type
+interface Committee {
+  name: string;
+  imageWhite: string;
+  imageBlack: string;
+  data: string;
+  agenda: string;
+  board: BoardPosition;
+}
+
+const committees: Committee[]= [
   { name: "CHAOS", imageWhite: "/committee/chaos.png", imageBlack: "/committee/chaos2.png", data:"Where uncertainty meets strategy", agenda: "Clausula Rebus Sic Stantibus", board: { "Chairperson": "Aravind Y Belur", "Vice-Chairperson": "Swastik Shukla", "Director": "Sree Pramod Ganapa & Ansh James" } },
   { name: "JHES", imageWhite: "/committee/jhes.png", imageBlack: "/committee/jhes2.png", data:"Where global economies converge", agenda: "How Can Central Banks Manage Inflation Caused by Trade Shocks?", board: { "Chairperson": "Sanjana Vijay", "Vice-Chairperson": "Shubham Rathore", "Director": "Srivaass Ganesan" } },
   { name: "UNGA-SOCHUM", imageWhite: "/committee/sochum.png", imageBlack: "/committee/sochum2.png", data:"Championing human rights, one debate at a time", agenda: "Transitional Justice and Accountability in ensuring Human Security.", board: { "Chairperson": "Satrajit Sahani", "Vice-Chairperson": "Siddharth Bandam", "Director": "Hrishi Samay Jetty" } },
@@ -31,7 +46,7 @@ const committees = [
 const CommitteesPage = () => {
   const [selectedCommittee, setSelectedCommittee] = useState<{
     data: string; name: string, agenda: string, board: { [key: string]: string } 
-} | null>(null);
+  } | null>(null);
 
   const handleCommitteeClick = (committee: { name: string, agenda: string, data: string, board: { [key: string]: string } }) => {
     setSelectedCommittee(committee);
@@ -58,58 +73,62 @@ const CommitteesPage = () => {
               imageWhite={committee.imageWhite}
               imageBlack={committee.imageBlack}
               name={committee.name}
-              onClick={() => handleCommitteeClick(committee)}
+              onClick={() => handleCommitteeClick({
+                name: committee.name,
+                agenda: committee.agenda,
+                data: committee.data,
+                board: committee.board
+              })}
               isSelected={selectedCommittee?.name === committee.name}
             />
           ))}
         </div>
 
         {selectedCommittee && (
-  <div
-    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50"
-    aria-modal="true"
-    role="dialog"
-  >
-    <div className="bg-white border-4 border-black bg-gradient-to-l from-transparent to-blue-100 p-6 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 max-w-3xl mx-auto text-center relative overflow-y-auto max-h-[90vh]">
-      <button
-        className="absolute top-4 right-4 rounded-full"
-        onClick={closeModal}
-        aria-label="Close Modal"
-      >
-        <Image src="/cross.svg" alt="Close" width={36} height={36} />
-      </button>
-      <h2 className="text-3xl font-bold mb-4">{selectedCommittee.name}</h2>
-      <p className="text-lg mb-4">
-        <strong>
-          {selectedCommittee.name === "UNSC"
-            ? selectedCommittee.data.split(" Freeze Date:")[0]
-            : selectedCommittee.name === "ORF" && selectedCommittee.data.includes("Forum:")
-            ? selectedCommittee.data.split(" Forum:")[0]
-            : selectedCommittee.data}
-        </strong>
-      </p>
-      {selectedCommittee.name === "UNSC" && (
-        <p className="text-lg mb-4">
-          <strong>Freeze Date:</strong> 15 October 1977
-        </p>
-      )}
-      {selectedCommittee.name === "ORF" && selectedCommittee.data.includes("Forum:") && (
-        <p className="text-lg mb-4">
-          <strong>Forum:</strong> {selectedCommittee.data.split("Forum:")[1].trim()}
-        </p>
-      )}
-      <p className="text-lg mb-4">
-        <strong>Agenda:</strong> {selectedCommittee.agenda}
-      </p>
-      {Object.entries(selectedCommittee.board).map(([position, person]) => (
-        <p key={position} className="mb-2">
-          <strong>{position}:</strong> {person}
-        </p>
-      ))}
-    </div>
-  </div>
-)}
-
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50"
+            aria-modal="true"
+            role="dialog"
+          >
+            <div className="bg-white border-4 border-black bg-gradient-to-l from-transparent to-blue-100 p-6 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 max-w-3xl mx-auto text-center relative overflow-y-auto max-h-[90vh]">
+              <button
+                className="absolute top-4 right-4 rounded-full"
+                onClick={closeModal}
+                aria-label="Close Modal"
+              >
+                <Image src="/cross.svg" alt="Close" width={36} height={36} />
+              </button>
+              <h2 className="text-3xl font-bold mb-4">{selectedCommittee.name}</h2>
+              <p className="text-lg mb-4">
+                <strong>
+                  {selectedCommittee.name === "UNSC"
+                    ? selectedCommittee.data.split(" Freeze Date:")[0]
+                    : selectedCommittee.name === "ORF" && selectedCommittee.data.includes("Forum:")
+                    ? selectedCommittee.data.split(" Forum:")[0]
+                    : selectedCommittee.data}
+                </strong>
+              </p>
+              {selectedCommittee.name === "UNSC" && (
+                <p className="text-lg mb-4">
+                  <strong>Freeze Date:</strong> 15 October 1977
+                </p>
+              )}
+              {selectedCommittee.name === "ORF" && selectedCommittee.data.includes("Forum:") && (
+                <p className="text-lg mb-4">
+                  <strong>Forum:</strong> {selectedCommittee.data.split("Forum:")[1].trim()}
+                </p>
+              )}
+              <p className="text-lg mb-4">
+                <strong>Agenda:</strong> {selectedCommittee.agenda}
+              </p>
+              {Object.entries(selectedCommittee.board).map(([position, person]) => (
+                <p key={position} className="mb-2">
+                  <strong>{position}:</strong> {person}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
