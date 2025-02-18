@@ -96,6 +96,7 @@ const AdminPage = () => {
   const [delegations, setDelegations] = useState<Delegation[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUnallottedOnly, setShowUnallottedOnly] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const updateAllLunchStatus = async () => {
     if (
@@ -446,10 +447,13 @@ const AdminPage = () => {
   return (
     <>
       {/* Fixed Navbar */}
-      <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
-          <span className="text-lg font-bold">Admin Panel- VITMUN 25</span>
-          <div className="flex items-center space-x-6">
+     <nav className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
+  <div className="max-w-7xl mx-auto px-4 py-2">
+    <div className="flex justify-between items-center">
+      <span className="text-lg font-bold">Admin Panel- VITMUN 25</span>
+      
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex items-center space-x-6">
             <Link
               href="#internal"
               className="px-4 py-2 rounded hover:bg-blue-700 transition"
@@ -501,11 +505,7 @@ const AdminPage = () => {
               Reset Lunch
             </Button>
 
-            <Button
-              variant="secondary"
-              onClick={handleLogout}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded flex items-center gap-2"
-            >
+           <Button variant="secondary" onClick={handleLogout} className="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -523,19 +523,132 @@ const AdminPage = () => {
               </svg>
               Logout
             </Button>
-            <Button
-              onClick={generateExcel}
-              className="bg-green-500 text-white px-4 py-2 rounded"
-            >
+            <Button onClick={generateExcel} className="bg-green-500 text-white px-4 py-2 rounded">
               Download Excel
             </Button>
           </div>
+           <div className="md:hidden">
+        <Button
+          variant="ghost"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="text-white hover:bg-blue-700 focus:outline-none"
+        >
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            {isMenuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+        </Button>
+      </div>
+    </div>
+
+    {/* Mobile Menu */}
+    {isMenuOpen && (
+      <div className="md:hidden pt-4 pb-2 space-y-4">
+        <div className="flex flex-col space-y-2">
+          <Link
+            href="#internal"
+            className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Internal
+          </Link>
+          <Link
+            href="#external"
+            className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            External
+          </Link>
+          <Link
+            href="#delegations"
+            className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Delegations
+          </Link>
+          <Link
+            href="../allotments"
+            className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Allotments
+          </Link>
         </div>
-      </nav>
+
+        <div className="flex flex-col space-y-4 border-t border-blue-500 pt-4">
+          <div className="flex items-center space-x-3 px-4">
+            <Switch
+              id="showUnallotted"
+              checked={showUnallottedOnly}
+              onCheckedChange={setShowUnallottedOnly}
+            />
+            <label
+              htmlFor="showUnallotted"
+              className="text-sm font-medium text-gray-200"
+            >
+              Show only unallotted
+            </label>
+          </div>
+
+          <Link
+            href="/ext-del"
+            className="px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Add Delegation
+          </Link>
+
+          <Button
+            className="bg-red-600 text-white hover:bg-red-700 mx-4"
+            onClick={() => {
+              updateAllLunchStatus();
+              setIsMenuOpen(false);
+            }}
+          >
+            Reset Lunch
+          </Button>
+
+          <Button
+            onClick={generateExcel}
+            className="bg-green-500 text-white mx-4"
+          >
+            Download Excel
+          </Button>
+
+          <Button
+            variant="secondary"
+            onClick={handleLogout}
+            className="bg-white text-blue-600 hover:bg-gray-100 mx-4 flex items-center gap-2"
+          >
+            {/* ... logout icon and text ... */}
+          </Button>
+        </div>
+      </div>
+    )}
+  </div>
+</nav>
 
       {/* Content Section */}
-      <div id="top" className="p-6 mt-16 bg-gray-100 rounded-lg shadow-md">
-        <ul className="list-disc pl-8 space-y-2 text-gray-700">
+      <div id="top" className="w-full p-6 mt-[8vh] md:mt-[15vh] bg-gray-100 rounded-lg shadow-md">
+        <ul className="mt-30 list-disc pl-8 space-y-2 text-gray-700">
           <li>
             Use <span className="font-semibold">Ctrl+F</span> or{" "}
             <span className="font-semibold">Cmd+F</span> to search for
@@ -548,8 +661,8 @@ const AdminPage = () => {
         </ul>
       </div>
 
-      <section id="external">
-        <div className="text-4xl p-24 text-center">External Delegates</div>
+      <section id="external" className="mt-[0.5vh]">
+        <div className="text-4xl p-12 text-center">External Delegates</div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-4">
           {filterDelegates(externalDelegates).map((external) => (
             <Card key={external._id} className="w-full">
