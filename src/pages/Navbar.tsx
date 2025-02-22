@@ -76,6 +76,9 @@ export default function Navbar() {
                     <li className="px-4 py-2 hover:text-[#54B3EA]">
                       <Link href="https://drive.google.com/file/d/1UhHYEbJeCZkzTPwWwjk3vIlb3_OFMsuz/view?usp=drive_link" target="blank">CONFERENCE BROCHURE</Link>
                     </li>
+                    <li className="px-4 py-2 hover:text-[#54B3EA]">
+                      <Link href="https://drive.google.com/drive/u/0/folders/1-kbW0OyNkP9PVmNX-UHc5QVdZud6QPHL" target="blank">BACKGROUND GUIDES</Link>
+                    </li>
                   </ul>
                 )}
               </li>
@@ -133,6 +136,18 @@ export default function Navbar() {
                             }}
                           >
                             CONFERENCE BROCHURE
+                          </Link>
+                        </li>
+                        <li className="px-4 py-2 hover:text-[#54B3EA] text-[2.5vh]">
+                          <Link 
+                            href="https://drive.google.com/drive/u/0/folders/1-kbW0OyNkP9PVmNX-UHc5QVdZud6QPHL" 
+                            target="blank"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleMenu();
+                            }}
+                          >
+                            BACKGROUND GUIDES
                           </Link>
                         </li>
                       </ul>
