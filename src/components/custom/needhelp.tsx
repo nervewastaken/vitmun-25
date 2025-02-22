@@ -10,8 +10,8 @@ const NeedHelp = () => {
     <>
 
     
-      <div className={`text-black  font-medium text-xl font-cereal`}>
-        <div className="w-[80%] mx-auto container flex  py-24 md:flex-row flex-col items-center">
+      <div className={`text-black  font-medium text-xl font-cereal bg-gradient-to-l from-transparent to-blue-100`}>
+        <div className="w-[80%] mx-auto container flex  py-12 md:flex-row flex-col items-center">
           <section className="w-full md:w-[60%]">
             <div className="wrapper md:w-[70%] text-sm md:text-lg">
               <motion.div
@@ -96,6 +96,7 @@ const NeedHelp = () => {
                 height={500}
                 alt="QR-CODE"
                 src="/qr-code.webp"
+                draggable="false"
                 className="w-full h-full"
               />
             </div>

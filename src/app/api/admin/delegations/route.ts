@@ -1,17 +1,18 @@
 import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "../../../../../lib/mongodb";
-import { getAuth } from "@clerk/nextjs/server";
 
 export async function GET(req: NextRequest) {
   try {
     // Authenticate the user
-    const { userId } = getAuth(req);
+    // const { userId } = getAuth(req);
 
-    if (!userId) {
-      return NextResponse.json({ error: "Bad Auth!" }, { status: 401 });
-    }
+    // if (!userId) {
+    //   return NextResponse.json({ error: "Bad Auth!" }, { status: 401 });
+    // }
 
     // Fetch data from MongoDB
+    const { searchParams } = new URL(req.url);
+    console.log(searchParams)
     const client = await clientPromise;
     const db = client.db("delegateallotments");
     const collection = db.collection("delegation");

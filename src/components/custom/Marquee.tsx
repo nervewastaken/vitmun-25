@@ -8,7 +8,7 @@ interface MarqueeProps {
 
 const Marquee: React.FC<MarqueeProps> = ({ text1, text2 }) => {
   return (
-    <div className="overflow-hidden w-full text-white font-bebas text-[2vh] lg:text-[4vh] py-2">
+    <div className="overflow-hidden w-full text-white font-bebas text-[2vh] lg:text-[3vh] py-1 z-1">
       {/* Marquee Container */}
       <div className="flex whitespace-nowrap animate-marquee">
         {/* Repeat enough content to cover the gap */}

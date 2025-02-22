@@ -1,27 +1,32 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
-import { useEffect } from "react";
-import Landing from "../pages/Landing"
-import Navbar from "../components/custom/Navbar"
+
+import { useState } from 'react';
+import NeedHelp from "@/components/custom/needhelp";
+import Landing from "../pages/Landing";
+import Navbar from "../pages/Navbar";
+import AboutMunsoc from "@/components/custom/aboutMunsoc";
 
 export default function Home() {
-  const { isSignedIn } = useAuth();
+  const [isLandingLoaded, setIsLandingLoaded] = useState(false);
 
-  // Redirect if the user is authenticated
-  useEffect(() => { 
-    if (isSignedIn) {
-      window.location.href = "/admin"; // Redirect to the admin page
-    }
-  }, [isSignedIn]);
-
-  if (isSignedIn) {
-    return null; // Render nothing while redirecting
-  }
+  const handleLandingLoad = () => {
+    setIsLandingLoaded(true);
+  };
 
   return (
     <div>
-      <Navbar />
-      <Landing />
+      {isLandingLoaded && (
+        <>
+          <Navbar />
+        </>
+      )}
+      <Landing onLoad={handleLandingLoad} />
+      {isLandingLoaded && (
+        <>
+          <AboutMunsoc />
+          <NeedHelp />
+        </>
+      )}
     </div>
   );
 }
