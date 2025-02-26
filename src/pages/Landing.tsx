@@ -144,7 +144,7 @@ const Landing = ( { onLoad } ) => {
               <div className="relative z-10">
                 <div className="relative -mt-[10vh] lg:-mt-[18vh] mb-[2vh]">
                   <div
-                    className="inset-0 border-rotating p-8 z-1 h-[18vh] w-[18vh] lg:h-[30vh] lg:w-[30vh] z-0"
+                    className="inset-0 border-rotating p-8 z-1 h-[18vh] w-[18vh] lg:h-[26vh] lg:w-[26vh] z-0"
                     style={{
                       background: `url('/globe-rotating.png') center/100% 100%`,
                     }}
@@ -155,13 +155,15 @@ const Landing = ( { onLoad } ) => {
                     src="/globe.svg"
                     alt="VITMUN"
                     draggable="false"
-                    className="h-[10vh] w-[10vh] lg:h-[18vh] lg:w-[18vh] rounded-full z-15 absolute -mt-[14vh] ml-[4vh] lg:-mt-[24vh] lg:ml-[6vh]"
+                    className="h-[10vh] w-[10vh] lg:h-[16vh] lg:w-[18vh] rounded-full z-15 absolute -mt-[14vh] ml-[4vh] lg:-mt-[21vh] lg:ml-[4vh]"
                   />
                 </div>
               </div>
 
               {/* Event Title */}
               <div className="flex flex-col items-center justify-center">
+                <p className="text-[2vh] lg:text-[3vh] font-bebas">Office of Students' Welfare</p>
+                <p className="text-[1vh] lg:text-[1.5vh] font-bebas">presents</p>
                 <div className="font-bold text-[5vh] lg:text-[6vh] select-none flex justify-center">
                   <span className={`${montaga.className} text-center`}>VIT</span>
                   <ImageFilledText
